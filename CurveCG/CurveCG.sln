@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30104.148
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CurveCG", "CurveCG\CurveCG.vcxproj", "{D0C3171B-7172-4B58-848B-E684D241FF67}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D0C3171B-7172-4B58-848B-E684D241FF67}.Debug|x64.ActiveCfg = Debug|x64
+		{D0C3171B-7172-4B58-848B-E684D241FF67}.Debug|x64.Build.0 = Debug|x64
+		{D0C3171B-7172-4B58-848B-E684D241FF67}.Debug|x86.ActiveCfg = Debug|Win32
+		{D0C3171B-7172-4B58-848B-E684D241FF67}.Debug|x86.Build.0 = Debug|Win32
+		{D0C3171B-7172-4B58-848B-E684D241FF67}.Release|x64.ActiveCfg = Release|x64
+		{D0C3171B-7172-4B58-848B-E684D241FF67}.Release|x64.Build.0 = Release|x64
+		{D0C3171B-7172-4B58-848B-E684D241FF67}.Release|x86.ActiveCfg = Release|Win32
+		{D0C3171B-7172-4B58-848B-E684D241FF67}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5F4305B7-DB0E-4EC6-AF17-8736B3F8B359}
+	EndGlobalSection
+EndGlobal
