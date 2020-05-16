@@ -183,11 +183,15 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AddCurveView.h" />
     <ClInclude Include="CP2.h" />
     <ClInclude Include="Curve.h" />
     <ClInclude Include="CurveCG.h" />
     <ClInclude Include="CurveCGDoc.h" />
     <ClInclude Include="CurveCGView.h" />
+    <ClInclude Include="CurveInfoView.h" />
+    <ClInclude Include="CurvePointView.h" />
+    <ClInclude Include="DrawView.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="pch.h" />
@@ -196,11 +200,15 @@
     <ClInclude Include="Transform.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AddCurveView.cpp" />
     <ClCompile Include="CP2.cpp" />
     <ClCompile Include="Curve.cpp" />
     <ClCompile Include="CurveCG.cpp" />
     <ClCompile Include="CurveCGDoc.cpp" />
     <ClCompile Include="CurveCGView.cpp" />
+    <ClCompile Include="CurveInfoView.cpp" />
+    <ClCompile Include="CurvePointView.cpp" />
+    <ClCompile Include="DrawView.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

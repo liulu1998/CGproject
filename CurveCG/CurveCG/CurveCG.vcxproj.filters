@@ -48,6 +48,18 @@
     <ClInclude Include="Transform.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="DrawView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="AddCurveView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CurveInfoView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CurvePointView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CurveCG.cpp">
@@ -72,6 +84,18 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Transform.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="DrawView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="AddCurveView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CurveInfoView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CurvePointView.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

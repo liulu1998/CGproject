@@ -37,6 +37,11 @@ protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	DECLARE_MESSAGE_MAP()
 
+private:
+	CSplitterWnd m_spliter;	//总体拆分窗口类对象，1行1列
+	CSplitterWnd m_LeftSpliter;	//将第一列继续拆分
+
+	virtual BOOL OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext);
 };
 
 
