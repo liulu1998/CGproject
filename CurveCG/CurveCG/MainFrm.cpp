@@ -51,11 +51,24 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	}
 	m_wndStatusBar.SetIndicators(indicators, sizeof(indicators)/sizeof(UINT));
 
+	// 设置程序左上角logo，IDI_ICON_LOGO为图标相应的资源ID
+	SetClassLong(m_hWnd, GCL_HICON, (LONG)AfxGetApp()->LoadIconW(IDI_ICON_LOGO));
+
+	// 设置右侧标题
+	SetTitle(_T("图不行学小组出品"));
+
+	// 设置窗口大小
+	MoveWindow(0, 0, 1400, 800);
+
+	// 设置居中窗口
+	CenterWindow();
+
 	return 0;
 }
 
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
+	cs.style = cs.style & ~WS_MAXIMIZEBOX & ~WS_MINIMIZEBOX;
 	if( !CFrameWnd::PreCreateWindow(cs) )
 		return FALSE;
 	// TODO: 在此处通过修改

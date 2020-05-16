@@ -219,6 +219,7 @@
   <ItemGroup>
     <Image Include="res\CurveCG.ico" />
     <Image Include="res\CurveCGDoc.ico" />
+    <Image Include="res\logo.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
