@@ -129,6 +129,18 @@ Return: double
 *************************************************/
 double Curve::Bernstein(int i, int degree, double t) {
 	//return this->Combination(degree, i) * pow(t, i) * pow(1 - t, degree - i);
+	//if (t == 0) {
+	//	if (i == 0)
+	//		return 1.0;
+	//	return 0.0;
+	//}
+	//else if (t == 1) {
+	//	if (i == degree)
+	//		return 1.0;
+	//	return 0.0;
+	//}
+	if (i > degree)
+		throw "Bernstein 组合数错误";
 	return this->combs[degree][i] * pow(t, i) * pow(1 - t, degree - i);
 }
 
@@ -184,7 +196,7 @@ std::vector<CP2> Curve::generateCurvePoints(int start, int end)
 	else					// B - 样条曲线
 		offset = 1;
 
-	for (int i = start; i + this->degree + 1 <= end; i += offset) {		// 起始控制点索引 i
+	for (int i = start; i + this->degree <= end; i += offset) {		// 起始控制点索引 i
 
 		for (double t = 0; t <= 1; t += this->precision) {		// 参数方程 参量 t
 			CP2 cur;
@@ -214,16 +226,21 @@ Input:
 		- ctrlPoint: CP2, 控制点
 Return:
 *************************************************/
-void Curve::addCtrlPoint(CP2 ctrlPoint)
+void Curve::addCtrlPoint(CP2& ctrlPoint)
 {
 	ctrlPoints.push_back(ctrlPoint);		// 末尾加入控制点
 
-	if (ctrlPoints.size() - degree - 1 < 0)		// 控制点数量少, 无法生成曲线
+	if (this->getCtrlPointsNum() - this->degree - 1 < 0)		// 控制点数量少, 无法生成曲线
 		return;
 
-	std::vector<CP2> newPoints = this->generateCurvePoints(ctrlPoints.size() - degree - 1, ctrlPoints.size() - 1);
+	std::vector<CP2> newPoints;
 
-	newPoints.erase(newPoints.begin());		// 删除首元素, 首元素与前一条曲线重复
+	if (this->getCurveType() == Bezier && this->getCtrlPointsNum() != this->degree + 1 && ((this->getCtrlPointsNum() + 1) % (this->degree + 1) != 0))
+		return;
+
+	newPoints = this->generateCurvePoints(this->getCtrlPointsNum() - degree - 1, this->getCtrlPointsNum() - 1);
+
+	//newPoints.erase(newPoints.begin());		// 删除首元素, 首元素与前一条曲线重复
 
 	curvePoints.insert(curvePoints.end(), newPoints.begin(), newPoints.end());
 }
@@ -312,10 +329,12 @@ Input:				- pDC
 Return:				void
 *************************************************/
 void Curve::drawCurve(CDC* pDC) {
+	if (this->ctrlPoints.empty() || this->curvePoints.empty())
+		return;
 
 	CPen curvePen, curvePen1, * pOldPen;		//画笔
 	// TODO: 设置画笔 属性 (颜色, 粗细...)
-	curvePen.CreatePen(PS_SOLID, 6, RGB(0, 0, 0));
+	curvePen.CreatePen(PS_SOLID, 1, RGB(0, 0, 0));
 	pOldPen = pDC->SelectObject(&curvePen);
 
 	pDC->MoveTo(ctrlPoints[0].x, ctrlPoints[0].y);
@@ -324,7 +343,7 @@ void Curve::drawCurve(CDC* pDC) {
 		pDC->LineTo(cP.x, cP.y);
 	}
 
-	curvePen1.CreatePen(PS_SOLID, 2, RGB(0, 0, 0));
+	curvePen1.CreatePen(PS_SOLID, 2, RGB(220, 0, 0));
 	pDC->SelectObject(&curvePen1);
 	pDC->MoveTo(curvePoints[0].x, curvePoints[0].y);
 	for (CP2 cP : curvePoints) {

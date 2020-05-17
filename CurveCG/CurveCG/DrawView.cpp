@@ -4,6 +4,7 @@
 #include "pch.h"
 #include "CurveCG.h"
 #include "DrawView.h"
+#include "CP2.h"
 #include "Curve.h"
 
 
@@ -21,9 +22,9 @@ DrawView::~DrawView()
 }
 
 BEGIN_MESSAGE_MAP(DrawView, CView)
-//	ON_WM_LBUTTONDBLCLK()
-//ON_WM_LBUTTONDBLCLK()
-ON_WM_LBUTTONDOWN()
+	//	ON_WM_LBUTTONDBLCLK()
+	//ON_WM_LBUTTONDBLCLK()
+	ON_WM_LBUTTONDOWN()
 END_MESSAGE_MAP()
 
 
@@ -33,6 +34,10 @@ void DrawView::OnDraw(CDC* pDC)
 {
 	CDocument* pDoc = GetDocument();
 	// TODO:  在此添加绘制代码
+
+	// 逐条绘制
+	for (Curve c : this->curves)
+		c.drawCurve(pDC);
 }
 
 
@@ -186,7 +191,13 @@ void DrawView::OnLButtonDown(UINT nFlags, CPoint point)
 	// TODO: 在此添加消息处理程序代码和/或调用默认值
 
 	CView::OnLButtonDown(nFlags, point);
-	
+
+
+	if (this->getCurvesNum() == 0) {
+		MessageBox(TEXT("请先创建曲线"));
+		return;
+	}
+
 	// 获取点view
 	CRuntimeClass* pClass = RUNTIME_CLASS(CurvePointView);
 
@@ -202,7 +213,13 @@ void DrawView::OnLButtonDown(UINT nFlags, CPoint point)
 
 	// TODO: 继续和Curve类联动, 如在ctrlPoint中加入点
 
+	// 当前焦点
+	int curFocus = this->getFocus();
+	// 加入控制点
+	this->curves[curFocus].addCtrlPoint(CP2((double)point.x, (double)point.y));
+
+	// 绘制
+	CDC* pDC = GetDC();
+	this->OnDraw(pDC);
+	ReleaseDC(pDC);
 }
-
-
-

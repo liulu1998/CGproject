@@ -39,7 +39,7 @@ public:
 	double F(int i, int degree, double t);			// B-样条 基函数
 
 	std::vector<CP2> generateCurvePoints(int start, int end);		// 生成样条曲线上的点
-	void addCtrlPoint(CP2);					// 追加一个控制点
+	void addCtrlPoint(CP2&);					// 追加一个控制点
 
 	void deleteCtrlPoint(int index);		// 删除控制点, 及其多种重载
 	void deleteCtrlPoint(CP2);

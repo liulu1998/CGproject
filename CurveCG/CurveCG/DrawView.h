@@ -27,7 +27,7 @@ protected:
 
 private:
 	std::vector<Curve> curves;		// 多条曲线
-	int focus;						// 当前焦点, 即当前操作哪一条曲线
+	int focus = -1;						// 当前焦点, 即当前操作哪一条曲线
 
 public:
 	int getCurvesNum();				// 获取曲线条数
