@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-
+#include "viewList.h"
 
 // AddCurveView 窗体视图
 
@@ -31,6 +31,10 @@ public:
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 private:
 	CButton m_addCurveDlg;
+
+// 我们的方法
+private:
+	CView* GetView(CRuntimeClass* pClass);	// 获取指定类型的View
 };
 
 

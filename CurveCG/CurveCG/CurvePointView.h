@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-
+#include "viewList.h"
 
 // CurvePointView 窗体视图
 
@@ -29,6 +29,12 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnSize(UINT nType, int cx, int cy);
+
+// 我们的方法
+private:
+	CView* GetView(CRuntimeClass* pClass);	// 获取指定类型的View
+public:
+	CListBox m_pointList;
 };
 
 

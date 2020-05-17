@@ -5,7 +5,7 @@
 #include "CurveCG.h"
 #include "DrawView.h"
 #include "Curve.h"
-#include "viewList.h"
+
 
 // DrawView
 
@@ -143,19 +143,17 @@ void DrawView::deleteCurve(int index) {
 }
 
 
-// DrawView 消息处理程序
-
-// 测试点击事件
-
-
-// 视图间转换测试
-void DrawView::OnLButtonDown(UINT nFlags, CPoint point)
-{
-	// TODO: 在此添加消息处理程序代码和/或调用默认值
-
-	CView::OnLButtonDown(nFlags, point);
-	
-	CRuntimeClass* pClass = RUNTIME_CLASS(CurveInfoView);
+/*************************************************
+Function:		GetView
+Description:	获取其它视图的指针，以获得其指针
+Author:			刘崇鹏
+Calls:			GetDocument
+Input:
+		- pClass: CRuntimeClass, 运行时类
+Return:
+		- pView: CView*, 要求类的指针
+*************************************************/
+CView* DrawView::GetView(CRuntimeClass* pClass) {
 	CDocument* pDoc = (CDocument*)GetDocument();
 	CView* pView;
 	POSITION pos = pDoc->GetFirstViewPosition();
@@ -164,15 +162,47 @@ void DrawView::OnLButtonDown(UINT nFlags, CPoint point)
 		pView = pDoc->GetNextView(pos);
 		if (pView->IsKindOf(pClass))
 		{
-			CString data;
-			data.Format(_T("pointNum: %d"), ((CurveInfoView*)pView)->m_curveList.GetCount());
-			((CurveInfoView*)pView)->m_curveList.AddString(data);
-			break;
+			return pView;
 		}
 	}
-	//if (!pView->IsKindOf(pClass))
-	//{
-	//	MessageBox(_T("Can't Locate the View."));
-	//}
+	return NULL;
+}
+
+
+// DrawView 消息处理程序
+/*************************************************
+Function:		OnLButtonDown
+Description:	在白板处点击时，在点列表中增加新的点信息,并更新选中状态
+Author:			刘崇鹏
+Calls:			GetView
+Input:
+		- nFlags: nFlags, 标志位
+		- point: CPoint, 点击的点位置
+Return:
+		- pView: CView*, 要求类的指针
+*************************************************/
+void DrawView::OnLButtonDown(UINT nFlags, CPoint point)
+{
+	// TODO: 在此添加消息处理程序代码和/或调用默认值
+
+	CView::OnLButtonDown(nFlags, point);
+	
+	// 获取点view
+	CRuntimeClass* pClass = RUNTIME_CLASS(CurvePointView);
+
+	// 获取vieew中的列表
+	CListBox* list = &((CurvePointView*)GetView(pClass))->m_pointList;
+
+	// 构造数据
+	CString data;
+	int listLength = list->GetCount();
+	data.Format(_T("%d: (%d, %d)"), listLength, point.x, point.y);
+	list->AddString(data);
+	list->SetCurSel(listLength);
+
+	// TODO: 继续和Curve类联动, 如在ctrlPoint中加入点
 
 }
+
+
+

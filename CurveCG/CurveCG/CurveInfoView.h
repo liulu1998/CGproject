@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-
+#include "viewList.h"
 
 // CurveInfoView 窗体视图
 
@@ -32,6 +32,12 @@ public:
 	// 存有点信息的ListBox
 	CListBox m_curveList;
 	virtual void OnInitialUpdate();
+
+// 我们的方法
+private:
+	CView* GetView(CRuntimeClass* pClass);	// 获取指定类型的View
+
+
 };
 
 
