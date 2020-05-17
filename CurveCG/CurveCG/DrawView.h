@@ -1,4 +1,6 @@
 ﻿#pragma once
+#include <vector>
+#include "Curve.h"
 
 
 // DrawView 视图
@@ -22,6 +24,18 @@ public:
 
 protected:
 	DECLARE_MESSAGE_MAP()
+
+private:
+	std::vector<Curve> curves;		// 多条曲线
+	int focus;						// 当前焦点, 即当前操作哪一条曲线
+
+public:
+	int getCurvesNum();				// 获取曲线条数
+	int getFocus();					// 获取当前焦点
+	void setFocus(int index);		// 更改当前焦点
+
+	int addCurve();
+	int addCurve(CurveType type, int degree, double precision);
+
+	void deleteCurve(int index);	// 删除一条曲线
 };
-
-
