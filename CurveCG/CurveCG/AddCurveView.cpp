@@ -184,6 +184,6 @@ void AddCurveView::OnBnClickedButtonAddcurve()
 	//int curvesNum = pDraw->getCurvesNum();
 
 	//CString text;
-	//text.Format(TEXT("%d,  %c,  %d"), curDegree, this->selectedType, curvesNum);
+	//text.Format(TEXT("选中的次数: %d, 选中的曲线类型: %c, Draw中的曲线数: %d"), curDegree, this->selectedType, curvesNum);
 	//MessageBox(text);
 }
