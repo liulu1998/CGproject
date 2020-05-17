@@ -49,12 +49,12 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	if (CFrameWnd::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
-	if (!m_wndStatusBar.Create(this))
-	{
-		TRACE0("未能创建状态栏\n");
-		return -1;      // 未能创建
-	}
-	m_wndStatusBar.SetIndicators(indicators, sizeof(indicators)/sizeof(UINT));
+	//if (!m_wndStatusBar.Create(this))
+	//{
+	//	TRACE0("未能创建状态栏\n");
+	//	return -1;      // 未能创建
+	//}
+	//m_wndStatusBar.SetIndicators(indicators, sizeof(indicators)/sizeof(UINT));
 
 	// 设置程序左上角logo，IDI_ICON_LOGO为图标相应的资源ID
 	SetClassLong(m_hWnd, GCL_HICON, (LONG)AfxGetApp()->LoadIconW(IDI_ICON_LOGO));
@@ -75,6 +75,7 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
 	//cs.style = cs.style & ~WS_MAXIMIZEBOX;	// 不能最大化，但可以拖拽改变大小
 	//cs.style = WS_OVERLAPPED | WS_SYSMENU | WS_MINIMIZEBOX;		// 不能最大化，且不可拖拽改变大小
+	cs.style = WS_OVERLAPPED | WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX;		// 可以最大化，但不可拖拽改变大小
 	if( !CFrameWnd::PreCreateWindow(cs) )
 		return FALSE;
 	// TODO: 在此处通过修改
@@ -131,7 +132,7 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 	//m_LeftSpliter.CreateView(1, 0, RUNTIME_CLASS(CurveListView), CSize(284, 233), pContext);
 	//m_LeftSpliter.CreateView(2, 0, RUNTIME_CLASS(CurvePointView), CSize(284, 233), pContext);
 
-	m_spliter.SetColumnInfo(0, shape.Width() / 5, 10);
+	m_spliter.SetColumnInfo(0, shape.Width() / 5, 526);
 	m_spliter.SetColumnInfo(1, shape.Width()*4 / 5, 10);
 
 	// 设置左边的框大小
@@ -165,10 +166,9 @@ void CMainFrame::OnSize(UINT nType, int cx, int cy)
 		m_LeftSpliter.SetRowInfo(0, cy / 3, 10);
 		m_LeftSpliter.SetRowInfo(1, cy / 3, 10);
 		m_LeftSpliter.SetRowInfo(2, cy / 3, 10);
-		m_LeftSpliter.UpdateWindow();
-
 		m_spliter.RecalcLayout();
 		m_LeftSpliter.RecalcLayout();
+
 
 	}
 	
