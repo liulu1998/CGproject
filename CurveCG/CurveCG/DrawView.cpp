@@ -183,9 +183,14 @@ Return:
 *************************************************/
 void DrawView::OnLButtonDown(UINT nFlags, CPoint point)
 {
-	// TODO: 在此添加消息处理程序代码和/或调用默认值
 
 	CView::OnLButtonDown(nFlags, point);
+
+	if (this->getCurvesNum() == 0) 
+	{
+		MessageBox(_T("请先添加曲线"));
+		return;
+	}
 	
 	// 获取点view
 	CRuntimeClass* pClass = RUNTIME_CLASS(CurvePointView);
