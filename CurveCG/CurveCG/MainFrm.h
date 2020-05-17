@@ -38,10 +38,13 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 private:
+	BOOL isSpliterCreate = false;
 	CSplitterWnd m_spliter;	//总体拆分窗口类对象，1行1列
 	CSplitterWnd m_LeftSpliter;	//将第一列继续拆分
 
 	virtual BOOL OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext);
+public:
+	afx_msg void OnSize(UINT nType, int cx, int cy);
 };
 
 
