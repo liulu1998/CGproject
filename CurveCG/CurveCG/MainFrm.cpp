@@ -22,6 +22,7 @@ IMPLEMENT_DYNCREATE(CMainFrame, CFrameWnd)
 
 BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_WM_CREATE()
+	ON_WM_SIZE()
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -73,7 +74,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
 	//cs.style = cs.style & ~WS_MAXIMIZEBOX;	// 不能最大化，但可以拖拽改变大小
-	cs.style = WS_OVERLAPPED | WS_SYSMENU | WS_MINIMIZEBOX;		// 不能最大化，且不可拖拽改变大小
+	//cs.style = WS_OVERLAPPED | WS_SYSMENU | WS_MINIMIZEBOX;		// 不能最大化，且不可拖拽改变大小
 	if( !CFrameWnd::PreCreateWindow(cs) )
 		return FALSE;
 	// TODO: 在此处通过修改
@@ -132,8 +133,44 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 
 	m_spliter.SetColumnInfo(0, shape.Width() / 5, 10);
 	m_spliter.SetColumnInfo(1, shape.Width()*4 / 5, 10);
+
+	// 设置左边的框大小
 	m_LeftSpliter.SetRowInfo(0, shape.Height() / 3, 10);
 	m_LeftSpliter.SetRowInfo(1, shape.Height() / 3, 10);
 	m_LeftSpliter.SetRowInfo(2, shape.Height() / 3, 10);
+	isSpliterCreate = true;
+
 	return TRUE;	// 自己拆分
+}
+
+
+void CMainFrame::OnSize(UINT nType, int cx, int cy)
+{
+	CFrameWnd::OnSize(nType, cx, cy);
+
+	// TODO: 在此处添加消息处理程序代码
+
+
+	if (isSpliterCreate) {
+		CRect shape;
+		GetClientRect(shape);
+		// 输出窗口大小
+		CString str;
+		str.Format(_T("%d %d"), cx, cy);
+		//MessageBox(str);
+		m_spliter.SetColumnInfo(0, cx / 5, 10);
+		m_spliter.SetColumnInfo(1, cx * 4 / 5, 10);
+
+		// 设置左边的框大小
+		m_LeftSpliter.SetRowInfo(0, cy / 3, 10);
+		m_LeftSpliter.SetRowInfo(1, cy / 3, 10);
+		m_LeftSpliter.SetRowInfo(2, cy / 3, 10);
+		m_LeftSpliter.UpdateWindow();
+
+		m_spliter.RecalcLayout();
+		m_LeftSpliter.RecalcLayout();
+
+	}
+	
+
 }
