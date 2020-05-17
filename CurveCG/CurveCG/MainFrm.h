@@ -40,9 +40,9 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 private:
-	BOOL isSpliterCreate = false;
-	MySplitter m_spliter;	//总体拆分窗口类对象，1行1列
-	MySplitter m_LeftSpliter;	//将第一列继续拆分
+	BOOL isSplitterCreate = false;
+	MySplitter m_splitter;	//总体拆分窗口类对象，1行1列
+	MySplitter m_LeftSplitter;	//将第一列继续拆分
 
 	virtual BOOL OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext);
 public:

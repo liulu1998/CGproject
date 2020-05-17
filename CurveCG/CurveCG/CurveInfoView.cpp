@@ -23,6 +23,7 @@ CurveInfoView::~CurveInfoView()
 void CurveInfoView::DoDataExchange(CDataExchange* pDX)
 {
 	CFormView::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_LIST_CURVES, m_curveList);
 }
 
 BEGIN_MESSAGE_MAP(CurveInfoView, CFormView)
@@ -60,4 +61,16 @@ void CurveInfoView::OnSize(UINT nType, int cx, int cy)
 
 	// 将内部内容自适应大小
 	MoveWindow(shape);
+}
+
+
+void CurveInfoView::OnInitialUpdate()
+{
+	CFormView::OnInitialUpdate();
+
+	// TODO: 在此添加专用代码和/或调用基类
+	m_curveList.AddString(_T("赛高！！"));
+	m_curveList.AddString(_T("赛高！！"));
+	m_curveList.AddString(_T("赛高！！"));
+	m_curveList.AddString(_T("赛高！！"));
 }

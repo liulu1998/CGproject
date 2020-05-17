@@ -5,7 +5,7 @@
 #include "CurveCG.h"
 #include "DrawView.h"
 #include "Curve.h"
-
+#include "viewList.h"
 
 // DrawView
 
@@ -21,6 +21,9 @@ DrawView::~DrawView()
 }
 
 BEGIN_MESSAGE_MAP(DrawView, CView)
+//	ON_WM_LBUTTONDBLCLK()
+//ON_WM_LBUTTONDBLCLK()
+ON_WM_LBUTTONDOWN()
 END_MESSAGE_MAP()
 
 
@@ -141,3 +144,35 @@ void DrawView::deleteCurve(int index) {
 
 
 // DrawView 消息处理程序
+
+// 测试点击事件
+
+
+// 视图间转换测试
+void DrawView::OnLButtonDown(UINT nFlags, CPoint point)
+{
+	// TODO: 在此添加消息处理程序代码和/或调用默认值
+
+	CView::OnLButtonDown(nFlags, point);
+	
+	CRuntimeClass* pClass = RUNTIME_CLASS(CurveInfoView);
+	CDocument* pDoc = (CDocument*)GetDocument();
+	CView* pView;
+	POSITION pos = pDoc->GetFirstViewPosition();
+	while (pos != NULL)
+	{
+		pView = pDoc->GetNextView(pos);
+		if (pView->IsKindOf(pClass))
+		{
+			CString data;
+			data.Format(_T("pointNum: %d"), ((CurveInfoView*)pView)->m_curveList.GetCount());
+			((CurveInfoView*)pView)->m_curveList.AddString(data);
+			break;
+		}
+	}
+	//if (!pView->IsKindOf(pClass))
+	//{
+	//	MessageBox(_T("Can't Locate the View."));
+	//}
+
+}

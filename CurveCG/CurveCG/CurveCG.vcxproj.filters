@@ -63,6 +63,9 @@
     <ClInclude Include="MySplitter.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="viewList.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CurveCG.cpp">

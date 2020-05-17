@@ -29,6 +29,9 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnSize(UINT nType, int cx, int cy);
+	// 存有点信息的ListBox
+	CListBox m_curveList;
+	virtual void OnInitialUpdate();
 };
 
 
