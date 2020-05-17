@@ -50,12 +50,20 @@ void CurveInfoView::Dump(CDumpContext& dc) const
 
 // CurveInfoView 消息处理程序
 
-
+/*************************************************
+Function:		OnSize
+Description:	view自适应splitter大小
+Author:			刘崇鹏
+Calls:			GetClientRect
+Input:
+		- cx: int, x坐标
+		- cy: int, y坐标
+Return:
+*************************************************/
 void CurveInfoView::OnSize(UINT nType, int cx, int cy)
 {
 	CFormView::OnSize(nType, cx, cy);
 
-	// TODO: 在此处添加消息处理程序代码
 	CRect shape;
 	GetClientRect(shape);
 
