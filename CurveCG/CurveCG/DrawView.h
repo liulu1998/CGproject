@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <vector>
 #include "Curve.h"
-
+#include "viewList.h"
 
 // DrawView 视图
 
@@ -38,7 +38,7 @@ public:
 	int addCurve(CurveType type, int degree, double precision);
 
 	void deleteCurve(int index);	// 删除一条曲线
-//	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
-//	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
+	CView* GetView(CRuntimeClass* pClass);	// 获取指定类型的View
+
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 };
