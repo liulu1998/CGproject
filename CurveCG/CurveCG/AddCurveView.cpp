@@ -345,7 +345,14 @@ void AddCurveView::OnEnChangeEdit1()
 //	// TODO:  在此添加控件通知处理程序代码
 //}
 
-
+/*************************************************
+Function:		OnSetfocusEdit1
+Description:	在EditCtrl获得focus之后，进行初始化
+Author:			刘崇鹏
+Calls:			GetWindowTextW
+Input:
+Return:
+*************************************************/
 void AddCurveView::OnSetfocusEdit1()
 {
 	// TODO: 在此添加控件通知处理程序代码
@@ -357,7 +364,14 @@ void AddCurveView::OnSetfocusEdit1()
 	}
 }
 
-
+/*************************************************
+Function:		OnKillfocusEdit1
+Description:	在blur之后，进行框内的判断
+Author:			刘崇鹏
+Calls:
+Input:
+Return:
+*************************************************/
 void AddCurveView::OnKillfocusEdit1()
 {
 	isFocus = false;
