@@ -1,3 +1,4 @@
+#pragma once
 #include <vector>
 #include <string>
 #include "CP2.h"
@@ -16,6 +17,7 @@ enum CurveType
 
 class Curve {
 	// 构造器
+public:
 	Curve(); 	//无参构造器，初始化内部参数为默认值
 	Curve(CurveType type, int degree, double precision);   // 有参构造器
 
