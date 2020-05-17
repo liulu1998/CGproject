@@ -10,8 +10,8 @@ public:
 	friend CP2 operator *(const CP2&, double);
 	friend CP2 operator *(double, const CP2&);
 	friend CP2 operator /(const CP2&, double);
-	friend CP2 operator+=(const CP2&, const CP2&);
-	friend CP2 operator-=(const CP2&, const CP2&);
+	friend void operator+=(CP2&, const CP2&);
+	friend void operator-=(CP2&, const CP2&);
 	friend CP2 operator*=(const CP2&, double);
 	friend CP2 operator/=(const CP2&, double);
 	friend bool operator==(const CP2& p1, const CP2& p2);

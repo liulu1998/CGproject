@@ -62,20 +62,16 @@ CP2 operator /(const CP2& p1, double k)//点和常量的除
 	return p;
 }
 
-CP2 operator+=(const CP2& p1, const CP2& p2)
+void operator+=(CP2& p1, const CP2& p2)
 {
-	CP2 p;
-	p.x = p1.x + p2.x;
-	p.y = p1.y + p2.y;
-	return p;
+	p1.x += p2.x;
+	p1.y += p2.y;
 }
 
-CP2 operator-=(const CP2& p1, const CP2& p2)
+void operator-=(CP2& p1, const CP2& p2)
 {
-	CP2 p;
-	p.x = p1.x - p2.x;
-	p.y = p1.y - p2.y;
-	return p;
+	p1.x -= p2.x;
+	p1.y -= p2.y;
 }
 
 CP2 operator*=(const CP2& p1, double k)
