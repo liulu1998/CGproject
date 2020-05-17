@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "viewList.h"
+#include "Curve.h"
 
 // AddCurveView 窗体视图
 
@@ -31,10 +32,15 @@ public:
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 private:
 	CButton m_addCurveDlg;
+	CComboBox m_degree_cbx;					// 次数 下拉框
+	CurveType selectedType = Spline;		// 选中的次数
 
-// 我们的方法
+	// 我们的方法
 private:
 	CView* GetView(CRuntimeClass* pClass);	// 获取指定类型的View
+public:
+	virtual void OnInitialUpdate();
+	afx_msg void OnBnClickedRadioBezier();
+	afx_msg void OnBnClickedRadioBspline();
+	afx_msg void OnBnClickedButtonAddcurve();
 };
-
-

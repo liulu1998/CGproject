@@ -12,10 +12,14 @@
 #define IDD_DLG_CURVEINFO               313
 #define IDD_DLG_CURBEPOINT              314
 #define IDC_COMBO1                      1000
+#define IDC_COMBO_DEGREE                1000
 #define IDC_RADIO1                      1001
+#define IDC_RADIO_BEZIER                1001
 #define IDC_RADIO2                      1002
+#define IDC_RADIO_BSPLINE               1002
 #define IDC_SLIDER1                     1003
 #define IDC_BUTTON1                     1004
+#define IDC_BUTTON_ADDCURVE             1004
 #define IDC_LIST_CURVE                  1007
 #define IDC_LIST_POINT                  1008
 #define IDC_EDIT1                       1009
