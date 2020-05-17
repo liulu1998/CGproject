@@ -110,9 +110,9 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 	//return CFrameWnd::OnCreateClient(lpcs, pContext);
 
 	// 拆成1行1列
-	m_spliter.CreateStatic(this, 1, 2, WS_CHILD | WS_VISIBLE | WS_BORDER);
+	m_splitter.CreateStatic(this, 1, 2, WS_CHILD | WS_VISIBLE | WS_BORDER);
 	// 将左边列拆成3行
-	m_LeftSpliter.CreateStatic(&m_spliter, 3, 1, WS_CHILD | WS_VISIBLE, m_spliter.IdFromRowCol(0, 0));
+	m_LeftSplitter.CreateStatic(&m_splitter, 3, 1, WS_CHILD | WS_VISIBLE, m_splitter.IdFromRowCol(0, 0));
 
 	CRect shape;
 	GetClientRect(shape);
@@ -123,23 +123,23 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 	//MessageBox(str);
 
 	// 左右侧具体显示内容
-	m_LeftSpliter.CreateView(0, 0, RUNTIME_CLASS(AddCurveView), CSize(shape.Width() / 5, shape.Height() / 3), pContext);
-	m_LeftSpliter.CreateView(1, 0, RUNTIME_CLASS(CurveInfoView), CSize(shape.Width() / 5, shape.Height() / 3), pContext);
-	m_LeftSpliter.CreateView(2, 0, RUNTIME_CLASS(CurvePointView), CSize(shape.Width() / 5, shape.Height() / 3), pContext);
-	m_spliter.CreateView(0, 1, RUNTIME_CLASS(DrawView), CSize(shape.Width() * 4 / 5, shape.Height()), pContext);
-	//m_spliter.CreateView(0, 1, RUNTIME_CLASS(DrawView), CSize(1139, 700), pContext);
-	//m_LeftSpliter.CreateView(0, 0, RUNTIME_CLASS(AddCurveView), CSize(284, 233), pContext);
-	//m_LeftSpliter.CreateView(1, 0, RUNTIME_CLASS(CurveListView), CSize(284, 233), pContext);
-	//m_LeftSpliter.CreateView(2, 0, RUNTIME_CLASS(CurvePointView), CSize(284, 233), pContext);
+	m_LeftSplitter.CreateView(0, 0, RUNTIME_CLASS(AddCurveView), CSize(shape.Width() / 5, shape.Height() / 3), pContext);
+	m_LeftSplitter.CreateView(1, 0, RUNTIME_CLASS(CurveInfoView), CSize(shape.Width() / 5, shape.Height() / 3), pContext);
+	m_LeftSplitter.CreateView(2, 0, RUNTIME_CLASS(CurvePointView), CSize(shape.Width() / 5, shape.Height() / 3), pContext);
+	m_splitter.CreateView(0, 1, RUNTIME_CLASS(DrawView), CSize(shape.Width() * 4 / 5, shape.Height()), pContext);
+	//m_splitter.CreateView(0, 1, RUNTIME_CLASS(DrawView), CSize(1139, 700), pContext);
+	//m_LeftSplitter.CreateView(0, 0, RUNTIME_CLASS(AddCurveView), CSize(284, 233), pContext);
+	//m_LeftSplitter.CreateView(1, 0, RUNTIME_CLASS(CurveListView), CSize(284, 233), pContext);
+	//m_LeftSplitter.CreateView(2, 0, RUNTIME_CLASS(CurvePointView), CSize(284, 233), pContext);
 
-	m_spliter.SetColumnInfo(0, shape.Width() / 5, 526);
-	m_spliter.SetColumnInfo(1, shape.Width()*4 / 5, 10);
+	m_splitter.SetColumnInfo(0, shape.Width() / 5, 526);
+	m_splitter.SetColumnInfo(1, shape.Width()*4 / 5, 10);
 
 	// 设置左边的框大小
-	m_LeftSpliter.SetRowInfo(0, shape.Height() / 3, 10);
-	m_LeftSpliter.SetRowInfo(1, shape.Height() / 3, 10);
-	m_LeftSpliter.SetRowInfo(2, shape.Height() / 3, 10);
-	isSpliterCreate = true;
+	m_LeftSplitter.SetRowInfo(0, shape.Height() / 3, 10);
+	m_LeftSplitter.SetRowInfo(1, shape.Height() / 3, 10);
+	m_LeftSplitter.SetRowInfo(2, shape.Height() / 3, 10);
+	isSplitterCreate = true;
 
 	return TRUE;	// 自己拆分
 }
@@ -152,22 +152,22 @@ void CMainFrame::OnSize(UINT nType, int cx, int cy)
 	// TODO: 在此处添加消息处理程序代码
 
 
-	if (isSpliterCreate) {
+	if (isSplitterCreate) {
 		CRect shape;
 		GetClientRect(shape);
 		// 输出窗口大小
 		CString str;
 		str.Format(_T("%d %d"), cx, cy);
 		//MessageBox(str);
-		m_spliter.SetColumnInfo(0, cx / 5, 10);
-		m_spliter.SetColumnInfo(1, cx * 4 / 5, 10);
+		m_splitter.SetColumnInfo(0, cx / 5, 10);
+		m_splitter.SetColumnInfo(1, cx * 4 / 5, 10);
 
 		// 设置左边的框大小
-		m_LeftSpliter.SetRowInfo(0, cy / 3, 10);
-		m_LeftSpliter.SetRowInfo(1, cy / 3, 10);
-		m_LeftSpliter.SetRowInfo(2, cy / 3, 10);
-		m_spliter.RecalcLayout();
-		m_LeftSpliter.RecalcLayout();
+		m_LeftSplitter.SetRowInfo(0, cy / 3, 10);
+		m_LeftSplitter.SetRowInfo(1, cy / 3, 10);
+		m_LeftSplitter.SetRowInfo(2, cy / 3, 10);
+		m_splitter.RecalcLayout();
+		m_LeftSplitter.RecalcLayout();
 
 
 	}
