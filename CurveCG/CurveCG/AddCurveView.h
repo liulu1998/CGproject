@@ -35,12 +35,25 @@ private:
 	CComboBox m_degree_cbx;					// 次数 下拉框
 	CurveType selectedType = Spline;		// 选中的次数
 
-	// 我们的方法
+// 我们的方法
 private:
 	CView* GetView(CRuntimeClass* pClass);	// 获取指定类型的View
+// 我们的属性
+	// 精度 滑动条和编辑框的设定值
+	int precisionMin = 20;
+	int precisionMax = 200;
+	int precisionInterval = 10;
+	int precisionDefault = 100;
 public:
 	virtual void OnInitialUpdate();
 	afx_msg void OnBnClickedRadioBezier();
 	afx_msg void OnBnClickedRadioBspline();
 	afx_msg void OnBnClickedButtonAddcurve();
+private:
+	CSliderCtrl m_slider_precision;
+	CEdit m_edit_precision;
+public:
+	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+//	afx_msg void OnEnChangeEdit1();
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 };
