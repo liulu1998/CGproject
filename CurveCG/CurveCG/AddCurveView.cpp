@@ -199,7 +199,6 @@ void AddCurveView::OnBnClickedButtonAddcurve()
 	m_edit_precision.GetWindowTextW(data);
 	double precision;
 	precision = 1.0 / _wtoi(data);
-	MessageBox(data);
 	// 获取 DrawView 指针
 	CRuntimeClass* pClass = RUNTIME_CLASS(DrawView);
 	DrawView* pDraw = (DrawView*)GetView(pClass);

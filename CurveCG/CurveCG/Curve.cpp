@@ -189,7 +189,6 @@ std::vector<CP2> Curve::generateCurvePoints(int start, int end)
 
 	CString data;
 	data.Format(_T("%d"), this->precision);
-	AfxMessageBox(data);
 
 	if (end - start + 1 <= this->degree)		// 控制点个数 不足以计算 degree 阶曲线
 		return points;
