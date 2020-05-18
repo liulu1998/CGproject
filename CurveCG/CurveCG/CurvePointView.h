@@ -36,7 +36,7 @@ private:
 	CView* GetView(CRuntimeClass* pClass);	// 获取指定类型的View
 public:
 	CListBox m_pointList;
-	void showCurvePoints(Curve c);
+	void showCurvePoints();
 	afx_msg void OnBnClickedButtonDelcurve();
 	afx_msg void OnBnClickedButtonAddpoint();
 };
