@@ -70,7 +70,7 @@ Calls:
 Input:
 Return:			int
 *************************************************/
-int DrawView::getCurvesNum() {
+int DrawView::getCurvesNum() const {
 	return (int)this->curves.size();
 }
 
@@ -81,7 +81,7 @@ Description:	获得当前曲线焦点, 即操作的曲线在 curves 中的索引
 Author:			刘陆
 Return:			int
 *************************************************/
-int DrawView::getFocus() {
+int DrawView::getFocus() const {
 	return this->focus;
 }
 
@@ -143,11 +143,11 @@ Calls:
 Input:
 	- type: CurveType, 曲线类型, Bezier 或 Spline
 	- degree: int, 曲线次数
-	- precision: double, 采样精度
+	- precision: int, 采样精度
 Return:			int, 新创建的曲线在 curves 中的索引
 Other:			添加曲线后, 默认的焦点 切换为 新增曲线
 *************************************************/
-int DrawView::addCurve(CurveType type, int degree, double precision) {
+int DrawView::addCurve(CurveType type, int degree, int precision) {
 	Curve c = Curve(type, degree, precision);
 	this->curves.push_back(c);
 	this->setFocus(this->getCurvesNum() - 1);		// 切换焦点
@@ -163,9 +163,9 @@ Calls:
 Input:
 Return:			int
 *************************************************/
-int DrawView::getCtrlPointsNumOfCurve() {
-	PCurves pc = this->curves.begin() + this->getFocus();
-	return pc->getCtrlPointsNum();
+int DrawView::getCtrlPointsNumOfCurve() const {
+	int f = this->getFocus();
+	return this->curves[f].getCtrlPointsNum();
 }
 
 
@@ -178,9 +178,11 @@ Input:
 			- index: int, 控制点在 焦点曲线 中的索引
 Return:			CP2
 *************************************************/
-CP2 DrawView::getCtrlPointFromCurve(int index) {
-	PCurves pcurve = this->curves.begin() + this->getFocus();
-	return pcurve->getCtrlPoint(index);
+CP2 DrawView::getCtrlPointFromCurve(int index) const {
+	int f = this->getFocus();
+	if (index >= this->curves[f].getCtrlPointsNum())
+		throw "索引越界";
+	return this->curves[f].getCtrlPoint(index);
 }
 
 
@@ -250,12 +252,11 @@ Input:
 		- index: int, 曲线在 curves 中的索引
 Return:			int
 *************************************************/
-int DrawView::getCurveDegree(int index) {
+int DrawView::getCurveDegree(int index) const {
 	if (index >= this->getCurvesNum())
 		throw "索引越界";
 
-	PCurves pc = this->curves.begin() + index;
-	return pc->getCurveDegree();
+	return this->curves[index].getCurveDegree();
 }
 
 
@@ -266,12 +267,10 @@ Input:
 		- index: int, 曲线在 curves 中的索引
 Return:			CurveType
 *************************************************/
-CurveType DrawView::getCurveType(int index) {
+CurveType DrawView::getCurveType(int index) const {
 	if (index >= this->getCurvesNum())
 		throw "索引越界";
-
-	PCurves pc = this->curves.begin() + index;
-	return pc->getCurveType();
+	return this->curves[index].getCurveType();
 }
 
 
@@ -282,12 +281,10 @@ Input:
 		- index: int, 曲线在 curves 中的索引
 Return:			double
 *************************************************/
-double DrawView::getCurvePrecision(int index) {
+int DrawView::getCurvePrecision(int index) const {
 	if (index >= this->getCurvesNum())
 		throw "索引越界";
-
-	PCurves pc = this->curves.begin() + index;
-	return pc->getCurvePrecision();
+	return this->curves[index].getCurvePrecision();
 }
 
 

@@ -19,7 +19,7 @@ class Curve {
 	// 构造器
 public:
 	Curve(); 	//无参构造器，初始化内部参数为默认值
-	Curve(CurveType type, int degree, double precision);   // 有参构造器
+	Curve(CurveType type, int degree, int precision);   // 有参构造器
 
 // 属性
 private:
@@ -29,7 +29,7 @@ private:
 
 	CurveType type;      // 曲线类型
 	int degree;			 // 曲线阶数
-	double precision;	 // 曲线的精度。如0.01代表每段曲线中，t以0.01变化，即一段曲线由100个点构成。
+	int precision;		 // 曲线的精度, 即一段曲线由 多少个点 组成
 	const static int combs[7][7];				// 组合数表
 	const static int factorials[6];			    // 阶乘表
 
@@ -49,17 +49,17 @@ public:
 	void drawCurve(CDC* pDC);						// 绘制本条曲线
 	void resetCurvePoints();					    // 清空 实例的 curvePoints
 
-	void changeCurveInfo(CurveType type, int degree, double precision);	// 修改曲线信息, 及其重载
+	void changeCurveInfo(CurveType type, int degree, int precision);	// 修改曲线信息, 及其重载
 	void changeCurveInfo(CurveType type);
 	void changeCurveInfo(int degree);
-	void changeCurveInfo(double precision);
+	//void changeCurveInfo(int precision);
 
 	int Combination(int n, int m);			// 组合数
 
 	/** Getters */
-	CurveType getCurveType();				// 获得曲线类型
-	int getCtrlPointsNum();					// 获得曲线中 控制点个数
-	int getCurveDegree();					// 获得曲线次数
-	double getCurvePrecision();				// 获得曲线精度
-	CP2 getCtrlPoint(int index);			// 获得曲线中 某个控制点
+	CurveType getCurveType() const;				// 获得曲线类型
+	int getCtrlPointsNum() const;					// 获得曲线中 控制点个数
+	int getCurveDegree() const;					// 获得曲线次数
+	int getCurvePrecision() const;				// 获得曲线精度
+	CP2 getCtrlPoint(int index) const;			// 获得曲线中 某个控制点
 };
