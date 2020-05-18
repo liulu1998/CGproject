@@ -238,7 +238,8 @@ void Curve::addCtrlPoint(CP2& ctrlPoint)
 
 	std::vector<CP2> newPoints;
 
-	if (this->getCurveType() == Bezier && this->getCtrlPointsNum() != this->degree + 1 && ((this->getCtrlPointsNum() + 1) % (this->degree + 1) != 0))
+	//if (this->getCurveType() == Bezier && this->getCtrlPointsNum() != this->degree + 1 && ((this->getCtrlPointsNum() + 1) % (this->degree + 1) != 0))
+	if (this->getCurveType() == Bezier && ((this->getCtrlPointsNum() - 1) % (this->degree) != 0))
 		return;
 
 	newPoints = this->generateCurvePoints(this->getCtrlPointsNum() - degree - 1, this->getCtrlPointsNum() - 1);
