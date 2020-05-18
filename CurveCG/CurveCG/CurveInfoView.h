@@ -31,14 +31,17 @@ protected:
 public:
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	// 存有点信息的ListBox
-	CListBox m_curveList;
+//	CListBox m_curveList;
 	virtual void OnInitialUpdate();
 
 // 我们的方法
+public:
+	void addCurveInfo(Curve);	// 添加点信息
 private:
 	CView* GetView(CRuntimeClass* pClass);	// 获取指定类型的View
-	void addCurveInfo(Curve);
 
+public:
+	CListCtrl m_curveList;
 };
 
 
