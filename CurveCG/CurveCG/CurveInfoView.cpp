@@ -23,6 +23,7 @@ CurveInfoView::~CurveInfoView()
 void CurveInfoView::DoDataExchange(CDataExchange* pDX)
 {
 	CFormView::DoDataExchange(pDX);
+	//  DDX_Control(pDX, IDC_LIST_CURVES, m_curveList);
 	DDX_Control(pDX, IDC_LIST_CURVES, m_curveList);
 }
 
@@ -76,7 +77,24 @@ void CurveInfoView::OnInitialUpdate()
 {
 	CFormView::OnInitialUpdate();
 
-	// TODO: 在此添加专用代码和/或调用基类
+	// 曲线列表初始化, 设置整行选中
+	m_curveList.SetExtendedStyle(m_curveList.GetExtendedStyle() | LVS_EX_FULLROWSELECT);
+
+	// 设置基本格式
+	// 设置表头
+	CRect listRect;
+	m_curveList.GetWindowRect(listRect);
+
+	CString header[] = { _T("id"), _T("type"), _T("degree"), _T("count"), _T("prec") };
+	float colWidth[] = { 0.14, 0.18, 0.22, 0.2, 0.26 };
+	for (int i = 0; i < 5; i++)
+	{
+		m_curveList.InsertColumn(i, header[i], LVCFMT_LEFT, listRect.Width()*colWidth[i]);
+	}
+
+
+
+
 
 }
 
@@ -118,5 +136,34 @@ Return:
 *************************************************/
 void CurveInfoView::addCurveInfo(Curve newCurve)
 {
-	m_curveList;
+	CString idStr;
+	int listLenth = m_curveList.GetItemCount();
+	int id;
+	// 如果列表长度为0, id为0
+	if (listLenth == 0)id = 0;
+	else {
+		// 如果不为0, 则为最后一个元素id+1
+		id = _wtoi(m_curveList.GetItemText(listLenth - 1, 0)) + 1;
+	}
+	// 数据格式 { _T("id"), _T("type"), _T("degree"), _T("count"), _T("prec") };
+
+	// 插入id
+	idStr.Format(_T("%d"), id);
+	m_curveList.InsertItem(listLenth, idStr);
+	// 依次设置类型等
+	CString type, degree, count, prec;
+	type.Format(_T("%c"), CurveType(newCurve.getCurveType()));
+	degree.Format(_T("%d"), newCurve.getCurveDegree());
+	count.Format(_T("%d"), newCurve.getCtrlPointsNum());
+	prec.Format(_T("%.3f"), newCurve.getCurvePrecision());
+	// 插入表格
+	m_curveList.SetItemText(listLenth, 1, type);
+	m_curveList.SetItemText(listLenth, 2, degree);
+	m_curveList.SetItemText(listLenth, 3, count);
+	m_curveList.SetItemText(listLenth, 4, prec);
+	// 选中新插入行
+	m_curveList.SetItemState(listLenth, LVIS_FOCUSED | LVIS_SELECTED, LVIS_FOCUSED | LVIS_SELECTED);   //选中行
+	m_curveList.SetSelectionMark(listLenth);
+	m_curveList.SetFocus();
+
 }

@@ -206,12 +206,12 @@ void AddCurveView::OnBnClickedButtonAddcurve()
 	// DrawView 中新增一条曲线
 	pDraw->addCurve(this->selectedType, curDegree, precision);
 
-	// TODO: CurveInfoView 中 更新信息
-	
+	// CurveInfoView 中 更新信息
 	// 获取 DrawView 指针
 	pClass = RUNTIME_CLASS(CurveInfoView);
 	CurveInfoView* pInfo = (CurveInfoView*)GetView(pClass);
-	CListBox* curveList = &pInfo->m_curveList;
+	// 在curveInfo中加入新曲线信息
+	pInfo->addCurveInfo(Curve(selectedType, curDegree, precision));
 
 
 
