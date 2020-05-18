@@ -211,7 +211,10 @@ void AddCurveView::OnBnClickedButtonAddcurve()
 	CurveInfoView* pInfo = (CurveInfoView*)GetView(pClass);
 	// 在curveInfo中加入新曲线信息
 	pInfo->addCurveInfo(Curve(selectedType, curDegree, precision));
-
+	// 清空point中的数据
+	// 获取list
+	CListCtrl* list = &((CurvePointView*)GetView(pClass))->m_pointList;
+	list->DeleteAllItems();
 
 	// 调试信息
 	//int curvesNum = pDraw->getCurvesNum();

@@ -113,15 +113,15 @@ void CurvePointView::showCurvePoints() {
 	// 获取 CurvePointView
 	CRuntimeClass* pClass = RUNTIME_CLASS(CurvePointView);
 	// 获取view中的列表
-	CListBox* list = &((CurvePointView*)GetView(pClass))->m_pointList;
+	CListCtrl* list = &((CurvePointView*)GetView(pClass))->m_pointList;
 
 	pClass = RUNTIME_CLASS(DrawView);
 	DrawView* pDraw = (DrawView*)GetView(pClass);
 	// 清空listbox
-	int a = list->GetCount();
-	for (int i = 0; i <= a; i++)
+	int listLength = list->GetItemCount();
+	for (int i = 0; i <= listLength; i++)
 	{
-		list->DeleteString(i);
+		list->DeleteItem(i);
 	}
 
 	// 输出选定的curve的点
@@ -129,10 +129,21 @@ void CurvePointView::showCurvePoints() {
 	int num = pDraw->getCtrlPointsNumOfCurve();
 
 	for (int j = 0; j < num; ++j) {
-		list->SetCurSel(j);
+		list->SetItemState(listLength, LVIS_FOCUSED | LVIS_SELECTED, LVIS_FOCUSED | LVIS_SELECTED);   //选中行
+		list->SetSelectionMark(listLength);
+
 		CP2 curPoint = pDraw->getCtrlPointFromCurve(j);
-		data.Format(_T("点%d (x: %d, y: %d)"), j+1, curPoint.x, curPoint.y);
-		list->AddString(data);
+
+		CString x, y, id;
+
+		id.Format(_T("%d"), j);
+		x.Format(_T("%d"), curPoint.x);
+		y.Format(_T("%d"), curPoint.y);
+
+		list->SetItemText(j, 0, id);
+		list->SetItemText(j, 1, x);
+		list->SetItemText(j, 2, y);
+
 	}
 }
 
@@ -152,12 +163,12 @@ void CurvePointView::OnBnClickedButtonDelcurve()
 	// 获取 CurvePointView
 	CurvePointView* pCPV = (CurvePointView*)GetView(pClass);
 	// 获取view中的列表
-	CListBox* list = &pCPV->m_pointList;
+	CListCtrl* list = &pCPV->m_pointList;
 	// 获取 DrawView
 	pClass = RUNTIME_CLASS(DrawView);
 	DrawView* pDraw = (DrawView*)GetView(pClass);
 
-	int point_index = list->GetCurSel();
+	int point_index = list->GetSelectedCount();
 
 	// 删除控制点
 	pDraw->deleteCtrlPointFromCurve(point_index);
@@ -176,4 +187,22 @@ void CurvePointView::OnBnClickedButtonDelcurve()
 void CurvePointView::OnBnClickedButtonAddpoint(){
 	// TODO: 在此添加控件通知处理程序代码
 
+}
+
+
+void CurvePointView::OnInitialUpdate()
+{
+	CFormView::OnInitialUpdate();
+
+	// 初始化列表
+	// 设置表头
+	CRect listRect;
+	m_pointList.GetWindowRect(listRect);
+
+	CString header[] = { _T("id"), _T("x"), _T("y")};
+	float colWidth[] = { 0.2, 0.4, 0.4 };
+	for (int i = 0; i < 3; i++)
+	{
+		m_pointList.InsertColumn(i, header[i], LVCFMT_LEFT, listRect.Width() * colWidth[i]);
+	}
 }
