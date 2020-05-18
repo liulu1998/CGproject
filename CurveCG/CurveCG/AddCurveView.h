@@ -56,12 +56,12 @@ private:
 	CEdit m_edit_precision;
 public:
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
-//	afx_msg void OnEnChangeEdit1();
+	//	afx_msg void OnEnChangeEdit1();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg void OnEnChangeEdit1();
-//	afx_msg void OnUpdateEdit1();
+	//	afx_msg void OnUpdateEdit1();
 	afx_msg void OnSetfocusEdit1();
 	afx_msg void OnKillfocusEdit1();
-//	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
+	//	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 };

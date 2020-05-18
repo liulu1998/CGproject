@@ -38,19 +38,19 @@ private:
 	bool isFocusChanged = FALSE;
 
 public:
-	int getCurvesNum();				// 获取曲线条数
+	int getCurvesNum() const;				// 获取曲线条数
 
-	int getFocus();					// 获取当前焦点
+	int getFocus() const;					// 获取当前焦点
 	void setFocus(int index);		// 更改当前焦点
 
 	void addCtrlPoint2Curve(CP2);						// 向焦点的曲线 增加控制点
 	bool deleteCtrlPointFromCurve(int index);		    // 从焦点的曲线 删除控制点
 
-	int getCtrlPointsNumOfCurve();						// 获得焦点曲线的 控制点数
-	CP2 getCtrlPointFromCurve(int index);				// 从焦点的曲线 获得控制点
+	int getCtrlPointsNumOfCurve() const;						// 获得焦点曲线的 控制点数
+	CP2 getCtrlPointFromCurve(int index) const;				// 从焦点的曲线 获得控制点
 
 	int addCurve();
-	int addCurve(CurveType type, int degree, double precision);
+	int addCurve(CurveType type, int degree, int precision);
 
 	void deleteCurve(int index);			// 删除一条曲线
 	CView* GetView(CRuntimeClass* pClass);	// 获取指定类型的View
@@ -58,9 +58,9 @@ public:
 	void BufferDraw(CDC* pDC);				// 双缓冲绘图
 	void drawGrid(CDC* pDC, const CRect&);						// 绘制网格
 
-	int getCurveDegree(int index);
-	CurveType getCurveType(int index);
-	double getCurvePrecision(int index);
+	int getCurveDegree(int index) const;
+	CurveType getCurveType(int index) const;
+	int getCurvePrecision(int index) const;
 
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);

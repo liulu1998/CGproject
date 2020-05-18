@@ -105,8 +105,9 @@ Input:
 Return:         int				// 失败返回0，成功返回1
 Others:         // 其它说明
 *************************************************/
-int MoreCurveInfo::setCurve(CurveType type, int degree, double percision)
+int MoreCurveInfo::setCurve(CurveType type, int degree, int percision)
 {
+	// TODO: precision 已经换为 整型, 此处的判断调整 ?
 	if (type == NULL || degree == 0 || percision == 0)
 	{
 		return 0;
@@ -144,11 +145,11 @@ Others:         // 其它说明
 BOOL MoreCurveInfo::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
-	
+
 	// TODO:  在此添加额外的初始化
 	//初始化名称
 	this->m_edit_curveName.SetWindowTextW(curveName);
-	
+
 	//初始化类型
 	if (m_curve.getCurveType() == 'B')
 		m_BEZIER_BUTTON.SetCheck(1);
@@ -159,14 +160,14 @@ BOOL MoreCurveInfo::OnInitDialog()
 	CString degrees[] = { TEXT("1"), TEXT("2"), TEXT("3") };
 	for (int i = 0; i < 3; i++)
 		m_DEGREE_COMBOX.AddString(degrees[i]);
-	m_DEGREE_COMBOX.SetCurSel(m_curve.getCurveDegree()-1);		// 默认三次
+	m_DEGREE_COMBOX.SetCurSel(m_curve.getCurveDegree() - 1);		// 默认三次
 
 	//初始化精度滑动条
 	m_SLIDER.SetRange(precisionMin, precisionMax);
 	m_SLIDER.SetTicFreq(precisionInterval);
 	m_SLIDER.SetPos(m_curve.getCurvePrecision());
 	//初始化精度编辑框
-	CString ss ;
+	CString ss;
 	ss.Format(_T("%lf"), m_curve.getCurvePrecision());
 	this->m_PRESICION_EDIT.SetWindowTextW(ss);
 
