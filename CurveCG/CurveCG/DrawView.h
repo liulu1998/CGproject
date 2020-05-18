@@ -32,10 +32,19 @@ private:
 	CDC bufferdc;					// 用于双缓冲的DC
 	CBitmap bufferbmp;				// 承载临时对象的位图
 
+	bool map[1800][1500];			// 对应坐标是否有控制点
+
 public:
 	int getCurvesNum();				// 获取曲线条数
+
 	int getFocus();					// 获取当前焦点
 	void setFocus(int index);		// 更改当前焦点
+
+	void addCtrlPoint2Curve(CP2);						// 向焦点的曲线 增加控制点
+	bool deleteCtrlPointFromCurve(int index);		    // 从焦点的曲线 删除控制点
+
+	int getCtrlPointsNumOfCurve();						// 获得焦点曲线的 控制点数
+	CP2 getCtrlPointFromCurve(int index);				// 从焦点的曲线 获得控制点
 
 	int addCurve();
 	int addCurve(CurveType type, int degree, double precision);

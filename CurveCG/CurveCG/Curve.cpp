@@ -94,6 +94,20 @@ double Curve::getCurvePrecision() {
 }
 
 
+/**********************************
+ Function:		getCtrlPoint
+ Description:	获取曲线中 某个控制点
+ Input:
+			- index: int, 索引
+ Return:		CP2
+**********************************/
+CP2 Curve::getCtrlPoint(int index) {
+	if (index >= this->getCtrlPointsNum())
+		throw "索引越界!";
+	return this->ctrlPoints[index];
+}
+
+
 /*************************************************
 Function:       Combination
 Description:	组合数, 暴力解法

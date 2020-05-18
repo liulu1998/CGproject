@@ -7,6 +7,10 @@
 #include "CP2.h"
 #include "Curve.h"
 
+#include <vector>
+
+typedef std::vector<Curve>::iterator PCurves;
+
 
 // DrawView
 
@@ -96,6 +100,39 @@ void DrawView::setFocus(int index) {
 
 
 /*************************************************
+Function:		addCtrlPoint
+Description:	向焦点的曲线 增加控制点
+Author:			刘陆
+Input:
+			- point: CP2&, 要删除的点
+Return:
+*************************************************/
+void DrawView::addCtrlPoint2Curve(CP2 point) {
+	int idx = this->getFocus();
+	if (idx != -1)
+		this->curves[idx].addCtrlPoint(point);
+}
+
+
+/*************************************************
+Function:		deleteCtrlPointFromCurve
+Description:	从焦点的曲线 删除控制点
+Author:			刘陆
+Input:
+			- index: int, 删除的控制点 在 焦点曲线中的索引
+Return:
+*************************************************/
+bool DrawView::deleteCtrlPointFromCurve(int index) {
+	int f = this->getFocus();
+	if (index >= this->curves[f].getCtrlPointsNum())
+		return false;
+
+	this->curves[f].deleteCtrlPoint(index);
+	return true;
+}
+
+
+/*************************************************
 Function:		addCurve
 Description:	新增一条曲线, 默认在尾部追加
 Author:			刘陆
@@ -112,6 +149,21 @@ int DrawView::addCurve(CurveType type, int degree, double precision) {
 	this->curves.push_back(c);
 	this->setFocus(this->getCurvesNum() - 1);		// 切换焦点
 	return this->getCurvesNum() - 1;
+}
+
+
+/*************************************************
+Function:		getCtrlPointFromCurve
+Description:	焦点的曲线 获得控制点
+Author:			刘陆
+Calls:
+Input:
+			- index: int, 控制点在 焦点曲线 中的索引
+Return:			CP2
+*************************************************/
+CP2 DrawView::getCtrlPointFromCurve(int index) {
+	PCurves pcurve = this->curves.begin() + this->getFocus();
+	return pcurve->getCtrlPoint(index);
 }
 
 
@@ -246,7 +298,7 @@ void DrawView::BufferDraw(CDC* pDC) {
 
 	bufferdc.CreateCompatibleDC(NULL);		//创建兼容DC
 	bufferbmp.CreateCompatibleBitmap(pDC, rect.Width(), rect.Height());		//创建兼容位图
-	bufferdc.SelectObject(&bufferbmp);		// 将位图选入内存区域
+	//bufferdc.SelectObject(&bufferbmp);		// 将位图选入内存区域
 	CBitmap* pOldBit = bufferdc.SelectObject(&bufferbmp);
 	bufferbmp.GetBitmap(&bmp);				// 获取内存位图的信息
 
