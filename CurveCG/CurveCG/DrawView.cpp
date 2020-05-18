@@ -289,6 +289,8 @@ double DrawView::getCurvePrecision(int index) {
 
 
 // DrawView 消息处理程序
+
+
 /*************************************************
 Function:		OnLButtonDown
 Description:	在白板处点击时，在点列表中增加新的点信息,并更新选中状态
@@ -348,7 +350,7 @@ BOOL DrawView::OnEraseBkgnd(CDC* pDC)
 Function:		BufferDraw
 Description:	双缓冲绘图
 Author:			刘陆
-Calls:
+Calls:			drawCurve,
 Input:
 		- pDC: CDC*
 Return:
@@ -366,9 +368,13 @@ void DrawView::BufferDraw(CDC* pDC) {
 
 	// >>> 在此处添加绘制代码
 
+	// 白色背景
 	bufferdc.FillSolidRect(&rect, RGB(255, 255, 255));
 
-	// 逐条绘制
+	// 绘制网格
+	drawGrid(&bufferdc, rect);
+
+	// 逐条绘制曲线
 	for (Curve c : this->curves)
 		c.drawCurve(&bufferdc);
 
@@ -378,4 +384,34 @@ void DrawView::BufferDraw(CDC* pDC) {
 	pDC->StretchBlt(0, 0, rect.Width(), rect.Height(), &bufferdc, 0, 0, bmp.bmWidth, bmp.bmHeight, SRCCOPY);//将内存中的内容复制到设备
 	bufferdc.DeleteDC();                                       //删除DC
 	bufferbmp.DeleteObject();                                  //删除位图
+}
+
+
+/*************************************************
+Function:		drawGrid
+Description:	绘制网格线
+Author:			刘陆
+Calls:
+Input:
+		- pDC: CDC*
+Return:
+*************************************************/
+void DrawView::drawGrid(CDC* pDC, const CRect& rect) {
+	CPen pen, * pOldPen;
+	pen.CreatePen(PS_DASHDOT, 1, RGB(191, 191, 191));		// 灰色 点划线画笔
+	pOldPen = pDC->SelectObject(&pen);
+
+	// 竖线
+	for (int i = 0; i < rect.Width(); i += 30) {
+		pDC->MoveTo(i, 0);
+		pDC->LineTo(i, rect.Height());
+	}
+
+	// 横线
+	for (int j = 0; j < rect.Height(); j += 30) {
+		pDC->MoveTo(0, j);
+		pDC->LineTo(rect.Width(), j);
+	}
+
+	pDC->SelectObject(pOldPen);
 }
