@@ -25,6 +25,7 @@ BEGIN_MESSAGE_MAP(DrawView, CView)
 	//	ON_WM_LBUTTONDBLCLK()
 	//ON_WM_LBUTTONDBLCLK()
 	ON_WM_LBUTTONDOWN()
+	ON_WM_ERASEBKGND()
 END_MESSAGE_MAP()
 
 
@@ -35,9 +36,8 @@ void DrawView::OnDraw(CDC* pDC)
 	CDocument* pDoc = GetDocument();
 	// TODO:  在此添加绘制代码
 
-	// 逐条绘制
-	for (Curve c : this->curves)
-		c.drawCurve(pDC);
+	// 双缓冲绘图
+	BufferDraw(pDC);
 }
 
 
@@ -221,4 +221,47 @@ void DrawView::OnLButtonDown(UINT nFlags, CPoint point)
 	CDC* pDC = GetDC();
 	this->OnDraw(pDC);
 	ReleaseDC(pDC);
+}
+
+
+BOOL DrawView::OnEraseBkgnd(CDC* pDC)
+{
+	return TRUE;
+}
+
+
+/*************************************************
+Function:		BufferDraw
+Description:	双缓冲绘图
+Author:			刘陆
+Calls:
+Input:
+		- pDC: CDC*
+Return:
+*************************************************/
+void DrawView::BufferDraw(CDC* pDC) {
+	BITMAP bmp;					// 储存位图信息的结构体
+	CRect rect;
+	GetClientRect(rect);		// 获取客户区域的矩形
+
+	bufferdc.CreateCompatibleDC(NULL);		//创建兼容DC
+	bufferbmp.CreateCompatibleBitmap(pDC, rect.Width(), rect.Height());		//创建兼容位图
+	bufferdc.SelectObject(&bufferbmp);		// 将位图选入内存区域
+	CBitmap* pOldBit = bufferdc.SelectObject(&bufferbmp);
+	bufferbmp.GetBitmap(&bmp);				// 获取内存位图的信息
+
+	// >>> 在此处添加绘制代码
+
+	bufferdc.FillSolidRect(&rect, RGB(255, 255, 255));
+
+	// 逐条绘制
+	for (Curve c : this->curves)
+		c.drawCurve(&bufferdc);
+
+	// <<< 添加绘制代码
+
+	SetStretchBltMode(pDC->m_hDC, STRETCH_HALFTONE);
+	pDC->StretchBlt(0, 0, rect.Width(), rect.Height(), &bufferdc, 0, 0, bmp.bmWidth, bmp.bmHeight, SRCCOPY);//将内存中的内容复制到设备
+	bufferdc.DeleteDC();                                       //删除DC
+	bufferbmp.DeleteObject();                                  //删除位图
 }

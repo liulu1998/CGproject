@@ -74,29 +74,23 @@ void operator-=(CP2& p1, const CP2& p2)
 	p1.y -= p2.y;
 }
 
-CP2 operator*=(const CP2& p1, double k)
+void operator*=(CP2& p1, double k)
 {
-	CP2 p;
-	p.x = p1.x * k;
-	p.y = p1.y * k;
-	return p;
+	p1.x *= k;
+	p1.y *= k;
 }
 
-CP2 operator/=(const CP2& p1, double k)
+void operator/=(CP2& p1, double k)
 {
 	if (fabs(k) < 1e-6)
 		k = 1.0;
-	CP2 p;
-	p.x = p1.x / k;
-	p.y = p1.y / k;
-	return p;
+	p1.x /= k;
+	p1.y /= k;
 }
-
 
 bool operator==(const CP2& p1, const CP2& p2) {
 	return p1.x == p2.x && p1.y == p2.y;
 }
-
 
 bool operator!=(const CP2& p1, const CP2& p2) {
 	return !operator==(p1, p2);

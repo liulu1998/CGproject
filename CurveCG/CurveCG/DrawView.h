@@ -27,7 +27,10 @@ protected:
 
 private:
 	std::vector<Curve> curves;		// 多条曲线
-	int focus = -1;						// 当前焦点, 即当前操作哪一条曲线
+	int focus = -1;					// 当前焦点, 即当前操作哪一条曲线
+
+	CDC bufferdc;					// 用于双缓冲的DC
+	CBitmap bufferbmp;				// 承载临时对象的位图
 
 public:
 	int getCurvesNum();				// 获取曲线条数
@@ -37,8 +40,11 @@ public:
 	int addCurve();
 	int addCurve(CurveType type, int degree, double precision);
 
-	void deleteCurve(int index);	// 删除一条曲线
+	void deleteCurve(int index);			// 删除一条曲线
 	CView* GetView(CRuntimeClass* pClass);	// 获取指定类型的View
 
+	void BufferDraw(CDC* pDC);				// 双缓冲绘图
+
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 };
