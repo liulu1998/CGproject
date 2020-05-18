@@ -11,6 +11,7 @@
 #define IDD_DLG_ADDCURVE                311
 #define IDD_DLG_CURVEINFO               313
 #define IDD_DLG_CURBEPOINT              314
+#define IDD_DLG_MORECURVEINFO           315
 #define IDC_COMBO1                      1000
 #define IDC_COMBO_DEGREE                1000
 #define IDC_RADIO1                      1001
@@ -26,12 +27,22 @@
 #define IDC_LIST_CURVES                 1010
 #define IDC_LIST_POINTS                 1010
 #define IDC_LIST1                       1011
+#define IDC_EDIT_02                     1014
+#define IDC_RADIO_BEZIER_01             1015
+#define IDC_RADIO_BSPLINE_01            1016
+#define IDC_COMBO_DEGREE_01             1017
+#define IDC_SLIDER2                     1018
+#define IDC_STATIC_01                   1019
+#define IDC_STATIC_02                   1020
+#define IDC_STATIC_03                   1021
+#define IDC_STATIC_04                   1022
+#define IDC_EDIT_01                     1023
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        315
+#define _APS_NEXT_RESOURCE_VALUE        317
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_CONTROL_VALUE         1012
 #define _APS_NEXT_SYMED_VALUE           310

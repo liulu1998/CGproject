@@ -2,6 +2,7 @@
 
 #include "viewList.h"
 #include "Curve.h"
+#include "DrawView.h"
 
 // CurveInfoView 窗体视图
 
@@ -42,6 +43,13 @@ private:
 
 public:
 	CListCtrl m_curveList;
+
+public:
+	int AddCurve(int index);
+	afx_msg void OnLbnSelchangeListCurves();
+	afx_msg void OnLbnDblclkListCurves();
+//	afx_msg void OnHdnItemdblclickListCurves(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnNMDblclkListCurves(NMHDR* pNMHDR, LRESULT* pResult);
 };
 
 
