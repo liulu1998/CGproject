@@ -64,11 +64,11 @@ void CurveInfoView::OnSize(UINT nType, int cx, int cy)
 {
 	CFormView::OnSize(nType, cx, cy);
 
-	CRect shape;
-	GetClientRect(shape);
+	//CRect shape;
+	//GetClientRect(shape);
 
-	// 将内部内容自适应大小
-	MoveWindow(shape);
+	//// 将内部内容自适应大小
+	//MoveWindow(shape);
 }
 
 
