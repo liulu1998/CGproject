@@ -35,6 +35,12 @@ BEGIN_MESSAGE_MAP(AddCurveView, CFormView)
 	ON_BN_CLICKED(IDC_RADIO_BSPLINE, &AddCurveView::OnBnClickedRadioBspline)
 	ON_BN_CLICKED(IDC_BUTTON_ADDCURVE, &AddCurveView::OnBnClickedButtonAddcurve)
 	ON_WM_HSCROLL()
+	ON_EN_CHANGE(IDC_EDIT1, &AddCurveView::OnEnChangeEdit1)
+//	ON_EN_UPDATE(IDC_EDIT1, &AddCurveView::OnUpdateEdit1)
+ON_EN_SETFOCUS(IDC_EDIT1, &AddCurveView::OnSetfocusEdit1)
+ON_EN_KILLFOCUS(IDC_EDIT1, &AddCurveView::OnKillfocusEdit1)
+//ON_WM_LBUTTONDBLCLK()
+ON_WM_LBUTTONDOWN()
 END_MESSAGE_MAP()
 
 
@@ -71,11 +77,11 @@ void AddCurveView::OnSize(UINT nType, int cx, int cy)
 {
 	CFormView::OnSize(nType, cx, cy);
 
-	CRect shape;
-	GetClientRect(shape);
+	//CRect shape;
+	//GetClientRect(shape);
 
-	// 将内部内容自适应大小
-	MoveWindow(shape);
+	//// 将内部内容自适应大小
+	//MoveWindow(shape);
 }
 
 
@@ -193,21 +199,21 @@ void AddCurveView::OnBnClickedButtonAddcurve()
 	m_edit_precision.GetWindowTextW(data);
 	double precision;
 	precision = 1.0 / _wtoi(data);
-
 	// 获取 DrawView 指针
 	CRuntimeClass* pClass = RUNTIME_CLASS(DrawView);
 	DrawView* pDraw = (DrawView*)GetView(pClass);
 
 	// DrawView 中新增一条曲线
-	int index = pDraw->addCurve(this->selectedType, curDegree, precision);
+	pDraw->addCurve(this->selectedType, curDegree, precision);
 
 	// TODO: CurveInfoView 中 更新信息
-	//获取CurveInfoView指针
-	CRuntimeClass* pClass1 = RUNTIME_CLASS(CurveInfoView);
-	CurveInfoView* pCurveInfo = (CurveInfoView*)GetView(pClass1);
+	
+	// 获取 DrawView 指针
+	pClass = RUNTIME_CLASS(CurveInfoView);
+	CurveInfoView* pInfo = (CurveInfoView*)GetView(pClass);
+	CListBox* curveList = &pInfo->m_curveList;
 
-	//TODO:CurveInfoView中增加一行记录
-	pCurveInfo->AddCurve(index);
+
 
 	// 调试信息
 	//int curvesNum = pDraw->getCurvesNum();
@@ -308,4 +314,119 @@ BOOL AddCurveView::PreTranslateMessage(MSG* pMsg)
 	}
 
 	return CFormView::PreTranslateMessage(pMsg);
+}
+
+
+void AddCurveView::OnEnChangeEdit1()
+{
+	// TODO:  如果该控件是 RICHEDIT 控件，它将不
+	// 发送此通知，除非重写 CFormView::OnInitDialog()
+	// 函数并调用 CRichEditCtrl().SetEventMask()，
+	// 同时将 ENM_CHANGE 标志“或”运算到掩码中。
+
+	// TODO:  在此添加控件通知处理程序代码
+	//CString data, newData;
+	//m_edit_precision.GetWindowTextW(data);
+	//m_edit_precision.UpdateData(TRUE);
+	//m_edit_precision.GetWindowTextW(newData);
+	//data = data + _T(" ") + newData;
+	//MessageBox(data);
+}
+
+
+//void AddCurveView::OnUpdateEdit1()
+//{
+//	// TODO:  如果该控件是 RICHEDIT 控件，它将不
+//	// 发送此通知，除非重写 CFormView::OnInitDialog()
+//	// 函数，以将 EM_SETEVENTMASK 消息发送到该控件，
+//	// 同时将 ENM_UPDATE 标志“或”运算到 lParam 掩码中。
+//
+//	// TODO:  在此添加控件通知处理程序代码
+//}
+
+/*************************************************
+Function:		OnSetfocusEdit1
+Description:	在EditCtrl获得focus之后，进行初始化
+Author:			刘崇鹏
+Calls:			GetWindowTextW
+Input:
+Return:
+*************************************************/
+void AddCurveView::OnSetfocusEdit1()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	if (!isFocus) {
+		isFocus = true;
+		CString data;
+		m_edit_precision.GetWindowTextW(data);
+		nowPrecision = _wtoi(data);
+	}
+}
+
+/*************************************************
+Function:		OnKillfocusEdit1
+Description:	在blur之后，进行框内的判断
+Author:			刘崇鹏
+Calls:
+Input:
+Return:
+*************************************************/
+void AddCurveView::OnKillfocusEdit1()
+{
+	isFocus = false;
+	// TODO: 在此添加控件通知处理程序代码
+	GetDlgItem(IDC_SLIDER1)->SetFocus();
+	CString rawData;
+	m_edit_precision.GetWindowTextW(rawData);
+	m_edit_precision.UpdateData(TRUE);
+	CString newData, newDataBak;
+	m_edit_precision.GetWindowTextW(newData);
+	newDataBak = newData;
+	// 判断是不是全数字
+	if (newDataBak.TrimLeft(_T("0123456789")) != "") {
+		// 非全是数字，弹框并回复数据
+		MessageBox(_T("请输入数字"));
+		m_edit_precision.SetWindowTextW(rawData);
+		return;
+	}
+	else
+	{
+		// 全数字，判断是否超界，并赋值sliderBar
+		int precision = _wtoi(newData);
+		if (precision < precisionMin) {
+			// 若小于100（最小值），EditCtrl回复100，scrollBar调至最小
+			newData.Format(_T("%d"), precisionMin);
+			m_edit_precision.SetWindowTextW(newData);
+			m_slider_precision.SetPos(precisionMin);
+		}
+		else if (precision > precisionMax) {
+			// 大于1000，类似于上
+			newData.Format(_T("%d"), precisionMax);
+			m_edit_precision.SetWindowTextW(newData);
+			m_slider_precision.SetPos(precisionMax);
+		}
+		else {
+			m_slider_precision.SetPos(_wtoi(newData));
+			// 焦点到添加曲线上，回车就可添加曲线
+			GetDlgItem(IDC_BUTTON_ADDCURVE)->SetFocus();
+		}
+	}
+}
+
+
+//void AddCurveView::OnLButtonDblClk(UINT nFlags, CPoint point)
+//{
+//	// TODO: 在此添加消息处理程序代码和/或调用默认值
+//
+//	CFormView::OnLButtonDblClk(nFlags, point);
+//	
+//}
+
+
+void AddCurveView::OnLButtonDown(UINT nFlags, CPoint point)
+{
+	// TODO: 在此添加消息处理程序代码和/或调用默认值
+
+	CFormView::OnLButtonDown(nFlags, point);
+	GetDlgItem(IDC_BUTTON_ADDCURVE)->SetFocus();
 }

@@ -94,6 +94,20 @@ double Curve::getCurvePrecision() {
 }
 
 
+/**********************************
+ Function:		getCtrlPoint
+ Description:	获取曲线中 某个控制点
+ Input:
+			- index: int, 索引
+ Return:		CP2
+**********************************/
+CP2 Curve::getCtrlPoint(int index) {
+	if (index >= this->getCtrlPointsNum())
+		throw "索引越界!";
+	return this->ctrlPoints[index];
+}
+
+
 /*************************************************
 Function:       Combination
 Description:	组合数, 暴力解法
@@ -187,6 +201,10 @@ std::vector<CP2> Curve::generateCurvePoints(int start, int end)
 {
 	std::vector<CP2> points;
 
+	// 调试信息
+	// CString data;
+	// data.Format(_T("%d"), this->precision);
+
 	if (end - start + 1 <= this->degree)		// 控制点个数 不足以计算 degree 阶曲线
 		return points;
 
@@ -213,6 +231,11 @@ std::vector<CP2> Curve::generateCurvePoints(int start, int end)
 			points.push_back(cur);
 		}
 	}
+
+	// 防止 Bezier 曲线 精度过低曲线不连续
+	if (type == Bezier)
+		points.push_back(ctrlPoints[end]);
+
 	return points;
 }
 
@@ -235,12 +258,11 @@ void Curve::addCtrlPoint(CP2& ctrlPoint)
 
 	std::vector<CP2> newPoints;
 
-	if (this->getCurveType() == Bezier && this->getCtrlPointsNum() != this->degree + 1 && ((this->getCtrlPointsNum() + 1) % (this->degree + 1) != 0))
+	//if (this->getCurveType() == Bezier && this->getCtrlPointsNum() != this->degree + 1 && ((this->getCtrlPointsNum() + 1) % (this->degree + 1) != 0))
+	if (this->getCurveType() == Bezier && ((this->getCtrlPointsNum() - 1) % (this->degree) != 0))
 		return;
 
 	newPoints = this->generateCurvePoints(this->getCtrlPointsNum() - degree - 1, this->getCtrlPointsNum() - 1);
-
-	//newPoints.erase(newPoints.begin());		// 删除首元素, 首元素与前一条曲线重复
 
 	curvePoints.insert(curvePoints.end(), newPoints.begin(), newPoints.end());
 }
@@ -329,22 +351,37 @@ Input:				- pDC
 Return:				void
 *************************************************/
 void Curve::drawCurve(CDC* pDC) {
-	if (this->ctrlPoints.empty() || this->curvePoints.empty())
+	if (this->ctrlPoints.empty())
 		return;
 
 	CPen curvePen, curvePen1, * pOldPen;		//画笔
 	// TODO: 设置画笔 属性 (颜色, 粗细...)
-	curvePen.CreatePen(PS_SOLID, 1, RGB(0, 0, 0));
+	curvePen.CreatePen(PS_SOLID, 1, RGB(0, 123, 231));
+
+	CBrush brush(RGB(0, 123, 231));		// 蓝色画刷, 绘制蓝色
+
 	pOldPen = pDC->SelectObject(&curvePen);
+	CBrush* pOldBrush = pDC->SelectObject(&brush);
+
+	const int blockWidth = 4;		// 控制点矩形宽度 的一半
 
 	pDC->MoveTo(ctrlPoints[0].x, ctrlPoints[0].y);
 	for (CP2 cP : ctrlPoints) {
 		//连接控制点
 		pDC->LineTo(cP.x, cP.y);
+		pDC->FillRect(CRect(cP.x - blockWidth, cP.y - blockWidth, cP.x + blockWidth, cP.y + blockWidth), &brush);
+	}
+	pDC->SelectObject(pOldBrush);
+
+	// curvePoints 空, 不绘制曲线
+	if (this->curvePoints.empty()) {
+		pDC->SelectObject(pOldPen);
+		return;
 	}
 
 	curvePen1.CreatePen(PS_SOLID, 2, RGB(220, 0, 0));
-	pDC->SelectObject(&curvePen1);
+	pOldPen = pDC->SelectObject(&curvePen1);
+
 	pDC->MoveTo(curvePoints[0].x, curvePoints[0].y);
 	for (CP2 cP : curvePoints) {
 		//样条曲线
