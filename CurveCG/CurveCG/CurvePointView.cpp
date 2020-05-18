@@ -109,11 +109,14 @@ Input:
 		- c: Curve, 曲线类
 Return:
 *************************************************/
-void CurvePointView::showCurvePoints(Curve c) {
+void CurvePointView::showCurvePoints() {
 	// 获取 CurvePointView
 	CRuntimeClass* pClass = RUNTIME_CLASS(CurvePointView);
 	// 获取view中的列表
 	CListBox* list = &((CurvePointView*)GetView(pClass))->m_pointList;
+
+	pClass = RUNTIME_CLASS(DrawView);
+	DrawView* pDraw = (DrawView*)GetView(pClass);
 	// 清空listbox
 	int a = list->GetCount();
 	for (int i = 0; i <= a; i++)
@@ -123,10 +126,11 @@ void CurvePointView::showCurvePoints(Curve c) {
 
 	// 输出选定的curve的点
 	CString data;
-	int num = c.getCtrlPointsNum();
+	int num = pDraw->getCtrlPointsNumOfCurve();
+
 	for (int j = 0; j < num; ++j) {
 		list->SetCurSel(j);
-		CP2 curPoint = c.getCtrlPoint(j);
+		CP2 curPoint = pDraw->getCtrlPointFromCurve(j);
 		data.Format(_T("点%d (x: %d, y: %d)"), j+1, curPoint.x, curPoint.y);
 		list->AddString(data);
 	}
@@ -156,9 +160,9 @@ void CurvePointView::OnBnClickedButtonDelcurve()
 	int point_index = list->GetCurSel();
 
 	// 删除控制点
-	pDraw->getCurve(pDraw->getFocus()).deleteCtrlPoint(point_index);
+	pDraw->deleteCtrlPointFromCurve(point_index);
 
-	pCPV->showCurvePoints(pDraw->getCurve(pDraw->getFocus()));
+	pCPV->showCurvePoints();
 
 	// 绘制
 	CDC* pDC = GetDC();
