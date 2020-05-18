@@ -116,6 +116,20 @@ int DrawView::addCurve(CurveType type, int degree, double precision) {
 
 
 /*************************************************
+Function:		getCurve
+Description:	得到一条曲线
+Author:			韩继锋
+Calls:
+Input:			- index: int, 要得到的曲线在curves中的索引
+Return:			Curve
+*************************************************/
+Curve DrawView::getCurve(int index)
+{
+	return this->curves[index];
+}
+
+
+/*************************************************
 Function:		addCurve
 Description:	新增一条曲线, 全部默认参数
 Author:			刘陆

@@ -93,6 +93,16 @@ double Curve::getCurvePrecision() {
 	return this->precision;
 }
 
+/**********************************
+ Function:		getCtrlPoint
+ Description:	获取曲线中指定的控制点
+ Input:
+ Return:		CP2
+**********************************/
+CP2 Curve::getCtrlPoint(int index) {
+	return this->ctrlPoints[index];
+}
+
 
 /*************************************************
 Function:       Combination

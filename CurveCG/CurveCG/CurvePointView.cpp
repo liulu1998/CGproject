@@ -28,6 +28,8 @@ void CurvePointView::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CurvePointView, CFormView)
 	ON_WM_SIZE()
+	ON_BN_CLICKED(IDC_BUTTON_DELCURVE, &CurvePointView::OnBnClickedButtonDelcurve)
+	ON_BN_CLICKED(IDC_BUTTON_ADDPOINT, &CurvePointView::OnBnClickedButtonAddpoint)
 END_MESSAGE_MAP()
 
 
@@ -95,4 +97,79 @@ CView* CurvePointView::GetView(CRuntimeClass* pClass) {
 		}
 	}
 	return NULL;
+}
+
+
+/*************************************************
+Function:		showCurvePoints
+Description:	列出指定曲线的点信息
+Author:			韩继锋
+Calls:			GetView, getCtrlPoint
+Input:
+		- c: Curve, 曲线类
+Return:
+*************************************************/
+void CurvePointView::showCurvePoints(Curve c) {
+	// 获取 CurvePointView
+	CRuntimeClass* pClass = RUNTIME_CLASS(CurvePointView);
+	// 获取view中的列表
+	CListBox* list = &((CurvePointView*)GetView(pClass))->m_pointList;
+	// 清空listbox
+	int a = list->GetCount();
+	for (int i = 0; i <= a; i++)
+	{
+		list->DeleteString(i);
+	}
+
+	// 输出选定的curve的点
+	CString data;
+	int num = c.getCtrlPointsNum();
+	for (int j = 0; j < num; ++j) {
+		list->SetCurSel(j);
+		CP2 curPoint = c.getCtrlPoint(j);
+		data.Format(_T("点%d (x: %d, y: %d)"), j+1, curPoint.x, curPoint.y);
+		list->AddString(data);
+	}
+}
+
+
+/*************************************************
+Function:		OnBnClickedButtonDelcurve
+Description:	点击删除键来删除点
+Author:			韩继锋
+Calls:			GetView, getCurve, getFocus, showCurvePoints
+Input:
+Return:
+*************************************************/
+void CurvePointView::OnBnClickedButtonDelcurve()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	CRuntimeClass* pClass = RUNTIME_CLASS(CurvePointView);
+	// 获取 CurvePointView
+	CurvePointView* pCPV = (CurvePointView*)GetView(pClass);
+	// 获取view中的列表
+	CListBox* list = &pCPV->m_pointList;
+	// 获取 DrawView
+	pClass = RUNTIME_CLASS(DrawView);
+	DrawView* pDraw = (DrawView*)GetView(pClass);
+
+	int point_index = list->GetCurSel();
+
+	// 删除控制点
+	pDraw->getCurve(pDraw->getFocus()).deleteCtrlPoint(point_index);
+
+	pCPV->showCurvePoints(pDraw->getCurve(pDraw->getFocus()));
+
+	// 绘制
+	CDC* pDC = GetDC();
+	pDraw->OnDraw(pDC);
+	ReleaseDC(pDC);
+}
+
+
+
+//添加按钮事件，目前似乎用不到这个按钮
+void CurvePointView::OnBnClickedButtonAddpoint(){
+	// TODO: 在此添加控件通知处理程序代码
+
 }

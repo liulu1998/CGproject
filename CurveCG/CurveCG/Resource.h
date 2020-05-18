@@ -20,11 +20,14 @@
 #define IDC_SLIDER1                     1003
 #define IDC_BUTTON1                     1004
 #define IDC_BUTTON_ADDCURVE             1004
+#define IDC_BUTTON_ADDPOINT             1004
 #define IDC_LIST_CURVE                  1007
 #define IDC_LIST_POINT                  1008
 #define IDC_EDIT1                       1009
 #define IDC_LIST_CURVES                 1010
 #define IDC_LIST_POINTS                 1010
+#define IDC_BUTTON2                     1011
+#define IDC_BUTTON_DELCURVE             1011
 
 // Next default values for new objects
 // 
@@ -32,7 +35,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        315
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1011
+#define _APS_NEXT_CONTROL_VALUE         1012
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

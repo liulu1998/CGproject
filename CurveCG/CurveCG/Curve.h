@@ -61,4 +61,5 @@ public:
 	int getCtrlPointsNum();
 	int getCurveDegree();
 	double getCurvePrecision();
+	CP2 getCtrlPoint(int index);
 };
