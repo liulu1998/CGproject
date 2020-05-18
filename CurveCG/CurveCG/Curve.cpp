@@ -187,8 +187,9 @@ std::vector<CP2> Curve::generateCurvePoints(int start, int end)
 {
 	std::vector<CP2> points;
 
-	CString data;
-	data.Format(_T("%d"), this->precision);
+	// 调试信息
+	// CString data;
+	// data.Format(_T("%d"), this->precision);
 
 	if (end - start + 1 <= this->degree)		// 控制点个数 不足以计算 degree 阶曲线
 		return points;
@@ -343,7 +344,7 @@ void Curve::drawCurve(CDC* pDC) {
 
 	CPen curvePen, curvePen1, * pOldPen;		//画笔
 	// TODO: 设置画笔 属性 (颜色, 粗细...)
-	curvePen.CreatePen(PS_SOLID, 1, RGB(0, 0, 0));
+	curvePen.CreatePen(PS_SOLID, 1, RGB(0, 123, 231));
 	pOldPen = pDC->SelectObject(&curvePen);
 
 	pDC->MoveTo(ctrlPoints[0].x, ctrlPoints[0].y);
