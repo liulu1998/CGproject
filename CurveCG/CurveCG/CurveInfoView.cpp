@@ -33,7 +33,7 @@ void CurveInfoView::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CurveInfoView, CFormView)
 	ON_WM_SIZE()
 	ON_LBN_SELCHANGE(IDC_LIST_CURVES, &CurveInfoView::OnLbnSelchangeListCurves)
-	ON_LBN_DBLCLK(IDC_LIST_CURVES, &CurveInfoView::OnLbnDblclkListCurves)
+	//ON_LBN_DBLCLK(IDC_LIST_CURVES, &CurveInfoView::OnLbnDblclkListCurves)
 //	ON_NOTIFY(HDN_ITEMDBLCLICK, 0, &CurveInfoView::OnHdnItemdblclickListCurves)
 ON_NOTIFY(NM_DBLCLK, IDC_LIST_CURVES, &CurveInfoView::OnNMDblclkListCurves)
 END_MESSAGE_MAP()
@@ -188,50 +188,6 @@ Input:
 Return:         void				// 函数返回值的说明
 Others:         // 其它说明
 *************************************************/
-void CurveInfoView::OnLbnDblclkListCurves()
-{
-	// TODO: 双击左键弹出信息窗口
-	//得到当前项索引及文本
-	int index = this->m_curveList.GetSelectionMark();
-	CString str;
-	str = m_curveList.GetItemText(index, 0);
-	//模态窗口
-	MoreCurveInfo pClass;
-	pClass.setCurveName(str);
-	//pClass.curveName = str;
-	pClass.DoModal();
-	//获取DrawView指针
-	CRuntimeClass* pClass1 = RUNTIME_CLASS(DrawView);
-	DrawView* pDraw = (DrawView*)GetView(pClass1);
-
-	pClass.setCurve(pDraw->getCurveType(index),pDraw->getCurveDegree(index),pDraw->getCurvePrecision(index));
-	
-
-}
-
-
-//void CurveInfoView::OnHdnItemdblclickListCurves(NMHDR* pNMHDR, LRESULT* pResult)
-//{
-//	LPNMHEADER phdr = reinterpret_cast<LPNMHEADER>(pNMHDR);
-//	// TODO: 在此添加控件通知处理程序代码
-//	*pResult = 0;
-//
-//	int index = this->m_curveList.GetSelectionMark();
-//	CString str;
-//	str = m_curveList.GetItemText(index, 0);
-//	//模态窗口
-//	MoreCurveInfo pClass;
-//	pClass.setCurveName(str);
-//	//pClass.curveName = str;
-//	pClass.DoModal();
-//	//获取DrawView指针
-//	CRuntimeClass* pClass1 = RUNTIME_CLASS(DrawView);
-//	DrawView* pDraw = (DrawView*)GetView(pClass1);
-//
-//	pClass.setCurve(pDraw->getCurveType(index), pDraw->getCurveDegree(index), pDraw->getCurvePrecision(index));
-//}
-
-
 void CurveInfoView::OnNMDblclkListCurves(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
