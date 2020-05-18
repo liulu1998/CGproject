@@ -216,6 +216,11 @@ std::vector<CP2> Curve::generateCurvePoints(int start, int end)
 			points.push_back(cur);
 		}
 	}
+
+	// 防止 Bezier 曲线 精度过低曲线不连续
+	if (type == Bezier)
+		points.push_back(ctrlPoints[end]);
+
 	return points;
 }
 
