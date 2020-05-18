@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "viewList.h"
+#include "Curve.h"
 
 // CurveInfoView 窗体视图
 
@@ -36,7 +37,7 @@ public:
 // 我们的方法
 private:
 	CView* GetView(CRuntimeClass* pClass);	// 获取指定类型的View
-
+	void addCurveInfo(Curve);
 
 };
 
