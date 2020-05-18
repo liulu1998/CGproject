@@ -56,6 +56,7 @@ public:
 	CView* GetView(CRuntimeClass* pClass);	// 获取指定类型的View
 
 	void BufferDraw(CDC* pDC);				// 双缓冲绘图
+	void drawGrid(CDC* pDC, const CRect&);						// 绘制网格
 
 	int getCurveDegree(int index);
 	CurveType getCurveType(int index);
