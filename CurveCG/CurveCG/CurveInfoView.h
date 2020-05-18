@@ -1,6 +1,8 @@
 ﻿#pragma once
 
 #include "viewList.h"
+#include "Curve.h"
+#include "DrawView.h"
 
 // CurveInfoView 窗体视图
 
@@ -30,14 +32,24 @@ protected:
 public:
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	// 存有点信息的ListBox
-	CListBox m_curveList;
+//	CListBox m_curveList;
 	virtual void OnInitialUpdate();
 
 // 我们的方法
+public:
+	void addCurveInfo(Curve);	// 添加点信息
 private:
 	CView* GetView(CRuntimeClass* pClass);	// 获取指定类型的View
 
+public:
+	CListCtrl m_curveList;
 
+public:
+	int AddCurve(int index);
+	afx_msg void OnLbnSelchangeListCurves();
+	afx_msg void OnLbnDblclkListCurves();
+//	afx_msg void OnHdnItemdblclickListCurves(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnNMDblclkListCurves(NMHDR* pNMHDR, LRESULT* pResult);
 };
 
 

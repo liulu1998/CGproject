@@ -3,6 +3,7 @@
 //
 
 #pragma once
+#include "CurveCGDoc.h"
 
 
 class CCurveCGView : public CView

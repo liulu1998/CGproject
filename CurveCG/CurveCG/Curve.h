@@ -57,9 +57,9 @@ public:
 	int Combination(int n, int m);			// 组合数
 
 	/** Getters */
-	CurveType getCurveType();
-	int getCtrlPointsNum();
-	int getCurveDegree();
-	double getCurvePrecision();
-	CP2 getCtrlPoint(int index);
+	CurveType getCurveType();				// 获得曲线类型
+	int getCtrlPointsNum();					// 获得曲线中 控制点个数
+	int getCurveDegree();					// 获得曲线次数
+	double getCurvePrecision();				// 获得曲线精度
+	CP2 getCtrlPoint(int index);			// 获得曲线中 某个控制点
 };
