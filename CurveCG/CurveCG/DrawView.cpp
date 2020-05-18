@@ -7,6 +7,10 @@
 #include "CP2.h"
 #include "Curve.h"
 
+#include <vector>
+
+typedef std::vector<Curve>::iterator PCurves;
+
 
 // DrawView
 
@@ -85,13 +89,49 @@ int DrawView::getFocus() {
 /*************************************************
 Function:		setCurvesNum
 Description:	更改当前曲线焦点, 即切换当前操作的曲线
-Author:			刘陆
+Author:			刘陆, 刘崇鹏
 Return:
 *************************************************/
 void DrawView::setFocus(int index) {
 	if (index >= this->getCurvesNum())
 		return;
 	this->focus = index;
+
+	// 仅限鼠标点击操作，判断focus是否改变, 有问题call->lcp
+	isFocusChanged = true;
+}
+
+
+/*************************************************
+Function:		addCtrlPoint
+Description:	向焦点的曲线 增加控制点
+Author:			刘陆
+Input:
+			- point: CP2&, 要删除的点
+Return:
+*************************************************/
+void DrawView::addCtrlPoint2Curve(CP2 point) {
+	int idx = this->getFocus();
+	if (idx != -1)
+		this->curves[idx].addCtrlPoint(point);
+}
+
+
+/*************************************************
+Function:		deleteCtrlPointFromCurve
+Description:	从焦点的曲线 删除控制点
+Author:			刘陆
+Input:
+			- index: int, 删除的控制点 在 焦点曲线中的索引
+Return:
+*************************************************/
+bool DrawView::deleteCtrlPointFromCurve(int index) {
+	int f = this->getFocus();
+	if (index >= this->curves[f].getCtrlPointsNum())
+		return false;
+
+	this->curves[f].deleteCtrlPoint(index);
+	return true;
 }
 
 
@@ -116,16 +156,31 @@ int DrawView::addCurve(CurveType type, int degree, double precision) {
 
 
 /*************************************************
-Function:		getCurve
-Description:	得到一条曲线
-Author:			韩继锋
+Function:		getCtrlPointsNumOfCurve
+Description:	获得焦点曲线的 控制点数
+Author:			刘陆
 Calls:
-Input:			- index: int, 要得到的曲线在curves中的索引
-Return:			Curve
+Input:
+Return:			int
 *************************************************/
-Curve DrawView::getCurve(int index)
-{
-	return this->curves[index];
+int DrawView::getCtrlPointsNumOfCurve() {
+	PCurves pc = this->curves.begin() + this->getFocus();
+	return pc->getCtrlPointsNum();
+}
+
+
+/*************************************************
+Function:		getCtrlPointFromCurve
+Description:	焦点的曲线 获得控制点
+Author:			刘陆
+Calls:
+Input:
+			- index: int, 控制点在 焦点曲线 中的索引
+Return:			CP2
+*************************************************/
+CP2 DrawView::getCtrlPointFromCurve(int index) {
+	PCurves pcurve = this->curves.begin() + this->getFocus();
+	return pcurve->getCtrlPoint(index);
 }
 
 
@@ -188,7 +243,57 @@ CView* DrawView::GetView(CRuntimeClass* pClass) {
 }
 
 
+/*************************************************
+Function:		getCurveDegree
+Description:	获取曲线次数
+Input:
+		- index: int, 曲线在 curves 中的索引
+Return:			int
+*************************************************/
+int DrawView::getCurveDegree(int index) {
+	if (index >= this->getCurvesNum())
+		throw "索引越界";
+
+	PCurves pc = this->curves.begin() + index;
+	return pc->getCurveDegree();
+}
+
+
+/*************************************************
+Function:		getCurveType
+Description:	获取曲线类型
+Input:
+		- index: int, 曲线在 curves 中的索引
+Return:			CurveType
+*************************************************/
+CurveType DrawView::getCurveType(int index) {
+	if (index >= this->getCurvesNum())
+		throw "索引越界";
+
+	PCurves pc = this->curves.begin() + index;
+	return pc->getCurveType();
+}
+
+
+/*************************************************
+Function:		getCurvePrecision
+Description:	获取曲线精度
+Input:
+		- index: int, 曲线在 curves 中的索引
+Return:			double
+*************************************************/
+double DrawView::getCurvePrecision(int index) {
+	if (index >= this->getCurvesNum())
+		throw "索引越界";
+
+	PCurves pc = this->curves.begin() + index;
+	return pc->getCurvePrecision();
+}
+
+
 // DrawView 消息处理程序
+
+
 /*************************************************
 Function:		OnLButtonDown
 Description:	在白板处点击时，在点列表中增加新的点信息,并更新选中状态
@@ -214,11 +319,29 @@ void DrawView::OnLButtonDown(UINT nFlags, CPoint point)
 	// 获取点view
 	CRuntimeClass* pClass = RUNTIME_CLASS(CurvePointView);
 
-	// 获取vieew中的列表
+	// 获取view中的列表
 	CListBox* list = &((CurvePointView*)GetView(pClass))->m_pointList;
 
 	// 构造数据
 	CString data;
+
+
+	// 如果focus进行了切换，将CurvePointView列表清空
+	if (isFocusChanged) {
+		// 将focus复原为false
+		isFocusChanged = false;
+		list->ResetContent();
+	}
+
+	// 将改curve原有的点加入
+	// fixme: 未测试，待curveInfo完善后联动测试
+	Curve nowCurve = curves[getFocus()];
+	for (int i = 0; i < nowCurve.getCtrlPointsNum(); i++) {
+		data.Format(_T("%d: (%d, %d)"), i, nowCurve.getCtrlPoint(i).x, nowCurve.getCtrlPoint(i).y);
+	}
+
+
+
 	int listLength = list->GetCount();
 	data.Format(_T("%d: (%d, %d)"), listLength, point.x, point.y);
 	list->AddString(data);
@@ -227,9 +350,9 @@ void DrawView::OnLButtonDown(UINT nFlags, CPoint point)
 	// TODO: 继续和Curve类联动, 如在ctrlPoint中加入点
 
 	// 当前焦点
-	int curFocus = this->getFocus();
+	int curFocus = getFocus();
 	// 加入控制点
-	this->curves[curFocus].addCtrlPoint(CP2((double)point.x, (double)point.y));
+	addCtrlPoint2Curve(CP2((double)point.x, (double)point.y));
 
 	// 绘制
 	CDC* pDC = GetDC();
@@ -248,7 +371,7 @@ BOOL DrawView::OnEraseBkgnd(CDC* pDC)
 Function:		BufferDraw
 Description:	双缓冲绘图
 Author:			刘陆
-Calls:
+Calls:			drawCurve,
 Input:
 		- pDC: CDC*
 Return:
@@ -260,15 +383,19 @@ void DrawView::BufferDraw(CDC* pDC) {
 
 	bufferdc.CreateCompatibleDC(NULL);		//创建兼容DC
 	bufferbmp.CreateCompatibleBitmap(pDC, rect.Width(), rect.Height());		//创建兼容位图
-	bufferdc.SelectObject(&bufferbmp);		// 将位图选入内存区域
+	//bufferdc.SelectObject(&bufferbmp);		// 将位图选入内存区域
 	CBitmap* pOldBit = bufferdc.SelectObject(&bufferbmp);
 	bufferbmp.GetBitmap(&bmp);				// 获取内存位图的信息
 
 	// >>> 在此处添加绘制代码
 
+	// 白色背景
 	bufferdc.FillSolidRect(&rect, RGB(255, 255, 255));
 
-	// 逐条绘制
+	// 绘制网格
+	drawGrid(&bufferdc, rect);
+
+	// 逐条绘制曲线
 	for (Curve c : this->curves)
 		c.drawCurve(&bufferdc);
 
@@ -278,4 +405,34 @@ void DrawView::BufferDraw(CDC* pDC) {
 	pDC->StretchBlt(0, 0, rect.Width(), rect.Height(), &bufferdc, 0, 0, bmp.bmWidth, bmp.bmHeight, SRCCOPY);//将内存中的内容复制到设备
 	bufferdc.DeleteDC();                                       //删除DC
 	bufferbmp.DeleteObject();                                  //删除位图
+}
+
+
+/*************************************************
+Function:		drawGrid
+Description:	绘制网格线
+Author:			刘陆
+Calls:
+Input:
+		- pDC: CDC*
+Return:
+*************************************************/
+void DrawView::drawGrid(CDC* pDC, const CRect& rect) {
+	CPen pen, * pOldPen;
+	pen.CreatePen(PS_DASHDOT, 1, RGB(191, 191, 191));		// 灰色 点划线画笔
+	pOldPen = pDC->SelectObject(&pen);
+
+	// 竖线
+	for (int i = 0; i < rect.Width(); i += 30) {
+		pDC->MoveTo(i, 0);
+		pDC->LineTo(i, rect.Height());
+	}
+
+	// 横线
+	for (int j = 0; j < rect.Height(); j += 30) {
+		pDC->MoveTo(0, j);
+		pDC->LineTo(rect.Width(), j);
+	}
+
+	pDC->SelectObject(pOldPen);
 }
