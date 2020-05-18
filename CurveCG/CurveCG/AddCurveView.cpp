@@ -207,6 +207,10 @@ void AddCurveView::OnBnClickedButtonAddcurve()
 	pDraw->addCurve(this->selectedType, curDegree, precision);
 
 	// TODO: CurveInfoView 中 更新信息
+	//获取CurveInfoView指针
+	CRuntimeClass* pClass1 = RUNTIME_CLASS(CurveInfoView);
+	CurveInfoView* pDraw1 = (CurveInfoView*)GetView(pClass1);
+	pDraw1->AddCurve(pDraw->getCurvesNum()-1);
 	
 	// 获取 DrawView 指针
 	pClass = RUNTIME_CLASS(CurveInfoView);
