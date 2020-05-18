@@ -24,22 +24,30 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 private:
-	CButton m_addCurveDlg;
-	CComboBox m_degree_cbx;					// 次数 下拉框
-	CSliderCtrl m_slider_precision;
-	CEdit m_edit_precision;
-
-public:
-	Curve m_curve;
-	CString curveName;
+	int precisionMin = 20;
+	int precisionMax = 200;
+	int precisionInterval = 10;
+private:
+	
 	CEdit m_edit_curveName;
+	Curve m_curve;
+	//CString curveName;
+	CSliderCtrl m_SLIDER;
+	CEdit m_PRESICION_EDIT;
+	CComboBox m_DEGREE_COMBOX;
+	
 	//方法
 public:
+	CString curveName;
 	CView* GetView(CRuntimeClass* pClass);	// 获取指定类型的View
-	int curveSetting(int index);
+	int setCurveName(CString str);
+	int setCurve(CurveType type, int degree, double percision);//设置m_curve
 	
-
 	afx_msg void OnEnChangeEdit01();
 	
 	virtual BOOL OnInitDialog();
+private:
+	CButton m_BEZIER_BUTTON;
+public:
+	CButton M_BSPLINE_BUTTON;
 };

@@ -156,8 +156,16 @@ void CurveInfoView::OnLbnDblclkListCurves()
 	CString str;
 	int len = this->m_curveList.GetTextLen(index);
 	this->m_curveList.GetText(index, str.GetBuffer(len));
+	//模态窗口
 	MoreCurveInfo pClass;
-	pClass.curveName = str;
+	pClass.setCurveName(str);
+	//pClass.curveName = str;
 	pClass.DoModal();
+	//获取DrawView指针
+	CRuntimeClass* pClass1 = RUNTIME_CLASS(DrawView);
+	DrawView* pDraw = (DrawView*)GetView(pClass1);
+
+	pClass.setCurve(pDraw->getCurveType(index),pDraw->getCurveDegree(index),pDraw->getCurvePrecision(index));
+	
 
 }

@@ -8,6 +8,7 @@
 #include "CurveCGView.h"
 #include "CP2.h"
 #include "Curve.h"
+#include<sstream>
 
 
 // MoreCurveInfo 对话框
@@ -33,6 +34,8 @@ void MoreCurveInfo::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_COMBO_DEGREE_01, m_DEGREE_COMBOX);
 	DDX_Control(pDX, IDC_SLIDER2, m_SLIDER);
 	DDX_Control(pDX, IDC_EDIT_02, m_PRESICION_EDIT);
+	DDX_Control(pDX, IDC_RADIO_BEZIER_01, m_BEZIER_BUTTON);
+	DDX_Control(pDX, IDC_RADIO_BSPLINE_01, M_BSPLINE_BUTTON);
 }
 
 
@@ -69,6 +72,51 @@ CView* MoreCurveInfo::GetView(CRuntimeClass* pClass) {
 	return NULL;
 }
 
+
+/*************************************************
+Function:
+Description:	设置线条名称
+Author:			刘俊
+Calls:          无					// 被本函数调用的函数清单
+Input:
+		-str						//线条名称
+Return:         int				// 失败返回0，成功返回1
+Others:         // 其它说明
+*************************************************/
+
+
+int MoreCurveInfo::setCurveName(CString str)
+{
+	if (str == "")
+		return 0;
+
+	this->curveName = str;
+	return 1;
+}
+
+
+/*************************************************
+Function:
+Description:	设置线条信息
+Author:			刘俊
+Calls:          无					// 被本函数调用的函数清单
+Input:
+		-
+Return:         int				// 失败返回0，成功返回1
+Others:         // 其它说明
+*************************************************/
+int MoreCurveInfo::setCurve(CurveType type, int degree, double percision)
+{
+	if (type == NULL || degree == 0 || percision == 0)
+	{
+		return 0;
+	}
+
+	this->m_curve.changeCurveInfo(type, degree, percision);
+
+	return 1;
+}
+
 void MoreCurveInfo::OnEnChangeEdit01()
 {
 	// TODO:  如果该控件是 RICHEDIT 控件，它将不
@@ -100,20 +148,27 @@ BOOL MoreCurveInfo::OnInitDialog()
 	// TODO:  在此添加额外的初始化
 	//初始化名称
 	this->m_edit_curveName.SetWindowTextW(curveName);
+	
 	//初始化类型
+	if (m_curve.getCurveType() == 'B')
+		m_BEZIER_BUTTON.SetCheck(1);
+	else
+		M_BSPLINE_BUTTON.SetCheck(1);
 
 	// 初始化 次数 下拉框
 	CString degrees[] = { TEXT("1"), TEXT("2"), TEXT("3") };
 	for (int i = 0; i < 3; i++)
 		m_DEGREE_COMBOX.AddString(degrees[i]);
-	m_DEGREE_COMBOX.SetCurSel(m_curve.getCurveDegree);		// 默认三次
+	m_DEGREE_COMBOX.SetCurSel(m_curve.getCurveDegree()-1);		// 默认三次
 
 	//初始化精度滑动条
 	m_SLIDER.SetRange(precisionMin, precisionMax);
 	m_SLIDER.SetTicFreq(precisionInterval);
-	m_SLIDER.SetPos(m_curve.getCurvePrecision);
+	m_SLIDER.SetPos(m_curve.getCurvePrecision());
 	//初始化精度编辑框
-	this->m_PRESICION_EDIT.SetWindowTextW(m_curve.getCurvePrecision);
+	CString ss ;
+	ss.Format(_T("%lf"), m_curve.getCurvePrecision());
+	this->m_PRESICION_EDIT.SetWindowTextW(ss);
 
 
 	return TRUE;  // return TRUE unless you set the focus to a control
