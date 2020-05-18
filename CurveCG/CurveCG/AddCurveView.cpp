@@ -199,9 +199,15 @@ void AddCurveView::OnBnClickedButtonAddcurve()
 	DrawView* pDraw = (DrawView*)GetView(pClass);
 
 	// DrawView 中新增一条曲线
-	pDraw->addCurve(this->selectedType, curDegree, precision);
+	int index = pDraw->addCurve(this->selectedType, curDegree, precision);
 
 	// TODO: CurveInfoView 中 更新信息
+	//获取CurveInfoView指针
+	CRuntimeClass* pClass1 = RUNTIME_CLASS(CurveInfoView);
+	CurveInfoView* pCurveInfo = (CurveInfoView*)GetView(pClass1);
+
+	//TODO:CurveInfoView中增加一行记录
+	pCurveInfo->AddCurve(index);
 
 	// 调试信息
 	//int curvesNum = pDraw->getCurvesNum();
