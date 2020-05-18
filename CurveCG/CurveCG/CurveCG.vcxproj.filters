@@ -66,6 +66,9 @@
     <ClInclude Include="viewList.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="MoreCurveInfo.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CurveCG.cpp">
@@ -105,6 +108,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="MySplitter.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MoreCurveInfo.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

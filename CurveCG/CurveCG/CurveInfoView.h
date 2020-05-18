@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "viewList.h"
+#include "DrawView.h"
 
 // CurveInfoView 窗体视图
 
@@ -38,6 +39,10 @@ private:
 	CView* GetView(CRuntimeClass* pClass);	// 获取指定类型的View
 
 
+public:
+	afx_msg void OnLbnSelchangeListCurves();
+	int AddCurve(int index);
+	afx_msg void OnLbnDblclkListCurves();
 };
 
 
