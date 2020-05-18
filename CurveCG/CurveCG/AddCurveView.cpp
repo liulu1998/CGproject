@@ -36,11 +36,11 @@ BEGIN_MESSAGE_MAP(AddCurveView, CFormView)
 	ON_BN_CLICKED(IDC_BUTTON_ADDCURVE, &AddCurveView::OnBnClickedButtonAddcurve)
 	ON_WM_HSCROLL()
 	ON_EN_CHANGE(IDC_EDIT1, &AddCurveView::OnEnChangeEdit1)
-//	ON_EN_UPDATE(IDC_EDIT1, &AddCurveView::OnUpdateEdit1)
-ON_EN_SETFOCUS(IDC_EDIT1, &AddCurveView::OnSetfocusEdit1)
-ON_EN_KILLFOCUS(IDC_EDIT1, &AddCurveView::OnKillfocusEdit1)
-//ON_WM_LBUTTONDBLCLK()
-ON_WM_LBUTTONDOWN()
+	//	ON_EN_UPDATE(IDC_EDIT1, &AddCurveView::OnUpdateEdit1)
+	ON_EN_SETFOCUS(IDC_EDIT1, &AddCurveView::OnSetfocusEdit1)
+	ON_EN_KILLFOCUS(IDC_EDIT1, &AddCurveView::OnKillfocusEdit1)
+	//ON_WM_LBUTTONDBLCLK()
+	ON_WM_LBUTTONDOWN()
 END_MESSAGE_MAP()
 
 
@@ -65,12 +65,12 @@ void AddCurveView::Dump(CDumpContext& dc) const
 
 /*************************************************
 Function:		OnSize
-Description:	view自适应splitter大小
+Description:	view 自适应splitter大小
 Author:			刘崇鹏
 Calls:			GetClientRect
 Input:
-		- cx: int, x坐标
-		- cy: int, y坐标
+		- cx: int, x 坐标
+		- cy: int, y 坐标
 Return:
 *************************************************/
 void AddCurveView::OnSize(UINT nType, int cx, int cy)
@@ -197,8 +197,7 @@ void AddCurveView::OnBnClickedButtonAddcurve()
 	// 获取精度
 	CString data;
 	m_edit_precision.GetWindowTextW(data);
-	double precision;
-	precision = 1.0 / _wtoi(data);
+	int precision = _wtoi(data);
 	// 获取 DrawView 指针
 	CRuntimeClass* pClass = RUNTIME_CLASS(DrawView);
 	DrawView* pDraw = (DrawView*)GetView(pClass);
@@ -212,7 +211,6 @@ void AddCurveView::OnBnClickedButtonAddcurve()
 	CurveInfoView* pInfo = (CurveInfoView*)GetView(pClass);
 	// 在curveInfo中加入新曲线信息
 	pInfo->addCurveInfo(Curve(selectedType, curDegree, precision));
-
 
 
 	// 调试信息
@@ -266,7 +264,7 @@ BOOL AddCurveView::PreTranslateMessage(MSG* pMsg)
 		{
 			// 判断是不是来自编辑框的回车,是则
 
-			if(GetDlgItem(IDC_EDIT1) == GetFocus())
+			if (GetDlgItem(IDC_EDIT1) == GetFocus())
 			{
 				GetDlgItem(IDC_SLIDER1)->SetFocus();
 				CString rawData;
@@ -281,7 +279,7 @@ BOOL AddCurveView::PreTranslateMessage(MSG* pMsg)
 					MessageBox(_T("请输入数字"));
 					m_edit_precision.SetWindowTextW(rawData);
 					return CFormView::PreTranslateMessage(pMsg);
-				} 
+				}
 				else
 				{
 					// 全数字，判断是否超界，并赋值sliderBar

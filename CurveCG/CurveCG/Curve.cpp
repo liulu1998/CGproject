@@ -30,7 +30,7 @@ Curve::Curve()
 	// 默认 3次 样条曲线 精度0.01
 	this->type = Spline;
 	this->degree = 3;
-	this->precision = 0.01;
+	this->precision = 100;
 	// 给crtlPoints预分配一条曲线，即4个点所需空间
 	this->ctrlPoints.reserve(4);
 	// 给curvePoints预分配一条曲线，4个点所需空间,1/precision 个
@@ -38,7 +38,7 @@ Curve::Curve()
 }
 
 
-Curve::Curve(CurveType type, int degree, double precision)
+Curve::Curve(CurveType type, int degree, int precision)
 {
 	this->type = type;
 	this->degree = degree;
@@ -56,7 +56,7 @@ Curve::Curve(CurveType type, int degree, double precision)
  Input:
  Return:		CurveType
 ********************************/
-CurveType Curve::getCurveType() {
+CurveType Curve::getCurveType() const {
 	return this->type;
 }
 
@@ -67,7 +67,7 @@ CurveType Curve::getCurveType() {
  Input:
  Return:		int
 ********************************/
-int Curve::getCurveDegree() {
+int Curve::getCurveDegree() const {
 	return this->degree;
 }
 
@@ -78,7 +78,7 @@ int Curve::getCurveDegree() {
  Input:
  Return:		int
 **********************************/
-int Curve::getCtrlPointsNum() {
+int Curve::getCtrlPointsNum() const {
 	return (int)this->ctrlPoints.size();
 }
 
@@ -89,7 +89,7 @@ int Curve::getCtrlPointsNum() {
  Input:
  Return:		int
 **********************************/
-double Curve::getCurvePrecision() {
+int Curve::getCurvePrecision() const {
 	return this->precision;
 }
 
@@ -101,7 +101,7 @@ double Curve::getCurvePrecision() {
 			- index: int, 索引
  Return:		CP2
 **********************************/
-CP2 Curve::getCtrlPoint(int index) {
+CP2 Curve::getCtrlPoint(int index) const {
 	if (index >= this->getCtrlPointsNum())
 		throw "索引越界!";
 	return this->ctrlPoints[index];
@@ -142,7 +142,6 @@ Input:
 Return: double
 *************************************************/
 double Curve::Bernstein(int i, int degree, double t) {
-	//return this->Combination(degree, i) * pow(t, i) * pow(1 - t, degree - i);
 	//if (t == 0) {
 	//	if (i == 0)
 	//		return 1.0;
@@ -175,7 +174,6 @@ double Curve::F(int i, int degree, double t) {
 	double res = 0.0;
 
 	for (int j = 0; j <= degree - i; j++) {
-		//res += (pow(-1, j) * this->Combination(degree + 1, j) * pow(t + degree - i - j, degree));
 
 		if (j & 1)		// 奇数
 			res -= (this->combs[degree + 1][j] * pow(t + degree - i - j, degree));
@@ -214,9 +212,11 @@ std::vector<CP2> Curve::generateCurvePoints(int start, int end)
 	else					// B - 样条曲线
 		offset = 1;
 
+	double eps = 1.0 / this->precision;		// 参量 t 精度
+
 	for (int i = start; i + this->degree <= end; i += offset) {		// 起始控制点索引 i
 
-		for (double t = 0; t <= 1; t += this->precision) {		// 参数方程 参量 t
+		for (double t = 0; t <= 1; t += eps) {		// 参数方程 参量 t
 			CP2 cur;
 			for (int k = 0; k <= this->degree; k++) {			// 遍历控制点
 				switch (type) {
@@ -392,17 +392,17 @@ void Curve::drawCurve(CDC* pDC) {
 
 
 /*************************************************
-Function:		changeCurveInfo(char, int, double)
+Function:		changeCurveInfo(char, int, int)
 Description:	修改曲线信息，注意：若有参数为NULL，则视为未修改
 Author:			刘崇鹏
 Calls:			changeCurveInfo, generateCurvePoints
 Input:
-				- type: char, 曲线的类型，即贝塞尔'B'或样条'S'曲线
+				- type: CurveType, 曲线的类型，Bezier 或 Spline
 				- degree: int, 曲线的新阶数，NULL代表该值未修改
-				- precision: double, 曲线的新画线精度
+				- precision: int, 曲线的新画线精度
 Return:
 *************************************************/
-void Curve::changeCurveInfo(CurveType type, int degree, double precision)
+void Curve::changeCurveInfo(CurveType type, int degree, int precision)
 {
 	// 修改曲线的类型与阶次信息
 	// 如果有参数为空(值未进行修改)，直接返回
@@ -428,7 +428,7 @@ void Curve::changeCurveInfo(CurveType type, int degree, double precision)
 	if (this->type == type && this->degree == degree && this->precision == precision)return;
 
 	// 正常绘制，生成新的curvePoints
-	this->type = type;		// TODO: 换为枚举 CurveType
+	this->type = type;
 	this->degree = degree;
 	this->precision = precision;
 	this->curvePoints.clear();
@@ -487,13 +487,13 @@ Input:
 				- precision: double, 曲线的新画线精度
 Return:
 *************************************************/
-void Curve::changeCurveInfo(double precision)
-{
-	// 为空直接返回
-	if (precision == NULL)return;
-	// 如果和原先一致，不进行修改
-	if (this->precision == precision)return;
-	// 进行修改，重新生成curvePoints
-	this->precision = precision;
-	this->curvePoints = generateCurvePoints(0, ctrlPoints.size() - 1);
-}
+//void Curve::changeCurveInfo(int precision)
+//{
+//	// 为空直接返回
+//	if (precision == NULL)return;
+//	// 如果和原先一致，不进行修改
+//	if (this->precision == precision)return;
+//	// 进行修改，重新生成curvePoints
+//	this->precision = precision;
+//	this->curvePoints = generateCurvePoints(0, ctrlPoints.size() - 1);
+//}

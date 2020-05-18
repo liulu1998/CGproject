@@ -96,7 +96,7 @@ void CurveInfoView::OnInitialUpdate()
 	float colWidth[] = { 0.14, 0.18, 0.22, 0.2, 0.26 };
 	for (int i = 0; i < 5; i++)
 	{
-		m_curveList.InsertColumn(i, header[i], LVCFMT_LEFT, listRect.Width()*colWidth[i]);
+		m_curveList.InsertColumn(i, header[i], LVCFMT_LEFT, listRect.Width() * colWidth[i]);
 	}
 
 
@@ -138,7 +138,7 @@ Input:
 Return:
 		- pView: CView*, 要求类的指针
 *************************************************/
-void CurveInfoView::addCurveInfo(Curve newCurve)
+void CurveInfoView::addCurveInfo(const Curve& newCurve)
 {
 	CString idStr;
 	int listLenth = m_curveList.GetItemCount();
