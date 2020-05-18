@@ -226,6 +226,54 @@ CView* DrawView::GetView(CRuntimeClass* pClass) {
 }
 
 
+/*************************************************
+Function:		getCurveDegree
+Description:	获取曲线次数
+Input:
+		- index: int, 曲线在 curves 中的索引
+Return:			int
+*************************************************/
+int DrawView::getCurveDegree(int index) {
+	if (index >= this->getCurvesNum())
+		throw "索引越界";
+
+	PCurves pc = this->curves.begin() + index;
+	return pc->getCurveDegree();
+}
+
+
+/*************************************************
+Function:		getCurveType
+Description:	获取曲线类型
+Input:
+		- index: int, 曲线在 curves 中的索引
+Return:			CurveType
+*************************************************/
+CurveType DrawView::getCurveType(int index) {
+	if (index >= this->getCurvesNum())
+		throw "索引越界";
+
+	PCurves pc = this->curves.begin() + index;
+	return pc->getCurveType();
+}
+
+
+/*************************************************
+Function:		getCurvePrecision
+Description:	获取曲线精度
+Input:
+		- index: int, 曲线在 curves 中的索引
+Return:			double
+*************************************************/
+double DrawView::getCurvePrecision(int index) {
+	if (index >= this->getCurvesNum())
+		throw "索引越界";
+
+	PCurves pc = this->curves.begin() + index;
+	return pc->getCurvePrecision();
+}
+
+
 // DrawView 消息处理程序
 /*************************************************
 Function:		OnLButtonDown

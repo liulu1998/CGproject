@@ -54,6 +54,10 @@ public:
 
 	void BufferDraw(CDC* pDC);				// 双缓冲绘图
 
+	int getCurveDegree(int index);
+	CurveType getCurveType(int index);
+	double getCurvePrecision(int index);
+
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 };
