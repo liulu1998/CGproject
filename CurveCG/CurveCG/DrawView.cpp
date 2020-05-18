@@ -156,6 +156,20 @@ int DrawView::addCurve(CurveType type, int degree, double precision) {
 
 
 /*************************************************
+Function:		getCtrlPointsNumOfCurve
+Description:	获得焦点曲线的 控制点数
+Author:			刘陆
+Calls:
+Input:
+Return:			int
+*************************************************/
+int DrawView::getCtrlPointsNumOfCurve() {
+	PCurves pc = this->curves.begin() + this->getFocus();
+	return pc->getCtrlPointsNum();
+}
+
+
+/*************************************************
 Function:		getCtrlPointFromCurve
 Description:	焦点的曲线 获得控制点
 Author:			刘陆
