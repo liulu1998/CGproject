@@ -285,6 +285,7 @@ int DrawView::getCurvePrecision(int index) const {
 }
 
 
+
 // DrawView 消息处理程序
 
 
@@ -315,15 +316,6 @@ void DrawView::OnLButtonDown(UINT nFlags, CPoint point)
 
 	// 构造数据
 	//CString data;
-
-	// 将改curve原有的点加入, 这个功能应该在切换curve的时候加入
-
-	// 未测试，待curveInfo完善后联动测试
-	//Curve nowCurve = curves[getFocus()];
-	//for (int i = 0; i < nowCurve.getCtrlPointsNum(); i++) {
-	//	data.Format(_T("%d: (%d, %d)"), i, nowCurve.getCtrlPoint(i).x, nowCurve.getCtrlPoint(i).y);
-	//}
-
 
 	// 转为 CP2
 	CP2 curPoint = CP2((double)point.x, (double)point.y);
