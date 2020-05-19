@@ -338,9 +338,9 @@ void DrawView::OnLButtonDown(UINT nFlags, CPoint point)
 	this->addCtrlPoint2Curve(curPoint);
 
 	// 绘制
-	CDC* pDC = GetDC();
+	//CDC* pDC = GetDC();
 	this->RedrawWindow();
-	ReleaseDC(pDC);
+	//ReleaseDC(pDC);
 }
 
 
