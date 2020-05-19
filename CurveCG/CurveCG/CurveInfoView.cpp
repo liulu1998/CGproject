@@ -212,7 +212,7 @@ void CurveInfoView::changeCurveInfo(CurveType type, int degree, int prec)
 	m_curveList.SetItemText(index, 2, degree_);
 	//m_curveList.SetItemText(index, 3, count_);
 	m_curveList.SetItemText(index, 3, prec_);
-	
+
 	DrawView* pDrawView = (DrawView*)GetView(RUNTIME_CLASS(DrawView));
 	pDrawView->setCurveInfo(index, type, degree, prec);
 
@@ -244,8 +244,8 @@ void CurveInfoView::OnNMDblclkListCurves(NMHDR* pNMHDR, LRESULT* pResult)
 	int index = this->m_curveList.GetSelectionMark();
 	CString str;
 	str = m_curveList.GetItemText(index, 0);
-	
-	
+
+
 	//获取DrawView指针
 	CRuntimeClass* pClass1 = RUNTIME_CLASS(DrawView);
 	DrawView* pDraw = (DrawView*)GetView(pClass1);
@@ -259,7 +259,7 @@ void CurveInfoView::OnNMDblclkListCurves(NMHDR* pNMHDR, LRESULT* pResult)
 
 	this->changeCurveInfo(pClass.getCurveType(), pClass.getCurveDegree(), pClass.getCurvePrec());
 
-	
+
 	// 重绘曲线
 	pDraw->RedrawWindow();
 }
@@ -295,7 +295,7 @@ void CurveInfoView::OnNMClickListCurves(NMHDR* pNMHDR, LRESULT* pResult)
 
 	// 改变DrawView中的focus
 	pDrawView->setFocus(index);
-	
+
 	// TODO:刷新控制点列表
 	pPointView->showCurvePoints();
 }

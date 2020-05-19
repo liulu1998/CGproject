@@ -314,9 +314,6 @@ void DrawView::OnLButtonDown(UINT nFlags, CPoint point)
 	CRuntimeClass* pClass = RUNTIME_CLASS(CurvePointView);
 	CurvePointView* pPointView = (CurvePointView*)GetView(pClass);
 
-	// 构造数据
-	//CString data;
-
 	// 转为 CP2
 	CP2 curPoint = CP2((double)point.x, (double)point.y);
 
@@ -330,9 +327,7 @@ void DrawView::OnLButtonDown(UINT nFlags, CPoint point)
 	this->addCtrlPoint2Curve(curPoint);
 
 	// 绘制
-	//CDC* pDC = GetDC();
 	this->RedrawWindow();
-	//ReleaseDC(pDC);
 }
 
 
