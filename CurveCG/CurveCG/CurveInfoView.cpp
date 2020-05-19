@@ -222,16 +222,20 @@ void CurveInfoView::OnNMClickListCurves(NMHDR* pNMHDR, LRESULT* pResult)
 	// 获取其它视图
 	CurvePointView* pPointView = (CurvePointView*)GetView(RUNTIME_CLASS(CurvePointView));
 	DrawView* pDrawView = (DrawView*)GetView(RUNTIME_CLASS(DrawView));
-	// 获取俩CListCtrl
-	CListCtrl* pointList = &pPointView->m_pointList;
+
 	// 获取选中的curve的index
 	int index = m_curveList.GetSelectionMark();
+
 	// 若未选中，直接返回
 	if (index == -1)return;
-	
+
+	// 焦点未改变
+	if (index == pDrawView->getFocus())
+		return;
+
 	// 改变DrawView中的focus
 	pDrawView->setFocus(index);
-	
-	// TODO:刷新控制点列表
 
+	// 刷新控制点列表
+	pPointView->showCurvePoints();
 }
