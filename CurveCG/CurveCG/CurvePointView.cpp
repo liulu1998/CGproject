@@ -171,9 +171,9 @@ void CurvePointView::OnBnClickedButtonDelcurve()
 	this->showCurvePoints();
 
 	// 重新绘制 右部区域
-	CDC* pDC = GetDC();
+	//CDC* pDC = GetDC();
 	pDraw->RedrawWindow();
-	ReleaseDC(pDC);
+	//ReleaseDC(pDC);
 }
 
 
