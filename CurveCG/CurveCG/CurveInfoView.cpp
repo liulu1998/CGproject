@@ -37,6 +37,8 @@ BEGIN_MESSAGE_MAP(CurveInfoView, CFormView)
 //	ON_NOTIFY(HDN_ITEMDBLCLICK, 0, &CurveInfoView::OnHdnItemdblclickListCurves)
 ON_NOTIFY(NM_DBLCLK, IDC_LIST_CURVES, &CurveInfoView::OnNMDblclkListCurves)
 ON_NOTIFY(NM_CLICK, IDC_LIST_CURVES, &CurveInfoView::OnNMClickListCurves)
+ON_NOTIFY(NM_SETFOCUS, IDC_LIST_CURVES, &CurveInfoView::OnNMSetfocusListCurves)
+ON_NOTIFY(LVN_ITEMACTIVATE, IDC_LIST_CURVES, &CurveInfoView::OnLvnItemActivateListCurves)
 END_MESSAGE_MAP()
 
 
@@ -236,20 +238,22 @@ void CurveInfoView::OnNMDblclkListCurves(NMHDR* pNMHDR, LRESULT* pResult)
 	int index = this->m_curveList.GetSelectionMark();
 	CString str;
 	str = m_curveList.GetItemText(index, 0);
-	//模态窗口
-	MoreCurveInfo pClass;
-	pClass.setCurveName(str);
+	
 	
 	//获取DrawView指针
 	CRuntimeClass* pClass1 = RUNTIME_CLASS(DrawView);
 	DrawView* pDraw = (DrawView*)GetView(pClass1);
 
+	//模态窗口
+	MoreCurveInfo pClass;
+	pClass.setCurveName(str);
 	pClass.setCurve(pDraw->getCurveType(index), pDraw->getCurveDegree(index), pDraw->getCurvePrecision(index));
 	//打开窗口
 	pClass.DoModal();
 
 	this->changeCurveInfo(pClass.getCurveType(), pClass.getCurveDegree(), pClass.getCurvePrec());
 }
+
 
 void CurveInfoView::OnNMClickListCurves(NMHDR* pNMHDR, LRESULT* pResult)
 {
@@ -271,5 +275,69 @@ void CurveInfoView::OnNMClickListCurves(NMHDR* pNMHDR, LRESULT* pResult)
 	pDrawView->setFocus(index);
 	
 	// TODO:刷新控制点列表
+
+}
+
+
+
+/*************************************************
+Function:
+Description:	当某条记录获得焦点时更新CurvePointView
+Author:			刘俊
+Calls:          无					// 被本函数调用的函数清单
+Input:
+		-
+Return:         void				// 函数返回值的说明
+Others:         // 其它说明
+*************************************************/
+
+
+void CurveInfoView::OnNMSetfocusListCurves(NMHDR* pNMHDR, LRESULT* pResult)
+{
+	// TODO: 在此添加控件通知处理程序代码
+	*pResult = 0;
+
+	CurvePointView* pClass = (CurvePointView*)GetView(RUNTIME_CLASS(CurvePointView));
+	DrawView* pDraw = (DrawView*)GetView(RUNTIME_CLASS(DrawView));
+	
+	//得到线条索引
+	int index = this->m_curveList.GetSelectionMark();
+
+	pDraw->setFocus(index);
+	pClass->m_pointList.DeleteAllItems();
+
+	// 输出 焦点曲线 的所有控制点
+	CString data;
+	int num = pDraw->getCtrlPointsNumOfCurve();
+
+	for (int j = 0; j < num; j++) {
+		// 当前控制点
+		CP2 curPoint = pDraw->getCtrlPointFromCurve(j);
+
+		CString x, y, id;
+		// 注意: 需要强制类型转换
+		id.Format(_T("%d"), j);
+		x.Format(_T("%d"), (int)curPoint.x);
+		y.Format(_T("%d"), (int)curPoint.y);
+
+		pClass->m_pointList.InsertItem(j, id);
+		pClass->m_pointList.SetItemText(j, 1, x);
+		pClass->m_pointList.SetItemText(j, 2, y);
+	}
+	// 选中最后一行
+	int listLength = pClass->m_pointList.GetItemCount() - 1;
+	pClass->m_pointList.SetItemState(listLength, LVIS_FOCUSED | LVIS_SELECTED, LVIS_FOCUSED | LVIS_SELECTED);
+	pClass->m_pointList.SetSelectionMark(listLength);
+
+
+}
+
+
+void CurveInfoView::OnLvnItemActivateListCurves(NMHDR* pNMHDR, LRESULT* pResult)
+{
+	LPNMITEMACTIVATE pNMIA = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	*pResult = 0;
+
 
 }
