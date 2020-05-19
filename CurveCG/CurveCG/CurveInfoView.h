@@ -38,7 +38,8 @@ public:
 	// 我们的方法
 public:
 	void addCurveInfo(CurveType, int, int, int);// 添加点信息
-
+	int AddCurve(int index);
+	void changeCurveInfo(CurveType, int, int);//修改曲线信息
 private:
 	CView* GetView(CRuntimeClass* pClass);	// 获取指定类型的View
 
@@ -46,7 +47,6 @@ public:
 	CListCtrl m_curveList;
 
 public:
-	int AddCurve(int index);
 	afx_msg void OnLbnSelchangeListCurves();
 	afx_msg void OnLbnDblclkListCurves();
 	//	afx_msg void OnHdnItemdblclickListCurves(NMHDR* pNMHDR, LRESULT* pResult);

@@ -173,6 +173,43 @@ void CurveInfoView::addCurveInfo(CurveType type, int degree, int count, int prec
 	m_curveList.SetFocus();
 }
 
+
+
+/*************************************************
+Function:
+Description:	关闭模态窗口后对线条记录进行修改
+Author:			刘俊
+Calls:          					// 被本函数调用的函数清单
+Input:
+		-CurveType type				//线条类型
+		-int degree					//阶数
+		-int count					//控制点数
+		-int prec					//精度
+Return:         void				// 函数返回值的说明
+Others:         // 其它说明
+*************************************************/
+
+
+void CurveInfoView::changeCurveInfo(CurveType type, int degree, int prec)
+{
+	///TODO:关闭模态窗口后对线条记录进行修改
+	int index = this->m_curveList.GetSelectionMark();
+	// 依次设置类型等
+	CString type_, degree_, count_, prec_;
+
+	// 格式化
+	type_.Format(_T("%c"), type);
+	degree_.Format(_T("%d"), degree);
+	prec_.Format(_T("%d"), prec);
+
+	//设置文本
+	m_curveList.SetItemText(index, 1, type_);
+	m_curveList.SetItemText(index, 2, degree_);
+	//m_curveList.SetItemText(index, 3, count_);
+	m_curveList.SetItemText(index, 4, prec_);
+	
+}
+
 void CurveInfoView::OnLbnSelchangeListCurves()
 {
 	// TODO: 在此添加控件通知处理程序代码
@@ -181,7 +218,7 @@ void CurveInfoView::OnLbnSelchangeListCurves()
 
 /*************************************************
 Function:
-Description:	双击线条记录弹出信息窗口
+Description:	双击线条记录弹出信息窗口并在窗口确认后更新线条信息
 Author:			刘俊
 Calls:          无					// 被本函数调用的函数清单
 Input:
@@ -209,6 +246,8 @@ void CurveInfoView::OnNMDblclkListCurves(NMHDR* pNMHDR, LRESULT* pResult)
 	pClass.setCurve(pDraw->getCurveType(index), pDraw->getCurveDegree(index), pDraw->getCurvePrecision(index));
 	//打开窗口
 	pClass.DoModal();
+
+	this->changeCurveInfo(pClass.getCurveType(), pClass.getCurveDegree(), pClass.getCurvePrec());
 }
 
 
