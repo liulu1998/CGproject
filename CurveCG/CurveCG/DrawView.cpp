@@ -89,16 +89,13 @@ int DrawView::getFocus() const {
 /*************************************************
 Function:		setCurvesNum
 Description:	更改当前曲线焦点, 即切换当前操作的曲线
-Author:			刘陆, 刘崇鹏
+Author:			刘陆
 Return:
 *************************************************/
 void DrawView::setFocus(int index) {
 	if (index >= this->getCurvesNum())
 		return;
 	this->focus = index;
-
-	// 仅限鼠标点击操作，判断focus是否改变, 有问题call->lcp
-	isFocusChanged = true;
 }
 
 
@@ -294,7 +291,7 @@ int DrawView::getCurvePrecision(int index) const {
 /*************************************************
 Function:		OnLButtonDown
 Description:	在白板处点击时，在点列表中增加新的点信息,并更新选中状态
-Author:			刘崇鹏
+Author:			刘崇鹏, 刘陆
 Calls:			GetView
 Input:
 		- nFlags: nFlags, 标志位
@@ -304,61 +301,45 @@ Return:
 *************************************************/
 void DrawView::OnLButtonDown(UINT nFlags, CPoint point)
 {
-
 	CView::OnLButtonDown(nFlags, point);
 
-
+	// 未创建曲线
 	if (this->getCurvesNum() == 0) {
 		MessageBox(TEXT("请先创建曲线"));
 		return;
 	}
 
-	// 获取点view
+	// 获取 PointView 指针
 	CRuntimeClass* pClass = RUNTIME_CLASS(CurvePointView);
-
-	// 获取view中的列表
-	CListCtrl* list = &((CurvePointView*)GetView(pClass))->m_pointList;
+	CurvePointView* pPointView = (CurvePointView*)GetView(pClass);
 
 	// 构造数据
-	CString data;
-
-
-	// 如果focus进行了切换，将CurvePointView列表清空
-	if (isFocusChanged) {
-		// 将focus复原为false
-		isFocusChanged = false;
-		list->DeleteAllItems();
-	}
+	//CString data;
 
 	// 将改curve原有的点加入, 这个功能应该在切换curve的时候加入
-	// fixme: 未测试，待curveInfo完善后联动测试
-	Curve nowCurve = curves[getFocus()];
-	for (int i = 0; i < nowCurve.getCtrlPointsNum(); i++) {
-		data.Format(_T("%d: (%d, %d)"), i, nowCurve.getCtrlPoint(i).x, nowCurve.getCtrlPoint(i).y);
-	}
+
+	// 未测试，待curveInfo完善后联动测试
+	//Curve nowCurve = curves[getFocus()];
+	//for (int i = 0; i < nowCurve.getCtrlPointsNum(); i++) {
+	//	data.Format(_T("%d: (%d, %d)"), i, nowCurve.getCtrlPoint(i).x, nowCurve.getCtrlPoint(i).y);
+	//}
 
 
+	// 转为 CP2
+	CP2 curPoint = CP2((double)point.x, (double)point.y);
 
-	int listLength = list->GetItemCount();
-	CString x, y, lenStr;
-
-	lenStr.Format(_T("%d"), listLength);
-	x.Format(_T("%d"), point.x);
-	y.Format(_T("%d"), point.y);
-
-	list->InsertItem(listLength, lenStr);
-	list->SetItemText(listLength, 1, x);
-	list->SetItemText(listLength, 2, y);
+	// CurveView 框中新增 控制点信息
+	pPointView->addPoint(curPoint);
 
 	// 继续和Curve类联动, 如在ctrlPoint中加入点
 	// 当前焦点
-	int curFocus = getFocus();
+	int curFocus = this->getFocus();
 	// 加入控制点
-	addCtrlPoint2Curve(CP2((double)point.x, (double)point.y));
+	this->addCtrlPoint2Curve(curPoint);
 
 	// 绘制
 	CDC* pDC = GetDC();
-	this->OnDraw(pDC);
+	this->RedrawWindow();
 	ReleaseDC(pDC);
 }
 

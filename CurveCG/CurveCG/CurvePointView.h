@@ -36,9 +36,13 @@ private:
 	CView* GetView(CRuntimeClass* pClass);	// 获取指定类型的View
 public:
 	CListCtrl m_pointList;
+
 	void showCurvePoints();
 	afx_msg void OnBnClickedButtonDelcurve();
 	afx_msg void OnBnClickedButtonAddpoint();
 	virtual void OnInitialUpdate();
-	void resetList();
+
+	void addPoint(const CP2&);			// 增加一个控制点信息, 一定是在焦点曲线操作
+
+	void resetList();					// 清空控制点列表
 };

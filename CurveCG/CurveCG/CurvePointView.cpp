@@ -115,7 +115,7 @@ void CurvePointView::showCurvePoints() {
 	DrawView* pDraw = (DrawView*)GetView(pClass);
 
 	// 清空 listbox
-	this->m_pointList.DeleteAllItems();
+	this->resetList();
 
 	// 输出 焦点曲线 的所有控制点
 	CString data;
@@ -201,10 +201,38 @@ void CurvePointView::OnInitialUpdate()
 	}
 }
 
-// 清空
+
+/*************************************************
+Function:		addPoint
+Description:	向控制点列表中增加一条控制点信息
+Author:			刘陆
+Calls:
+Input:
+Return:
+Other:
+*************************************************/
+void CurvePointView::addPoint(const CP2& point) {
+	int n = this->m_pointList.GetItemCount();
+
+	CString index, x, y;
+	index.Format(_T("%d"), n);
+	x.Format(_T("%d"), (int)point.x);
+	y.Format(_T("%d"), (int)point.y);
+
+	this->m_pointList.InsertItem(n, index);
+	this->m_pointList.SetItemText(n, 1, x);
+	this->m_pointList.SetItemText(n, 2, y);
+}
+
+
+/*************************************************
+Function:		resetList
+Description:	清空 控制点列表
+Author:			刘陆
+Calls:
+Input:
+Return:
+*************************************************/
 void CurvePointView::resetList() {
-	//int n = this->m_pointList.GetItemCount();
-	//for (int i = 0; i < n; i++)
-	//	this->m_pointList.DeleteItem(i);
 	this->m_pointList.DeleteAllItems();
 }
