@@ -317,7 +317,7 @@ void DrawView::OnLButtonDown(UINT nFlags, CPoint point)
 	CRuntimeClass* pClass = RUNTIME_CLASS(CurvePointView);
 
 	// 获取view中的列表
-	CListBox* list = &((CurvePointView*)GetView(pClass))->m_pointList;
+	CListCtrl* list = &((CurvePointView*)GetView(pClass))->m_pointList;
 
 	// 构造数据
 	CString data;
@@ -327,10 +327,10 @@ void DrawView::OnLButtonDown(UINT nFlags, CPoint point)
 	if (isFocusChanged) {
 		// 将focus复原为false
 		isFocusChanged = false;
-		list->ResetContent();
+		list->DeleteAllItems();
 	}
 
-	// 将改curve原有的点加入
+	// 将改curve原有的点加入, 这个功能应该在切换curve的时候加入
 	// fixme: 未测试，待curveInfo完善后联动测试
 	Curve nowCurve = curves[getFocus()];
 	for (int i = 0; i < nowCurve.getCtrlPointsNum(); i++) {
@@ -339,13 +339,18 @@ void DrawView::OnLButtonDown(UINT nFlags, CPoint point)
 
 
 
-	int listLength = list->GetCount();
-	data.Format(_T("%d: (%d, %d)"), listLength, point.x, point.y);
-	list->AddString(data);
-	list->SetCurSel(listLength);
+	int listLength = list->GetItemCount();
+	CString x, y, lenStr;
 
-	// TODO: 继续和Curve类联动, 如在ctrlPoint中加入点
+	lenStr.Format(_T("%d"), listLength);
+	x.Format(_T("%d"), point.x);
+	y.Format(_T("%d"), point.y);
 
+	list->InsertItem(listLength, lenStr);
+	list->SetItemText(listLength, 1, x);
+	list->SetItemText(listLength, 2, y);
+
+	// 继续和Curve类联动, 如在ctrlPoint中加入点
 	// 当前焦点
 	int curFocus = getFocus();
 	// 加入控制点
