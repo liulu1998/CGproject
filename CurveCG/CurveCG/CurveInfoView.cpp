@@ -98,7 +98,6 @@ void CurveInfoView::OnInitialUpdate()
 	{
 		m_curveList.InsertColumn(i, header[i], LVCFMT_LEFT, listRect.Width() * colWidth[i]);
 	}
-	m_curveList.InsertItem(0, _T("ehhhh"));
 }
 
 
@@ -129,7 +128,7 @@ CView* CurveInfoView::GetView(CRuntimeClass* pClass) {
 
 /*************************************************
 Function:		addCurveInfo
-Description:
+Description:	新增一条曲线信息
 Author:			刘崇鹏
 Calls:			GetDocument
 Input:
@@ -152,20 +151,21 @@ void CurveInfoView::addCurveInfo(CurveType type, int degree, int count, int prec
 	// 依次设置类型等
 	CString type_, degree_, count_, prec_;
 
+	// 格式化
 	type_.Format(_T("%c"), type);
 	degree_.Format(_T("%d"), degree);
 	count_.Format(_T("%d"), count);
 	prec_.Format(_T("%d"), prec);
 
 	// 插入表格
-	// 插入id
+	// 插入 第一列 id
 	idStr.Format(_T("%d"), id);
-	m_curveList.InsertItem(listLenth, idStr);
-
-	m_curveList.SetItemText(listLenth, 1, type_);
-	m_curveList.SetItemText(listLenth, 2, degree_);
-	m_curveList.SetItemText(listLenth, 3, count_);
-	m_curveList.SetItemText(listLenth, 4, prec_);
+	m_curveList.InsertItem(listLength, idStr);
+	// 插入其他列
+	m_curveList.SetItemText(listLength, 1, type_);
+	m_curveList.SetItemText(listLength, 2, degree_);
+	m_curveList.SetItemText(listLength, 3, count_);
+	m_curveList.SetItemText(listLength, 4, prec_);
 
 	// 选中新插入行
 	m_curveList.SetItemState(listLength, LVIS_FOCUSED | LVIS_SELECTED, LVIS_FOCUSED | LVIS_SELECTED);   //选中行

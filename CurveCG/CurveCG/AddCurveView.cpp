@@ -215,8 +215,6 @@ void AddCurveView::OnBnClickedButtonAddcurve()
 
 	// 在curveInfo中加入新曲线信息
 	pInfo->addCurveInfo(this->selectedType, curDegree, ctrlCount, precision);
-
-	// 调试信息
 }
 
 

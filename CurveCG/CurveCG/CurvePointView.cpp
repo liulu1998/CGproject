@@ -158,7 +158,8 @@ Return:
 *************************************************/
 void CurvePointView::OnBnClickedButtonDelcurve()
 {
-	// TODO: 在此添加控件通知处理程序代码
+	// FIXME: 点击删除按钮后, 本 dialog 崩溃
+
 	CRuntimeClass* pClass = RUNTIME_CLASS(CurvePointView);
 	// 获取 CurvePointView
 	CurvePointView* pCPV = (CurvePointView*)GetView(pClass);
@@ -184,7 +185,7 @@ void CurvePointView::OnBnClickedButtonDelcurve()
 
 
 //添加按钮事件，目前似乎用不到这个按钮
-void CurvePointView::OnBnClickedButtonAddpoint(){
+void CurvePointView::OnBnClickedButtonAddpoint() {
 	// TODO: 在此添加控件通知处理程序代码
 
 }
@@ -199,7 +200,7 @@ void CurvePointView::OnInitialUpdate()
 	CRect listRect;
 	m_pointList.GetWindowRect(listRect);
 
-	CString header[] = { _T("id"), _T("x"), _T("y")};
+	CString header[] = { _T("id"), _T("x"), _T("y") };
 	float colWidth[] = { 0.2, 0.4, 0.4 };
 	for (int i = 0; i < 3; i++)
 	{
