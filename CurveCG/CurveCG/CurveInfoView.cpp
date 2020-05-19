@@ -98,8 +98,7 @@ void CurveInfoView::OnInitialUpdate()
 	{
 		m_curveList.InsertColumn(i, header[i], LVCFMT_LEFT, listRect.Width() * colWidth[i]);
 	}
-
-
+	m_curveList.InsertItem(0, _T("ehhhh"));
 }
 
 
@@ -139,13 +138,13 @@ Return:
 void CurveInfoView::addCurveInfo(CurveType type, int degree, int count, int prec)
 {
 	CString idStr;
-	int listLenth = m_curveList.GetItemCount();
+	int listLength = m_curveList.GetItemCount();
 	int id;
 	// 如果列表长度为0, id为0
-	if (listLenth == 0)id = 0;
+	if (listLength == 0)id = 0;
 	else {
 		// 如果不为0, 则为最后一个元素id+1
-		id = _wtoi(m_curveList.GetItemText(listLenth - 1, 0)) + 1;
+		id = _wtoi(m_curveList.GetItemText(listLength - 1, 0)) + 1;
 	}
 
 	// 数据格式 { _T("id"), _T("type"), _T("degree"), _T("count"), _T("prec") };
@@ -169,8 +168,8 @@ void CurveInfoView::addCurveInfo(CurveType type, int degree, int count, int prec
 	m_curveList.SetItemText(listLenth, 4, prec_);
 
 	// 选中新插入行
-	m_curveList.SetItemState(listLenth, LVIS_FOCUSED | LVIS_SELECTED, LVIS_FOCUSED | LVIS_SELECTED);   //选中行
-	m_curveList.SetSelectionMark(listLenth);
+	m_curveList.SetItemState(listLength, LVIS_FOCUSED | LVIS_SELECTED, LVIS_FOCUSED | LVIS_SELECTED);   //选中行
+	m_curveList.SetSelectionMark(listLength);
 	m_curveList.SetFocus();
 }
 

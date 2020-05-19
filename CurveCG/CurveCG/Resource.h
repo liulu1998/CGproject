@@ -11,6 +11,7 @@
 #define IDD_DLG_ADDCURVE                311
 #define IDD_DLG_CURVEINFO               313
 #define IDD_DLG_CURBEPOINT              314
+#define IDD_DLG_CURVEPOINT              314
 #define IDD_DLG_MORECURVEINFO           315
 #define IDC_COMBO1                      1000
 #define IDC_COMBO_DEGREE                1000
@@ -21,12 +22,13 @@
 #define IDC_SLIDER1                     1003
 #define IDC_BUTTON1                     1004
 #define IDC_BUTTON_ADDCURVE             1004
+#define IDC_BUTTON_ADDPOINT             1004
 #define IDC_LIST_CURVE                  1007
 #define IDC_LIST_POINT                  1008
 #define IDC_EDIT1                       1009
 #define IDC_LIST_CURVES                 1010
-#define IDC_LIST_POINTS                 1010
-#define IDC_LIST1                       1011
+#define IDC_LIST_POINTS                 1011
+#define IDC_BUTTON_DELCURVE             1012
 #define IDC_EDIT_02                     1014
 #define IDC_RADIO_BEZIER_01             1015
 #define IDC_RADIO_BSPLINE_01            1016
@@ -37,6 +39,7 @@
 #define IDC_STATIC_03                   1021
 #define IDC_STATIC_04                   1022
 #define IDC_EDIT_01                     1023
+#define IDC_LIST1                       1024
 
 // Next default values for new objects
 // 

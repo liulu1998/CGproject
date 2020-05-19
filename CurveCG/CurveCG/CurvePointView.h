@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "viewList.h"
+#include "Curve.h"
 
 // CurvePointView 窗体视图
 
@@ -34,7 +35,11 @@ public:
 private:
 	CView* GetView(CRuntimeClass* pClass);	// 获取指定类型的View
 public:
-	CListBox m_pointList;
+	CListCtrl m_pointList;
+	void showCurvePoints();
+	afx_msg void OnBnClickedButtonDelcurve();
+	afx_msg void OnBnClickedButtonAddpoint();
+	virtual void OnInitialUpdate();
 };
 
 
