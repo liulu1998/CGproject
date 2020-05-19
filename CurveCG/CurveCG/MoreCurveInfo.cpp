@@ -42,6 +42,9 @@ void MoreCurveInfo::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(MoreCurveInfo, CDialogEx)
 	ON_EN_CHANGE(IDC_EDIT_01, &MoreCurveInfo::OnEnChangeEdit01)
+	ON_BN_CLICKED(IDOK, &MoreCurveInfo::OnBnClickedOk)
+	ON_BN_CLICKED(IDC_RADIO_BEZIER_01, &MoreCurveInfo::OnBnClickedRadioBezier01)
+	ON_BN_CLICKED(IDC_RADIO_BSPLINE_01, &MoreCurveInfo::OnBnClickedRadioBspline01)
 END_MESSAGE_MAP()
 
 
@@ -97,6 +100,39 @@ int MoreCurveInfo::setCurveName(CString str)
 
 /*************************************************
 Function:
+Description:	得到线条名称
+Author:			刘俊
+Calls:          无					// 被本函数调用的函数清单
+Input:
+		-
+Return:         CString				// 函数返回值的说明
+Others:         // 其它说明
+*************************************************/
+
+
+CString MoreCurveInfo::getCurveName()
+{
+	return this->curveName;
+}
+
+CurveType MoreCurveInfo::getCurveType()
+{
+	return m_curve.getCurveType();
+}
+
+int MoreCurveInfo::getCurveDegree()
+{
+	return m_curve.getCurveDegree();
+}
+
+int MoreCurveInfo::getCurvePrec()
+{
+	return m_curve.getCurvePrecision();
+}
+
+
+/*************************************************
+Function:
 Description:	设置线条信息
 Author:			刘俊
 Calls:          无					// 被本函数调用的函数清单
@@ -147,6 +183,9 @@ BOOL MoreCurveInfo::OnInitDialog()
 	CDialogEx::OnInitDialog();
 
 	// TODO:  在此添加额外的初始化
+	//初始化dialog名
+	this->SetWindowTextW((CString)"线条详细信息");
+
 	//初始化名称
 	this->m_edit_curveName.SetWindowTextW(curveName);
 
@@ -168,10 +207,83 @@ BOOL MoreCurveInfo::OnInitDialog()
 	m_SLIDER.SetPos(m_curve.getCurvePrecision());
 	//初始化精度编辑框
 	CString ss;
-	ss.Format(_T("%lf"), m_curve.getCurvePrecision());
+	ss.Format(_T("%d"), m_curve.getCurvePrecision());
 	this->m_PRESICION_EDIT.SetWindowTextW(ss);
 
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
+}
+
+
+/*************************************************
+Function:
+Description:	点击确定按钮修改线条信息
+Author:			刘俊
+Calls:          					// 被本函数调用的函数清单
+Input:
+		-
+Return:         void				// 函数返回值的说明
+Others:         // 其它说明
+*************************************************/
+
+
+void MoreCurveInfo::OnBnClickedOk()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	CDialogEx::OnOK();
+
+	//TODO:获取修改信息并传递给父窗口
+	//获得线条名称
+	CString str,str1,str2;
+	m_edit_curveName.GetWindowTextW(str);
+	setCurveName(str);
+
+	//获得线条阶数 
+	m_DEGREE_COMBOX.GetWindowTextW(str1);
+	//获得精度
+	m_PRESICION_EDIT.GetWindowTextW(str2);
+	this->m_curve.changeCurveInfo(this->m_curve.getCurveType(),_ttoi(str1),_ttoi(str1));
+
+
+}
+
+
+/*************************************************
+Function:
+Description:	点击Bezier单选框事件
+Author:			刘俊
+Calls:          无					// 被本函数调用的函数清单
+Input:
+		-
+Return:         void				// 函数返回值的说明
+Others:         // 其它说明
+*************************************************/
+
+
+void MoreCurveInfo::OnBnClickedRadioBezier01()
+{
+	// TODO: 在此添加控件通知处理程序代码
+
+	this->m_curve.changeCurveInfo('B');
+}
+
+
+
+/*************************************************
+Function:
+Description:	点击BSline单选框事件
+Author:			刘俊
+Calls:          					// 被本函数调用的函数清单
+Input:
+		-
+Return:         void				// 函数返回值的说明
+Others:         // 其它说明
+*************************************************/
+
+
+void MoreCurveInfo::OnBnClickedRadioBspline01()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	this->m_curve.changeCurveInfo('S');
 }
