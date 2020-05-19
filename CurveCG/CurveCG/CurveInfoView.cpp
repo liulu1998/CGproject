@@ -35,6 +35,8 @@ BEGIN_MESSAGE_MAP(CurveInfoView, CFormView)
 	ON_LBN_SELCHANGE(IDC_LIST_CURVES, &CurveInfoView::OnLbnSelchangeListCurves)
 	//ON_LBN_DBLCLK(IDC_LIST_CURVES, &CurveInfoView::OnLbnDblclkListCurves)
 //	ON_NOTIFY(HDN_ITEMDBLCLICK, 0, &CurveInfoView::OnHdnItemdblclickListCurves)
+ON_NOTIFY(NM_DBLCLK, IDC_LIST_CURVES, &CurveInfoView::OnNMDblclkListCurves)
+ON_NOTIFY(NM_CLICK, IDC_LIST_CURVES, &CurveInfoView::OnNMClickListCurves)
 //ON_NOTIFY(NM_DBLCLK, IDC_LIST_CURVES, &CurveInfoView::OnNMDblclkListCurves)
 //ON_NOTIFY(NM_CLICK, IDC_LIST_CURVES, &CurveInfoView::OnNMClickListCurves)
 ON_WM_TIMER()
@@ -242,14 +244,15 @@ void CurveInfoView::OnNMDblclkListCurves(NMHDR* pNMHDR, LRESULT* pResult)
 	int index = this->m_curveList.GetSelectionMark();
 	CString str;
 	str = m_curveList.GetItemText(index, 0);
-	//模态窗口
-	MoreCurveInfo pClass;
-	pClass.setCurveName(str);
+	
 	
 	//获取DrawView指针
 	CRuntimeClass* pClass1 = RUNTIME_CLASS(DrawView);
 	DrawView* pDraw = (DrawView*)GetView(pClass1);
 
+	//模态窗口
+	MoreCurveInfo pClass;
+	pClass.setCurveName(str);
 	pClass.setCurve(pDraw->getCurveType(index), pDraw->getCurveDegree(index), pDraw->getCurvePrecision(index));
 	//打开窗口
 	pClass.DoModal();

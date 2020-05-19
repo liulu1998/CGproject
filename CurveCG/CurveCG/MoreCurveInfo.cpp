@@ -243,7 +243,6 @@ void MoreCurveInfo::OnBnClickedOk()
 	m_DEGREE_COMBOX.GetWindowTextW(str1);
 	//获得精度
 	m_PRESICION_EDIT.GetWindowTextW(str2);
-
 	this->m_curve.changeCurveInfo(this->m_curve.getCurveType(),_ttoi(str1),_ttoi(str2));
 
 
