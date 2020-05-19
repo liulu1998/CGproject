@@ -129,16 +129,14 @@ CView* CurveInfoView::GetView(CRuntimeClass* pClass) {
 }
 
 /*************************************************
-Function:		GetView
-Description:	获取其它视图的指针，以获得其指针
+Function:		addCurveInfo
+Description:
 Author:			刘崇鹏
 Calls:			GetDocument
 Input:
-		- pClass: CRuntimeClass, 运行时类
 Return:
-		- pView: CView*, 要求类的指针
 *************************************************/
-void CurveInfoView::addCurveInfo(const Curve& newCurve)
+void CurveInfoView::addCurveInfo(CurveType type, int degree, int count, int prec)
 {
 	CString idStr;
 	int listLenth = m_curveList.GetItemCount();
@@ -149,27 +147,31 @@ void CurveInfoView::addCurveInfo(const Curve& newCurve)
 		// 如果不为0, 则为最后一个元素id+1
 		id = _wtoi(m_curveList.GetItemText(listLenth - 1, 0)) + 1;
 	}
+
 	// 数据格式 { _T("id"), _T("type"), _T("degree"), _T("count"), _T("prec") };
 
+	// 依次设置类型等
+	CString type_, degree_, count_, prec_;
+
+	type_.Format(_T("%c"), type);
+	degree_.Format(_T("%d"), degree);
+	count_.Format(_T("%d"), count);
+	prec_.Format(_T("%d"), prec);
+
+	// 插入表格
 	// 插入id
 	idStr.Format(_T("%d"), id);
 	m_curveList.InsertItem(listLenth, idStr);
-	// 依次设置类型等
-	CString type, degree, count, prec;
-	type.Format(_T("%c"), CurveType(newCurve.getCurveType()));
-	degree.Format(_T("%d"), newCurve.getCurveDegree());
-	count.Format(_T("%d"), newCurve.getCtrlPointsNum());
-	prec.Format(_T("%.3f"), newCurve.getCurvePrecision());
-	// 插入表格
-	m_curveList.SetItemText(listLenth, 1, type);
-	m_curveList.SetItemText(listLenth, 2, degree);
-	m_curveList.SetItemText(listLenth, 3, count);
-	m_curveList.SetItemText(listLenth, 4, prec);
+
+	m_curveList.SetItemText(listLenth, 1, type_);
+	m_curveList.SetItemText(listLenth, 2, degree_);
+	m_curveList.SetItemText(listLenth, 3, count_);
+	m_curveList.SetItemText(listLenth, 4, prec_);
+
 	// 选中新插入行
 	m_curveList.SetItemState(listLenth, LVIS_FOCUSED | LVIS_SELECTED, LVIS_FOCUSED | LVIS_SELECTED);   //选中行
 	m_curveList.SetSelectionMark(listLenth);
 	m_curveList.SetFocus();
-
 }
 
 void CurveInfoView::OnLbnSelchangeListCurves()

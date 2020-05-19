@@ -198,27 +198,25 @@ void AddCurveView::OnBnClickedButtonAddcurve()
 	CString data;
 	m_edit_precision.GetWindowTextW(data);
 	int precision = _wtoi(data);
+
 	// 获取 DrawView 指针
 	CRuntimeClass* pClass = RUNTIME_CLASS(DrawView);
 	DrawView* pDraw = (DrawView*)GetView(pClass);
 
 	// DrawView 中新增一条曲线
 	pDraw->addCurve(this->selectedType, curDegree, precision);
+	// 获得 控制点数
+	int ctrlCount = pDraw->getCtrlPointsNumOfCurve();
 
 	// CurveInfoView 中 更新信息
 	// 获取 DrawView 指针
 	pClass = RUNTIME_CLASS(CurveInfoView);
 	CurveInfoView* pInfo = (CurveInfoView*)GetView(pClass);
-	// 在curveInfo中加入新曲线信息
-	pInfo->addCurveInfo(Curve(selectedType, curDegree, precision));
 
+	// 在curveInfo中加入新曲线信息
+	pInfo->addCurveInfo(this->selectedType, curDegree, ctrlCount, precision);
 
 	// 调试信息
-	//int curvesNum = pDraw->getCurvesNum();
-
-	//CString text;
-	//text.Format(TEXT("选中的次数: %d, 选中的曲线类型: %c, Draw中的曲线数: %d"), curDegree, this->selectedType, curvesNum);
-	//MessageBox(text);
 }
 
 
