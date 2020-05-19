@@ -36,6 +36,7 @@ BEGIN_MESSAGE_MAP(CurveInfoView, CFormView)
 	//ON_LBN_DBLCLK(IDC_LIST_CURVES, &CurveInfoView::OnLbnDblclkListCurves)
 //	ON_NOTIFY(HDN_ITEMDBLCLICK, 0, &CurveInfoView::OnHdnItemdblclickListCurves)
 ON_NOTIFY(NM_DBLCLK, IDC_LIST_CURVES, &CurveInfoView::OnNMDblclkListCurves)
+ON_NOTIFY(NM_CLICK, IDC_LIST_CURVES, &CurveInfoView::OnNMClickListCurves)
 END_MESSAGE_MAP()
 
 
@@ -250,4 +251,25 @@ void CurveInfoView::OnNMDblclkListCurves(NMHDR* pNMHDR, LRESULT* pResult)
 	this->changeCurveInfo(pClass.getCurveType(), pClass.getCurveDegree(), pClass.getCurvePrec());
 }
 
+void CurveInfoView::OnNMClickListCurves(NMHDR* pNMHDR, LRESULT* pResult)
+{
+	LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	*pResult = 0;
 
+	// 获取其它视图
+	CurvePointView* pPointView = (CurvePointView*)GetView(RUNTIME_CLASS(CurvePointView));
+	DrawView* pDrawView = (DrawView*)GetView(RUNTIME_CLASS(DrawView));
+	// 获取俩CListCtrl
+	CListCtrl* pointList = &pPointView->m_pointList;
+	// 获取选中的curve的index
+	int index = m_curveList.GetSelectionMark();
+	// 若未选中，直接返回
+	if (index == -1)return;
+	
+	// 改变DrawView中的focus
+	pDrawView->setFocus(index);
+	
+	// TODO:刷新控制点列表
+
+}
