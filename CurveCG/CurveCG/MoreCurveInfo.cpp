@@ -243,7 +243,7 @@ void MoreCurveInfo::OnBnClickedOk()
 	m_DEGREE_COMBOX.GetWindowTextW(str1);
 	//获得精度
 	m_PRESICION_EDIT.GetWindowTextW(str2);
-	this->m_curve.changeCurveInfo(this->m_curve.getCurveType(),_ttoi(str1),_ttoi(str1));
+	this->m_curve.changeCurveInfo(this->m_curve.getCurveType(),_ttoi(str1),_ttoi(str2));
 
 
 }
@@ -265,7 +265,7 @@ void MoreCurveInfo::OnBnClickedRadioBezier01()
 {
 	// TODO: 在此添加控件通知处理程序代码
 
-	this->m_curve.changeCurveInfo('B');
+	this->m_curve.changeCurveInfo((CurveType)'B');
 }
 
 
@@ -285,5 +285,5 @@ Others:         // 其它说明
 void MoreCurveInfo::OnBnClickedRadioBspline01()
 {
 	// TODO: 在此添加控件通知处理程序代码
-	this->m_curve.changeCurveInfo('S');
+	this->m_curve.changeCurveInfo((CurveType)'S');
 }

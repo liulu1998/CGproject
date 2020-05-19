@@ -35,16 +35,11 @@ BEGIN_MESSAGE_MAP(CurveInfoView, CFormView)
 	ON_LBN_SELCHANGE(IDC_LIST_CURVES, &CurveInfoView::OnLbnSelchangeListCurves)
 	//ON_LBN_DBLCLK(IDC_LIST_CURVES, &CurveInfoView::OnLbnDblclkListCurves)
 //	ON_NOTIFY(HDN_ITEMDBLCLICK, 0, &CurveInfoView::OnHdnItemdblclickListCurves)
-<<<<<<< HEAD
 ON_NOTIFY(NM_DBLCLK, IDC_LIST_CURVES, &CurveInfoView::OnNMDblclkListCurves)
 ON_NOTIFY(NM_CLICK, IDC_LIST_CURVES, &CurveInfoView::OnNMClickListCurves)
-ON_NOTIFY(NM_SETFOCUS, IDC_LIST_CURVES, &CurveInfoView::OnNMSetfocusListCurves)
-ON_NOTIFY(LVN_ITEMACTIVATE, IDC_LIST_CURVES, &CurveInfoView::OnLvnItemActivateListCurves)
-=======
 //ON_NOTIFY(NM_DBLCLK, IDC_LIST_CURVES, &CurveInfoView::OnNMDblclkListCurves)
 //ON_NOTIFY(NM_CLICK, IDC_LIST_CURVES, &CurveInfoView::OnNMClickListCurves)
 ON_WM_TIMER()
->>>>>>> 08d3a5994d6a49f1e3ac7dfea7b833d52635459a
 END_MESSAGE_MAP()
 
 
@@ -215,7 +210,7 @@ void CurveInfoView::changeCurveInfo(CurveType type, int degree, int prec)
 	m_curveList.SetItemText(index, 1, type_);
 	m_curveList.SetItemText(index, 2, degree_);
 	//m_curveList.SetItemText(index, 3, count_);
-	m_curveList.SetItemText(index, 4, prec_);
+	m_curveList.SetItemText(index, 3, prec_);
 	
 }
 
@@ -322,11 +317,11 @@ BOOL CurveInfoView::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 		//模态窗口
 
 		pClass.setCurveName(str);
-		//pClass.curveName = str;
-		pClass.DoModal();
-
-
 		pClass.setCurve(pDraw->getCurveType(index), pDraw->getCurveDegree(index), pDraw->getCurvePrecision(index));
+
+		pClass.DoModal();
+		
+		this->changeCurveInfo(pClass.getCurveType(), pClass.getCurveDegree(), pClass.getCurvePrec());
 
 		*pResult = 0;
 		return TRUE;
