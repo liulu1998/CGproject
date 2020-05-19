@@ -439,6 +439,7 @@ void CurveInfoView::OnBnClickedButtonDelcurve()
 
 	// 重绘图像
 	pDrawView->RedrawWindow();
+	pPointView->resetList();
 
 	// 如果没有曲线了，不进行下列操作
 	if (curveNum == 0)return;
