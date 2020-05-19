@@ -110,41 +110,35 @@ Input:
 Return:
 *************************************************/
 void CurvePointView::showCurvePoints() {
-	// 获取 CurvePointView
-	CRuntimeClass* pClass = RUNTIME_CLASS(CurvePointView);
-	// 获取view中的列表
-	CListCtrl* list = &((CurvePointView*)GetView(pClass))->m_pointList;
-
-	pClass = RUNTIME_CLASS(DrawView);
+	// 获取 DrawView 指针
+	CRuntimeClass* pClass = RUNTIME_CLASS(DrawView);
 	DrawView* pDraw = (DrawView*)GetView(pClass);
-	// 清空listbox
-	int listLength = list->GetItemCount();
-	for (int i = 0; i <= listLength; i++)
-	{
-		list->DeleteItem(i);
-	}
 
-	// 输出选定的curve的点
+	// 清空 listbox
+	this->m_pointList.DeleteAllItems();
+
+	// 输出 焦点曲线 的所有控制点
 	CString data;
 	int num = pDraw->getCtrlPointsNumOfCurve();
 
-	for (int j = 0; j < num; ++j) {
-		list->SetItemState(listLength, LVIS_FOCUSED | LVIS_SELECTED, LVIS_FOCUSED | LVIS_SELECTED);   //选中行
-		list->SetSelectionMark(listLength);
-
+	for (int j = 0; j < num; j++) {
+		// 当前控制点
 		CP2 curPoint = pDraw->getCtrlPointFromCurve(j);
 
 		CString x, y, id;
-
+		// 注意: 需要强制类型转换
 		id.Format(_T("%d"), j);
-		x.Format(_T("%d"), curPoint.x);
-		y.Format(_T("%d"), curPoint.y);
+		x.Format(_T("%d"), (int)curPoint.x);
+		y.Format(_T("%d"), (int)curPoint.y);
 
-		list->SetItemText(j, 0, id);
-		list->SetItemText(j, 1, x);
-		list->SetItemText(j, 2, y);
-
+		this->m_pointList.InsertItem(j, id);
+		this->m_pointList.SetItemText(j, 1, x);
+		this->m_pointList.SetItemText(j, 2, y);
 	}
+	// 选中最后一行
+	int listLength = this->m_pointList.GetItemCount() - 1;
+	this->m_pointList.SetItemState(listLength, LVIS_FOCUSED | LVIS_SELECTED, LVIS_FOCUSED | LVIS_SELECTED);
+	this->m_pointList.SetSelectionMark(listLength);
 }
 
 
@@ -158,30 +152,29 @@ Return:
 *************************************************/
 void CurvePointView::OnBnClickedButtonDelcurve()
 {
-	// FIXME: 点击删除按钮后, 本 dialog 崩溃
+	// TODO: 获取 选中 控制点的 索引
+	//int point_index = this->m_pointList.GetSelectedCount();
 
-	CRuntimeClass* pClass = RUNTIME_CLASS(CurvePointView);
-	// 获取 CurvePointView
-	CurvePointView* pCPV = (CurvePointView*)GetView(pClass);
-	// 获取view中的列表
-	CListCtrl* list = &pCPV->m_pointList;
-	// 获取 DrawView
-	pClass = RUNTIME_CLASS(DrawView);
+	// 默认删除最后一个控制点
+	int point_index = this->m_pointList.GetItemCount() - 1;
+
+	// 获取 DrawView 指针
+	CRuntimeClass* pClass = RUNTIME_CLASS(DrawView);
 	DrawView* pDraw = (DrawView*)GetView(pClass);
 
-	int point_index = list->GetSelectedCount();
-
 	// 删除控制点
-	pDraw->deleteCtrlPointFromCurve(point_index);
+	if (!pDraw->deleteCtrlPointFromCurve(point_index))
+		return;
 
-	pCPV->showCurvePoints();
+	// 清空 listCtrl, 重新生成 listCtrl
+	this->resetList();
+	this->showCurvePoints();
 
-	// 绘制
+	// 重新绘制 右部区域
 	CDC* pDC = GetDC();
-	pDraw->OnDraw(pDC);
+	pDraw->RedrawWindow();
 	ReleaseDC(pDC);
 }
-
 
 
 //添加按钮事件，目前似乎用不到这个按钮
@@ -206,4 +199,12 @@ void CurvePointView::OnInitialUpdate()
 	{
 		m_pointList.InsertColumn(i, header[i], LVCFMT_LEFT, listRect.Width() * colWidth[i]);
 	}
+}
+
+// 清空
+void CurvePointView::resetList() {
+	//int n = this->m_pointList.GetItemCount();
+	//for (int i = 0; i < n; i++)
+	//	this->m_pointList.DeleteItem(i);
+	this->m_pointList.DeleteAllItems();
 }

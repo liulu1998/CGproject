@@ -31,7 +31,7 @@ protected:
 public:
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 
-// 我们的方法
+	// 我们的方法
 private:
 	CView* GetView(CRuntimeClass* pClass);	// 获取指定类型的View
 public:
@@ -40,6 +40,5 @@ public:
 	afx_msg void OnBnClickedButtonDelcurve();
 	afx_msg void OnBnClickedButtonAddpoint();
 	virtual void OnInitialUpdate();
+	void resetList();
 };
-
-
