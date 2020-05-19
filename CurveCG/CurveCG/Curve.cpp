@@ -351,7 +351,7 @@ Input:				- pDC
 Return:				void
 *************************************************/
 void Curve::drawCurve(CDC* pDC) {
-	if (this->ctrlPoints.empty())
+	if (this->ctrlPoints.empty()||this->curvePoints.empty())
 		return;
 
 	CPen curvePen, curvePen1, * pOldPen;		//画笔
