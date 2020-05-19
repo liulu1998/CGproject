@@ -35,13 +35,22 @@ private:
 	CSliderCtrl m_SLIDER;
 	CEdit m_PRESICION_EDIT;
 	CComboBox m_DEGREE_COMBOX;
+	CString curveName;
 
 	//方法
 public:
-	CString curveName;
+	
 	CView* GetView(CRuntimeClass* pClass);	// 获取指定类型的View
+
+	/*SET方法*/
 	int setCurveName(CString str);
 	int setCurve(CurveType type, int degree, int percision);//设置m_curve
+
+	/*GET方法*/
+	CString getCurveName();
+	CurveType getCurveType();
+	int getCurveDegree();
+	int getCurvePrec();
 
 	afx_msg void OnEnChangeEdit01();
 
@@ -50,4 +59,7 @@ private:
 	CButton m_BEZIER_BUTTON;
 public:
 	CButton M_BSPLINE_BUTTON;
+	afx_msg void OnBnClickedOk();
+	afx_msg void OnBnClickedRadioBezier01();
+	afx_msg void OnBnClickedRadioBspline01();
 };
