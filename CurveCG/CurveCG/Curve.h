@@ -5,8 +5,9 @@
 
 
 struct EquationInfo {
-	std::string name;       // 参数方程
-	int x, y;       // 文本的输出位置
+	CString nameX;       // 参数方程 x 坐标
+	CString nameY;       // 参数方程 y 坐标
+	int x, y;			// 文本的输出位置
 };
 
 enum CurveType
@@ -33,11 +34,20 @@ private:
 	const static int combs[7][7];				// 组合数表
 	const static int factorials[6];			    // 阶乘表
 
-// 方法
+	// 系数矩阵
+	const static int W1[2][2];					// 一次曲线矩阵
+	const static int W2[2][3][3];				// w2[0] 为 2次贝塞尔曲线矩阵, w2[1] 为 2次样条曲线矩阵
+	const static int W3[2][4][4];				// 同上, 3 次曲线矩阵
+
+	// B-样条 系数矩阵
+	const static double BSplineW[4];		// 矩阵的 前缀系数
+
+	// 方法
 public:
 	double Bernstein(int i, int degree, double t);	// Bernstein 基函数
 	double F(int i, int degree, double t);			// B-样条 基函数
 
+	EquationInfo calEquation(int start, int end);					// 计算曲线方程
 	std::vector<CP2> generateCurvePoints(int start, int end);		// 生成样条曲线上的点
 	void addCtrlPoint(CP2);					// 追加一个控制点
 
