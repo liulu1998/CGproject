@@ -57,8 +57,8 @@ public:
 	virtual BOOL OnInitDialog();
 private:
 	CButton m_BEZIER_BUTTON;
-public:
 	CButton M_BSPLINE_BUTTON;
+public:
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedRadioBezier01();
 	afx_msg void OnBnClickedRadioBspline01();

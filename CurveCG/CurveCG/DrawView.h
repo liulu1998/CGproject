@@ -62,6 +62,9 @@ public:
 	CurveType getCurveType(int index) const;
 	int getCurvePrecision(int index) const;
 
+	int changeCurveInfo(int index, CurveType, int, int);//更改线条信息
+
+
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 };

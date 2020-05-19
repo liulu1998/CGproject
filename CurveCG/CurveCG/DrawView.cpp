@@ -288,6 +288,32 @@ int DrawView::getCurvePrecision(int index) const {
 }
 
 
+/*************************************************
+Function:
+Description:	更改一条线条的信息
+Author:			刘俊
+Calls:          无					// 被本函数调用的函数清单
+Input:
+		-index						//索引
+		-type						//线条类型
+		-degree						//阶数
+		-precision					//精度
+Return:         void				// 函数返回值的说明
+Others:         // 其它说明
+*************************************************/
+
+
+int DrawView::changeCurveInfo(int index, CurveType type, int degree, int prec)
+{
+	if (index<0)
+		return 0;
+
+	this->curves[index].changeCurveInfo(type,degree,prec);
+
+	return 1;
+}
+
+
 // DrawView 消息处理程序
 
 
@@ -330,11 +356,24 @@ void DrawView::OnLButtonDown(UINT nFlags, CPoint point)
 		list->DeleteAllItems();
 	}
 
+	list->DeleteAllItems();
 	// 将改curve原有的点加入, 这个功能应该在切换curve的时候加入
 	// fixme: 未测试，待curveInfo完善后联动测试
 	Curve nowCurve = curves[getFocus()];
 	for (int i = 0; i < nowCurve.getCtrlPointsNum(); i++) {
 		data.Format(_T("%d: (%d, %d)"), i, nowCurve.getCtrlPoint(i).x, nowCurve.getCtrlPoint(i).y);
+
+		//BY 刘俊
+		//重新将点加入到CurvePointView中
+		CString x, y, str;
+		str.Format(_T("%d"), (int)list->GetItemCount());
+		x.Format(_T("%d"), (int)nowCurve.getCtrlPoint(i).x);
+		y.Format(_T("%d"), (int)nowCurve.getCtrlPoint(i).y);
+
+		list->InsertItem(list->GetItemCount(), str);
+		list->SetItemText(i, 1, x);
+		list->SetItemText(i, 2, y);
+
 	}
 
 

@@ -53,4 +53,6 @@ public:
 	afx_msg void OnNMDblclkListCurves(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnHdnItemclickListCurves(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnNMClickListCurves(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnNMSetfocusListCurves(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnLvnItemActivateListCurves(NMHDR* pNMHDR, LRESULT* pResult);
 };
