@@ -34,9 +34,6 @@ private:
 
 	bool map[1800][1500];			// 对应坐标是否有控制点
 
-	// 对于点击操作独有的focus改变标志位
-	bool isFocusChanged = FALSE;
-
 public:
 	int getCurvesNum() const;				// 获取曲线条数
 

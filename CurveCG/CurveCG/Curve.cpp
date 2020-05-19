@@ -249,7 +249,7 @@ Input:
 		- ctrlPoint: CP2, 控制点
 Return:
 *************************************************/
-void Curve::addCtrlPoint(CP2& ctrlPoint)
+void Curve::addCtrlPoint(CP2 ctrlPoint)
 {
 	ctrlPoints.push_back(ctrlPoint);		// 末尾加入控制点
 
@@ -345,13 +345,13 @@ void Curve::resetCurvePoints() {
 /*************************************************
 Function:			drawCurve
 Description:		绘制曲线
-Author:				刘俊
+Author:				刘俊, 刘陆
 Calls:
 Input:				- pDC
 Return:				void
 *************************************************/
 void Curve::drawCurve(CDC* pDC) {
-	if (this->ctrlPoints.empty()||this->curvePoints.empty())
+	if (this->ctrlPoints.empty())
 		return;
 
 	CPen curvePen, curvePen1, * pOldPen;		//画笔

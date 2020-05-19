@@ -37,7 +37,7 @@ public:
 
 	// 我们的方法
 public:
-	void addCurveInfo(CurveType, int, int, int);// 添加点信息
+	void addCurveInfo(CurveType, int, int);// 添加点信息
 	int AddCurve(int index);
 	void changeCurveInfo(CurveType, int, int);//修改曲线信息
 private:
@@ -53,6 +53,11 @@ public:
 	afx_msg void OnNMDblclkListCurves(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnHdnItemclickListCurves(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnNMClickListCurves(NMHDR* pNMHDR, LRESULT* pResult);
+<<<<<<< HEAD
 	afx_msg void OnNMSetfocusListCurves(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnLvnItemActivateListCurves(NMHDR* pNMHDR, LRESULT* pResult);
+=======
+	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
+>>>>>>> 08d3a5994d6a49f1e3ac7dfea7b833d52635459a
 };

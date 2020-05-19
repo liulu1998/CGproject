@@ -115,7 +115,7 @@ void CurvePointView::showCurvePoints() {
 	DrawView* pDraw = (DrawView*)GetView(pClass);
 
 	// 清空 listbox
-	this->m_pointList.DeleteAllItems();
+	this->resetList();
 
 	// 输出 焦点曲线 的所有控制点
 	CString data;
@@ -152,11 +152,8 @@ Return:
 *************************************************/
 void CurvePointView::OnBnClickedButtonDelcurve()
 {
-	// TODO: 获取 选中 控制点的 索引
-	//int point_index = this->m_pointList.GetSelectedCount();
-
-	// 默认删除最后一个控制点
-	int point_index = this->m_pointList.GetItemCount() - 1;
+	// 获取 选中行 索引
+	int point_index = this->m_pointList.GetNextItem(-1, LVIS_SELECTED);
 
 	// 获取 DrawView 指针
 	CRuntimeClass* pClass = RUNTIME_CLASS(DrawView);
@@ -171,9 +168,7 @@ void CurvePointView::OnBnClickedButtonDelcurve()
 	this->showCurvePoints();
 
 	// 重新绘制 右部区域
-	CDC* pDC = GetDC();
 	pDraw->RedrawWindow();
-	ReleaseDC(pDC);
 }
 
 
@@ -199,12 +194,46 @@ void CurvePointView::OnInitialUpdate()
 	{
 		m_pointList.InsertColumn(i, header[i], LVCFMT_LEFT, listRect.Width() * colWidth[i]);
 	}
+	// 点击则选中整行, 整行高亮
+	this->m_pointList.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_HEADERDRAGDROP);
 }
 
-// 清空
+
+/*************************************************
+Function:		addPoint
+Description:	向控制点列表中增加一条控制点信息
+Author:			刘陆
+Calls:
+Input:
+Return:
+Other:
+*************************************************/
+void CurvePointView::addPoint(const CP2& point) {
+	int n = this->m_pointList.GetItemCount();
+
+	CString index, x, y;
+	index.Format(_T("%d"), n);
+	x.Format(_T("%d"), (int)point.x);
+	y.Format(_T("%d"), (int)point.y);
+
+	this->m_pointList.InsertItem(n, index);
+	this->m_pointList.SetItemText(n, 1, x);
+	this->m_pointList.SetItemText(n, 2, y);
+
+	int listLength = this->m_pointList.GetItemCount() - 1;
+	this->m_pointList.SetItemState(listLength, LVIS_FOCUSED | LVIS_SELECTED, LVIS_FOCUSED | LVIS_SELECTED);
+	this->m_pointList.SetSelectionMark(listLength);
+}
+
+
+/*************************************************
+Function:		resetList
+Description:	清空 控制点列表
+Author:			刘陆
+Calls:
+Input:
+Return:
+*************************************************/
 void CurvePointView::resetList() {
-	//int n = this->m_pointList.GetItemCount();
-	//for (int i = 0; i < n; i++)
-	//	this->m_pointList.DeleteItem(i);
 	this->m_pointList.DeleteAllItems();
 }
