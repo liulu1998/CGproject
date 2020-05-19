@@ -168,7 +168,7 @@ BOOL MoreCurveInfo::OnInitDialog()
 	m_SLIDER.SetPos(m_curve.getCurvePrecision());
 	//初始化精度编辑框
 	CString ss;
-	ss.Format(_T("%lf"), m_curve.getCurvePrecision());
+	ss.Format(_T("%d"), m_curve.getCurvePrecision());
 	this->m_PRESICION_EDIT.SetWindowTextW(ss);
 
 
