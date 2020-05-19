@@ -38,6 +38,7 @@ BEGIN_MESSAGE_MAP(CurveInfoView, CFormView)
 //ON_NOTIFY(NM_DBLCLK, IDC_LIST_CURVES, &CurveInfoView::OnNMDblclkListCurves)
 //ON_NOTIFY(NM_CLICK, IDC_LIST_CURVES, &CurveInfoView::OnNMClickListCurves)
 ON_WM_TIMER()
+ON_BN_CLICKED(IDC_BUTTON_DELCURVE, &CurveInfoView::OnBnClickedButtonDelcurve)
 END_MESSAGE_MAP()
 
 
@@ -208,8 +209,12 @@ void CurveInfoView::changeCurveInfo(CurveType type, int degree, int prec)
 	m_curveList.SetItemText(index, 1, type_);
 	m_curveList.SetItemText(index, 2, degree_);
 	//m_curveList.SetItemText(index, 3, count_);
-	m_curveList.SetItemText(index, 4, prec_);
+	m_curveList.SetItemText(index, 3, prec_);
 	
+	DrawView* pDrawView = (DrawView*)GetView(RUNTIME_CLASS(DrawView));
+	pDrawView->setCurveInfo(index, type, degree, prec);
+
+
 }
 
 void CurveInfoView::OnLbnSelchangeListCurves()
@@ -250,8 +255,22 @@ void CurveInfoView::OnNMDblclkListCurves(NMHDR* pNMHDR, LRESULT* pResult)
 	pClass.DoModal();
 
 	this->changeCurveInfo(pClass.getCurveType(), pClass.getCurveDegree(), pClass.getCurvePrec());
+
+	
+	// 重绘曲线
+	pDraw->RedrawWindow();
 }
 
+
+/*************************************************
+Function:		OnNMClickListCurves
+Description:	单机添加点
+Author:			刘崇鹏
+Calls:          GetView				// 被本函数调用的函数清单
+Input:			系统参数
+Return:         void				// 函数返回值的说明
+Others:         // 其它说明
+*************************************************/
 void CurveInfoView::OnNMClickListCurves(NMHDR* pNMHDR, LRESULT* pResult)
 {
 
@@ -298,7 +317,7 @@ BOOL CurveInfoView::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 	//获取DrawView指针
 	CRuntimeClass* pClass1 = RUNTIME_CLASS(DrawView);
 	DrawView* pDraw = (DrawView*)GetView(pClass1);
-
+	CurvePointView* pPointView = (CurvePointView*)GetView(RUNTIME_CLASS(CurvePointView));
 	switch (hdr.code) {
 	case NM_CLICK:
 		// 100ms判断，100后为单机事件
@@ -312,12 +331,26 @@ BOOL CurveInfoView::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 		str = m_curveList.GetItemText(index, 0);
 		//模态窗口
 
+		// 若未选中，直接返回
+		if (index == -1)return TRUE;
+
+		// 改变DrawView中的focus
+		pDraw->setFocus(index);
+		// 刷新控制点列表
+		pPointView->showCurvePoints();
+
+
 		pClass.setCurveName(str);
 		//pClass.curveName = str;
+		pClass.setCurve(pDraw->getCurveType(index), pDraw->getCurveDegree(index), pDraw->getCurvePrecision(index));
+
 		pClass.DoModal();
 
 
-		pClass.setCurve(pDraw->getCurveType(index), pDraw->getCurveDegree(index), pDraw->getCurvePrecision(index));
+		this->changeCurveInfo(pClass.getCurveType(), pClass.getCurveDegree(), pClass.getCurvePrec());
+
+		// 重绘曲线
+		pDraw->RedrawWindow();
 
 		*pResult = 0;
 		return TRUE;
@@ -360,11 +393,65 @@ void CurveInfoView::OnTimer(UINT_PTR nIDEvent)
 		// 改变DrawView中的focus
 		pDrawView->setFocus(index);
 
-		// TODO:刷新控制点列表
+		// 刷新控制点列表
 		pPointView->showCurvePoints();
 
 		KillTimer(1);
 	}
 
 	CFormView::OnTimer(nIDEvent);
+}
+
+
+/*************************************************
+Function:		OnBnClickedButtonDelcurve
+Description:	删除曲线按钮相关操作
+Author:			刘崇鹏
+Calls:          GetView, setFocus, deleteCurve, showCurvePoint	// 被本函数调用的函数清单
+Input:			系统参数
+Return:         void				// 函数返回值的说明
+Others:								// 其它说明
+*************************************************/
+void CurveInfoView::OnBnClickedButtonDelcurve()
+{
+	// 获取当前选中的曲线
+	int index = m_curveList.GetSelectionMark();
+
+	if (index == -1) {
+		MessageBox(_T("请先创建曲线!"));
+		return;
+	}
+
+	// 获取其它视图
+	CurvePointView* pPointView = (CurvePointView*)GetView(RUNTIME_CLASS(CurvePointView));
+	DrawView* pDrawView = (DrawView*)GetView(RUNTIME_CLASS(DrawView));
+
+	// 删除曲线在curveInfo中的信息
+	m_curveList.DeleteItem(index);
+	// 删除在curve向量中实际保存的信息
+	pDrawView->deleteCurve(index);
+
+	// curveInfo选中其它曲线
+	int curveNum = m_curveList.GetItemCount();
+
+	// 重绘图像
+	pDrawView->RedrawWindow();
+
+	// 如果没有曲线了，不进行下列操作
+	if (curveNum == 0)return;
+
+	int nowIndex = m_curveList.GetSelectionMark();
+
+	m_curveList.SetItemState(nowIndex, LVIS_FOCUSED | LVIS_SELECTED, LVIS_FOCUSED | LVIS_SELECTED);   //选中行
+	m_curveList.SetSelectionMark(nowIndex);
+	m_curveList.SetFocus();
+
+	// 重新设定focus
+	pDrawView->setFocus(nowIndex);
+
+	// 刷新curvePoint中相应的信息
+	pPointView->showCurvePoints();
+
+
+
 }

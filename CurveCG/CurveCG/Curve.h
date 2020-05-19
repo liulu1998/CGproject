@@ -50,8 +50,11 @@ public:
 	void resetCurvePoints();					    // 清空 实例的 curvePoints
 
 	void changeCurveInfo(CurveType type, int degree, int precision);	// 修改曲线信息, 及其重载
-	void changeCurveInfo(CurveType type);
-	void changeCurveInfo(int degree);
+	void setType(CurveType type);
+	void setDegree(int degree);
+	void setPrecision(int precision);
+	//void changeCurveInfo(CurveType type);
+	//void changeCurveInfo(int degree);
 	//void changeCurveInfo(int precision);
 
 	int Combination(int n, int m);			// 组合数
