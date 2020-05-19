@@ -419,3 +419,32 @@ void DrawView::drawGrid(CDC* pDC, const CRect& rect) {
 
 	pDC->SelectObject(pOldPen);
 }
+
+
+bool DrawView::setCurveInfo(int index, CurveType type, int degree, int precision)
+{
+	Curve* nowCurve = &curves[index];
+	nowCurve->changeCurveInfo(type, degree, precision);
+	return true;
+}
+
+bool DrawView::setCurveType(int index, CurveType type)
+{
+	Curve* nowCurve = &curves[index];
+	nowCurve->setType(type);
+	return true;
+}
+
+bool DrawView::setDegree(int index, int degree)
+{
+	Curve* nowCurve = &curves[index];
+	nowCurve->setDegree(degree);
+	return true;
+}
+
+bool DrawView::setPrecision(int index, int precision)
+{
+	Curve* nowCurve = &curves[index];
+	nowCurve->setPrecision(precision);
+	return true;
+}

@@ -36,7 +36,8 @@ private:
 	CEdit m_PRESICION_EDIT;
 	CComboBox m_DEGREE_COMBOX;
 	CString curveName;
-
+	bool isFocus = false;
+	int nowPrecision;
 	//方法
 public:
 	

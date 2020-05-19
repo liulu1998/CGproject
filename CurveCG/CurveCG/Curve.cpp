@@ -393,7 +393,7 @@ void Curve::drawCurve(CDC* pDC) {
 
 /*************************************************
 Function:		changeCurveInfo(char, int, int)
-Description:	修改曲线信息，注意：若有参数为NULL，则视为未修改
+Description:	修改曲线信息，注意：若有参数为NULL，则不进行修改
 Author:			刘崇鹏
 Calls:			changeCurveInfo, generateCurvePoints
 Input:
@@ -405,95 +405,40 @@ Return:
 void Curve::changeCurveInfo(CurveType type, int degree, int precision)
 {
 	// 修改曲线的类型与阶次信息
-	// 如果有参数为空(值未进行修改)，直接返回
-	if (type == NULL || degree == NULL || precision == NULL)return;
-
-	/*
-	// 若只有type为空，则调用degree多态函数
-	if (type == NULL)
+	
+	// type不为空
+	if (type != NULL)
 	{
-		changeCurveInfo(degree);
-		return;
+		this->type = type;
 	}
-	// 若只有degree为空，则调用type多态函数
-	if (degree == NULL)
+	// degree不为空
+	if (degree != NULL)
 	{
-		changeCurveInfo(type);
-		return;
+		this->degree = degree;
 	}
-	// 剩下为两参数都不为空
-	*/
-
-	// 未进行修改
-	if (this->type == type && this->degree == degree && this->precision == precision)return;
+	// precision不为空
+	if (precision != NULL)
+	{
+		this->precision = precision;
+	}
+	
 
 	// 正常绘制，生成新的curvePoints
+	resetCurvePoints();
+	this->curvePoints = generateCurvePoints(0, ctrlPoints.size() - 1);
+}
+
+void Curve::setType(CurveType type)
+{
 	this->type = type;
+}
+
+void Curve::setDegree(int degree)
+{
 	this->degree = degree;
+}
+
+void Curve::setPrecision(int precision)
+{
 	this->precision = precision;
-	this->curvePoints.clear();
-	this->curvePoints = generateCurvePoints(0, ctrlPoints.size() - 1);
 }
-
-
-/*************************************************
-Function:		changeCurveInfo(char)
-Description:	修改曲线信息，注意：参数为NULL代表该值未修改
-Author:			刘崇鹏
-Calls:			generateCurvePoints
-Input:
-				- type: char, 曲线的类型，即贝塞尔'B'或样条'S'曲线，NULL代表该值未修改
-Return:
-*************************************************/
-void Curve::changeCurveInfo(CurveType type)
-{
-	// 为空直接返回
-	if (type == NULL)return;
-	// 如果和原先一致，不进行修改
-	if (this->type == type)return;
-	// 进行修改，重新生成curvePoints
-	this->type = type;
-	this->curvePoints = generateCurvePoints(0, ctrlPoints.size() - 1);
-}
-
-
-/*************************************************
-Function:		changeCurveInfo(char)
-Description:	修改曲线信息，注意：参数为NULL代表该值未修改
-Author:			刘崇鹏
-Calls:			generateCurvePoints
-Input:
-				- degree: int, 曲线的新阶数，NULL代表该值未修改
-Return:
-*************************************************/
-void Curve::changeCurveInfo(int degree)
-{
-	// 为空直接返回
-	if (degree == NULL)return;
-	// 如果和原先一致，不进行修改
-	if (this->degree == degree)return;
-	// 进行修改，重新生成curvePoints
-	this->degree = degree;
-	this->curvePoints = generateCurvePoints(0, ctrlPoints.size() - 1);
-}
-
-
-/*************************************************
-Function:		changeCurveInfo(double)
-Description:	修改曲线信息，注意：参数为NULL代表该值未修改
-Author:			刘崇鹏
-Calls:			generateCurvePoints
-Input:
-				- precision: double, 曲线的新画线精度
-Return:
-*************************************************/
-//void Curve::changeCurveInfo(int precision)
-//{
-//	// 为空直接返回
-//	if (precision == NULL)return;
-//	// 如果和原先一致，不进行修改
-//	if (this->precision == precision)return;
-//	// 进行修改，重新生成curvePoints
-//	this->precision = precision;
-//	this->curvePoints = generateCurvePoints(0, ctrlPoints.size() - 1);
-//}

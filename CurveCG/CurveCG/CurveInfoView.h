@@ -55,4 +55,6 @@ public:
 	afx_msg void OnNMClickListCurves(NMHDR* pNMHDR, LRESULT* pResult);
 	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	afx_msg void OnBnClickedButton1();
+	afx_msg void OnBnClickedButtonDelcurve();
 };

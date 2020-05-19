@@ -223,6 +223,14 @@ void AddCurveView::OnBnClickedButtonAddcurve()
 }
 
 
+/*************************************************
+Function:		OnHScroll
+Description:	处理滚动条滑动
+Author:			刘崇鹏
+Calls:
+Input:
+Return:
+*************************************************/
 void AddCurveView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
 	// TODO: 在此添加消息处理程序代码和/或调用默认值
