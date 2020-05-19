@@ -201,11 +201,14 @@ void CurveInfoView::OnNMDblclkListCurves(NMHDR* pNMHDR, LRESULT* pResult)
 	//模态窗口
 	MoreCurveInfo pClass;
 	pClass.setCurveName(str);
-	//pClass.curveName = str;
-	pClass.DoModal();
+	
 	//获取DrawView指针
 	CRuntimeClass* pClass1 = RUNTIME_CLASS(DrawView);
 	DrawView* pDraw = (DrawView*)GetView(pClass1);
 
 	pClass.setCurve(pDraw->getCurveType(index), pDraw->getCurveDegree(index), pDraw->getCurvePrecision(index));
+	//打开窗口
+	pClass.DoModal();
 }
+
+
