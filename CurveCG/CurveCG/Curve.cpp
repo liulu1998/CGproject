@@ -365,7 +365,6 @@ std::vector<CP2> Curve::generateCurvePoints(int start, int end)
 
 	for (int i = start; i + this->degree <= end; i += offset) {		// 起始控制点索引 i
 		EquationInfo info = calEquation(i, i + this->degree);		// 计算该段曲线方程
-		this->equations.push_back(info);
 
 		for (double t = 0; t <= 1; t += eps) {		// 参数方程 参量 t
 			CP2 cur;
@@ -381,6 +380,11 @@ std::vector<CP2> Curve::generateCurvePoints(int start, int end)
 			}
 			points.push_back(cur);
 		}
+		// 显示位置默认为曲线中部
+		CP2 middlePnt = points[points.size() / 2];
+		info.x = middlePnt.x;
+		info.y = middlePnt.y;
+		this->equations.push_back(info);
 	}
 
 	// 防止 Bezier 曲线 精度过低曲线不连续
