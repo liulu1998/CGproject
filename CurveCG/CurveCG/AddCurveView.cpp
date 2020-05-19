@@ -215,6 +215,11 @@ void AddCurveView::OnBnClickedButtonAddcurve()
 
 	// 在curveInfo中加入新曲线信息
 	pInfo->addCurveInfo(this->selectedType, curDegree, ctrlCount, precision);
+
+	// 清空 CurvePoint 框
+	pClass = RUNTIME_CLASS(CurvePointView);
+	CurvePointView* pPointView = (CurvePointView*)GetView(pClass);
+	pPointView->resetList();
 }
 
 
