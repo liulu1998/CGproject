@@ -7,7 +7,6 @@
 struct EquationInfo {
 	CString nameX;       // 参数方程 x 坐标
 	CString nameY;       // 参数方程 y 坐标
-	int x, y;			// 文本的输出位置
 };
 
 enum CurveType
