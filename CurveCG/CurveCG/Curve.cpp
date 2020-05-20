@@ -306,6 +306,7 @@ std::vector<CP2> Curve::generateCurvePoints(int start, int end)
 		points.push_back(ctrlPoints[end]);
 
 	delete[] p;
+	delete[] tt;
 	return points;
 }
 
