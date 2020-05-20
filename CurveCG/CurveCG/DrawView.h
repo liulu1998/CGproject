@@ -58,6 +58,7 @@ public:
 	int getCurveDegree(int index) const;
 	CurveType getCurveType(int index) const;
 	int getCurvePrecision(int index) const;
+	std::vector<EquationInfo> getCurveEquationInfo(int index) const;
 
 	bool setCurveInfo(int index, CurveType type, int degree, int precision);	// 改变curve信息
 	bool setCurveType(int index, CurveType type);

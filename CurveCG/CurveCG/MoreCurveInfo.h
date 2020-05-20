@@ -46,6 +46,8 @@ public:
 	/*SET方法*/
 	int setCurveName(CString str);
 	int setCurve(CurveType type, int degree, int percision);//设置m_curve
+	int setCurveEquation(std::vector<EquationInfo>);
+	int setEquation(std::vector<EquationInfo>);
 
 	/*GET方法*/
 	CString getCurveName();
@@ -59,8 +61,18 @@ public:
 private:
 	CButton m_BEZIER_BUTTON;
 	CButton M_BSPLINE_BUTTON;
+	CListCtrl XEqution;
+	CListCtrl YEquation;
+	std::vector<EquationInfo> equation;
 public:
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedRadioBezier01();
 	afx_msg void OnBnClickedRadioBspline01();
+	afx_msg void OnLvnItemchangedList1(NMHDR* pNMHDR, LRESULT* pResult);
+
+
+private:
+	
+public:
+	
 };
