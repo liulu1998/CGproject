@@ -57,7 +57,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	//m_wndStatusBar.SetIndicators(indicators, sizeof(indicators)/sizeof(UINT));
 
 	// 设置程序左上角logo，IDI_ICON_LOGO为图标相应的资源ID
-	SetClassLong(m_hWnd, GCL_HICON, (LONG)AfxGetApp()->LoadIconW(IDI_ICON_LOGO));
+	//SetClassLong(m_hWnd, GCL_HICON, (LONG)AfxGetApp()->LoadIconW(IDI_ICON_LOGO));
 
 	// 设置右侧标题
 	SetTitle(_T("图不行学小组出品"));
@@ -174,3 +174,4 @@ void CMainFrame::OnSize(UINT nType, int cx, int cy)
 
 
 }
+

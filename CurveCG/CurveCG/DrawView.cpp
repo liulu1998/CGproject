@@ -30,6 +30,7 @@ BEGIN_MESSAGE_MAP(DrawView, CView)
 	//ON_WM_LBUTTONDBLCLK()
 	ON_WM_LBUTTONDOWN()
 	ON_WM_ERASEBKGND()
+	ON_COMMAND(ID_FILE_SAVE, &DrawView::OnFileSave)
 END_MESSAGE_MAP()
 
 
@@ -455,4 +456,41 @@ bool DrawView::setPrecision(int index, int precision)
 	Curve* nowCurve = &curves[index];
 	nowCurve->setPrecision(precision);
 	return true;
+}
+
+/*************************************************
+Function:		OnFileSave
+Description:	保存当前焦点曲线的控制点到一个txt文件中，默认名称为“myCurve.txt”
+Author:			韩继锋
+Calls:			getCtrlPointsNumOfCurve，getCtrlPointFromCurve
+Input:
+Return:
+*************************************************/
+void DrawView::OnFileSave()
+{
+	// TODO: 在此添加命令处理程序代码
+	TCHAR szFilter[] = _T("文本文件(*.txt)|*.txt|Word文件(*.doc)|*.doc|所有文件(*.*)|*.*||");
+	// 构造保存文件对话框 
+	CFileDialog savedlg(false, _T(".txt"), _T("myCurve"), OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, szFilter, this);
+	CString strFilePath;
+	CFile fsave(savedlg.GetPathName(), CFile::modeCreate | CFile::modeReadWrite);
+	CString str;
+	if (savedlg.DoModal() == IDOK) { //显示对话框并允许用户进行选择。
+		strFilePath = savedlg.GetPathName();
+		fsave.Open(strFilePath, CFile::modeCreate | CFile::modeWrite | CFile::typeText);
+
+		int num = this->getCtrlPointsNumOfCurve();
+		for (int i = 0; i < num; ++i) {
+			CP2 p = this->getCtrlPointFromCurve(i);
+			str.Format(_T("(%.2lf, %.2lf)"), p.x, p.y);
+			fsave.Write(str, str.GetLength()*2);
+			fsave.Write("\r\n", 2);
+		}
+		fsave.Close(); //文件操作结束关闭
+
+		MessageBox(_T("保存文件成功"), _T("搞定了"), MB_ICONEXCLAMATION | MB_OK);
+	}
+	else
+		return;
+
 }
