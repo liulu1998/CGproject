@@ -148,6 +148,18 @@ CP2 Curve::getCtrlPoint(int index) const {
 }
 
 
+/**********************************
+ Function:		getEquations
+ Description:	获得焦点曲线的所有 子曲线方程
+ Input:
+ Return:		vector<EquationInfo>
+**********************************/
+std::vector<EquationInfo> Curve::getEquations() const
+{
+	return this->equations;
+}
+
+
 /*************************************************
 Function:       Combination
 Description:	组合数, 暴力解法

@@ -75,4 +75,5 @@ public:
 	int getCurveDegree() const;					// 获得曲线次数
 	int getCurvePrecision() const;				// 获得曲线精度
 	CP2 getCtrlPoint(int index) const;			// 获得曲线中 某个控制点
+	std::vector<EquationInfo> getEquations() const;	// 获得焦点曲线的 所有子曲线方程
 };
