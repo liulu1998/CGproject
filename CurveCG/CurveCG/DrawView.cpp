@@ -284,6 +284,27 @@ int DrawView::getCurvePrecision(int index) const {
 	return this->curves[index].getCurvePrecision();
 }
 
+/*************************************************
+Function:
+Description:	得到某条线段的所有子曲线方程
+Author:			刘俊
+Calls:          无					// 被本函数调用的函数清单
+Input:
+		-index						//曲线索引
+Return:         vector<Equation>				// 函数返回值的说明
+Others:         // 其它说明
+*************************************************/
+
+
+std::vector<EquationInfo> DrawView::getCurveEquationInfo(int index) const
+{
+	if (index>=this->getCurvesNum())
+	{
+		throw("索引越界");
+	}
+	return this->curves[index].getEquations();
+}
+
 
 
 // DrawView 消息处理程序

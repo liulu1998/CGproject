@@ -346,6 +346,7 @@ BOOL CurveInfoView::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 		pClass.setCurveName(str);
 		//pClass.curveName = str;
 		pClass.setCurve(pDraw->getCurveType(index), pDraw->getCurveDegree(index), pDraw->getCurvePrecision(index));
+		pClass.setEquation(pDraw->getCurveEquationInfo(index));
 
 		pClass.DoModal();
 

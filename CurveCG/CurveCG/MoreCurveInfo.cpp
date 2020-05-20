@@ -35,6 +35,8 @@ void MoreCurveInfo::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDIT_02, m_PRESICION_EDIT);
 	DDX_Control(pDX, IDC_RADIO_BEZIER_01, m_BEZIER_BUTTON);
 	DDX_Control(pDX, IDC_RADIO_BSPLINE_01, M_BSPLINE_BUTTON);
+	DDX_Control(pDX, IDC_LIST2, XEqution);
+	DDX_Control(pDX, IDC_LIST1, YEquation);
 }
 
 
@@ -44,6 +46,7 @@ BEGIN_MESSAGE_MAP(MoreCurveInfo, CDialogEx)
 	ON_BN_CLICKED(IDOK, &MoreCurveInfo::OnBnClickedOk)
 	ON_BN_CLICKED(IDC_RADIO_BEZIER_01, &MoreCurveInfo::OnBnClickedRadioBezier01)
 	ON_BN_CLICKED(IDC_RADIO_BSPLINE_01, &MoreCurveInfo::OnBnClickedRadioBspline01)
+	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST1, &MoreCurveInfo::OnLvnItemchangedList1)
 END_MESSAGE_MAP()
 
 
@@ -153,6 +156,83 @@ int MoreCurveInfo::setCurve(CurveType type, int degree, int percision)
 	return 1;
 }
 
+/*************************************************
+Function:
+Description:	设置子曲线方程
+Author:			刘俊
+Calls:          无					// 被本函数调用的函数清单
+Input:
+		-vector<Equation>
+Return:         int				// 函数返回值的说明
+Others:         // 其它说明
+*************************************************/
+int MoreCurveInfo::setCurveEquation(std::vector<EquationInfo> e) 
+{
+
+	// 曲线列表初始化, 设置整行选中
+	XEqution.SetExtendedStyle(this->XEqution.GetExtendedStyle() | LVS_EX_FULLROWSELECT);
+	YEquation.SetExtendedStyle(this->YEquation.GetExtendedStyle() | LVS_EX_FULLROWSELECT);
+
+	// 设置基本格式
+	// 设置表头
+	CRect listRect;
+	XEqution.GetWindowRect(listRect);
+	YEquation.GetWindowRect(listRect);
+
+	CString header[] = { _T("id"), _T("XEquation") };
+	CString header1[] = { _T("id"), _T("YEquation") };
+	float colWidth[] = { 0.15, 0.85 };
+	for (int i = 0; i < 2; i++)
+	{
+		XEqution.InsertColumn(i, header[i], LVCFMT_LEFT, listRect.Width() * colWidth[i]);
+		YEquation.InsertColumn(i, header1[i], LVCFMT_LEFT, listRect.Width() * colWidth[i]);
+	}
+
+	if (e.empty()) return 0;
+
+	//设置数据
+	for (int i = 0;i<e.size();i++)
+	{
+		// 插入表格
+	// 插入 第一列 id
+		CString idstr;
+		idstr.Format(_T("%d"), i+1);
+		this->XEqution.InsertItem(i, idstr);
+		this->YEquation.InsertItem(i, idstr);
+		// 插入其他列
+		this->XEqution.SetItemText(i, 1, e[i].nameX);
+		this->YEquation.SetItemText(i, 1, e[i].nameY);
+	}
+
+	return 1;
+}
+
+/*************************************************
+Function:
+Description:	设置线条方程
+Author:			刘俊
+Calls:          无					// 被本函数调用的函数清单
+Input:
+		-vector<Equation>
+Return:         int				// 函数返回值的说明
+Others:         // 其它说明
+*************************************************/
+
+
+int MoreCurveInfo::setEquation(std::vector<EquationInfo > e)
+{
+	if (e.empty())
+	{
+		return 0;
+	}
+
+	for (EquationInfo i : e)
+	{
+		this->equation.push_back(i);
+	}
+	return 1;
+}
+
 void MoreCurveInfo::OnEnChangeEdit01()
 {
 	// TODO:  如果该控件是 RICHEDIT 控件，它将不
@@ -200,15 +280,13 @@ BOOL MoreCurveInfo::OnInitDialog()
 		m_DEGREE_COMBOX.AddString(degrees[i]);
 	m_DEGREE_COMBOX.SetCurSel(m_curve.getCurveDegree() - 1);		// 默认三次
 
-	//初始化精度滑动条
-	/*m_SLIDER.SetRange(precisionMin, precisionMax);
-	m_SLIDER.SetTicFreq(precisionInterval);
-	m_SLIDER.SetPos(m_curve.getCurvePrecision());*/
 	//初始化精度编辑框
 	CString ss;
 	ss.Format(_T("%d"), m_curve.getCurvePrecision());
 	this->m_PRESICION_EDIT.SetWindowTextW(ss);
 	nowPrecision = m_curve.getCurvePrecision();
+
+	this->setCurveEquation(this->equation);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
@@ -285,4 +363,12 @@ void MoreCurveInfo::OnBnClickedRadioBspline01()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	this->m_curve.setType(Spline);
+}
+
+
+void MoreCurveInfo::OnLvnItemchangedList1(NMHDR* pNMHDR, LRESULT* pResult)
+{
+	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
+	// TODO: 在此添加控件通知处理程序代码
+	*pResult = 0;
 }
