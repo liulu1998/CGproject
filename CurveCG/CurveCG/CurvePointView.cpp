@@ -139,6 +139,7 @@ void CurvePointView::showCurvePoints() {
 	int listLength = this->m_pointList.GetItemCount() - 1;
 	this->m_pointList.SetItemState(listLength, LVIS_FOCUSED | LVIS_SELECTED, LVIS_FOCUSED | LVIS_SELECTED);
 	this->m_pointList.SetSelectionMark(listLength);
+	this->m_pointList.EnsureVisible(listLength, FALSE);
 }
 
 
@@ -223,6 +224,7 @@ void CurvePointView::addPoint(const CP2& point) {
 	int listLength = this->m_pointList.GetItemCount() - 1;
 	this->m_pointList.SetItemState(listLength, LVIS_FOCUSED | LVIS_SELECTED, LVIS_FOCUSED | LVIS_SELECTED);
 	this->m_pointList.SetSelectionMark(listLength);
+	this->m_pointList.EnsureVisible(listLength, FALSE);
 }
 
 
