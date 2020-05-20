@@ -32,7 +32,6 @@ void MoreCurveInfo::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDIT_01, m_edit_curveName);
 	DDX_Text(pDX, IDC_EDIT_01, curveName);
 	DDX_Control(pDX, IDC_COMBO_DEGREE_01, m_DEGREE_COMBOX);
-	DDX_Control(pDX, IDC_SLIDER2, m_SLIDER);
 	DDX_Control(pDX, IDC_EDIT_02, m_PRESICION_EDIT);
 	DDX_Control(pDX, IDC_RADIO_BEZIER_01, m_BEZIER_BUTTON);
 	DDX_Control(pDX, IDC_RADIO_BSPLINE_01, M_BSPLINE_BUTTON);
@@ -202,9 +201,9 @@ BOOL MoreCurveInfo::OnInitDialog()
 	m_DEGREE_COMBOX.SetCurSel(m_curve.getCurveDegree() - 1);		// 默认三次
 
 	//初始化精度滑动条
-	m_SLIDER.SetRange(precisionMin, precisionMax);
+	/*m_SLIDER.SetRange(precisionMin, precisionMax);
 	m_SLIDER.SetTicFreq(precisionInterval);
-	m_SLIDER.SetPos(m_curve.getCurvePrecision());
+	m_SLIDER.SetPos(m_curve.getCurvePrecision());*/
 	//初始化精度编辑框
 	CString ss;
 	ss.Format(_T("%d"), m_curve.getCurvePrecision());
