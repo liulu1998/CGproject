@@ -172,6 +172,8 @@ void CurveInfoView::addCurveInfo(CurveType type, int degree, int prec)
 	//m_curveList.SetItemText(listLength, 3, count_);
 	m_curveList.SetItemText(listLength, 3, prec_);
 
+	m_curveList.EnsureVisible(listLength, FALSE);
+
 	// 选中新插入行
 	m_curveList.SetItemState(listLength, LVIS_FOCUSED | LVIS_SELECTED, LVIS_FOCUSED | LVIS_SELECTED);   //选中行
 	m_curveList.SetSelectionMark(listLength);
