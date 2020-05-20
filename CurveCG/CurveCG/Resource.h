@@ -23,6 +23,7 @@
 #define IDC_BUTTON1                     1004
 #define IDC_BUTTON_ADDCURVE             1004
 #define IDC_BUTTON_ADDPOINT             1004
+#define IDC_BUTTON_SAVEPOINTS           1004
 #define IDC_LIST_CURVE                  1007
 #define IDC_LIST_POINT                  1008
 #define IDC_EDIT1                       1009
@@ -30,6 +31,7 @@
 #define IDC_LIST_POINTS                 1011
 #define IDC_BUTTON_DELCURVE             1012
 #define IDC_LIST2                       1012
+#define IDC_BUTTON2                     1013
 #define IDC_EDIT_02                     1014
 #define IDC_RADIO_BEZIER_01             1015
 #define IDC_RADIO_BSPLINE_01            1016
@@ -50,7 +52,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        318
 #define _APS_NEXT_COMMAND_VALUE         32773
-#define _APS_NEXT_CONTROL_VALUE         1013
+#define _APS_NEXT_CONTROL_VALUE         1014
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

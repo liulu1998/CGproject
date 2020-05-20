@@ -29,7 +29,7 @@ void CurvePointView::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CurvePointView, CFormView)
 	ON_WM_SIZE()
 	ON_BN_CLICKED(IDC_BUTTON_DELCURVE, &CurvePointView::OnBnClickedButtonDelcurve)
-	ON_BN_CLICKED(IDC_BUTTON_ADDPOINT, &CurvePointView::OnBnClickedButtonAddpoint)
+	ON_BN_CLICKED(IDC_BUTTON_SAVEPOINTS, &CurvePointView::OnBnClickedButtonSavepoints)
 END_MESSAGE_MAP()
 
 
@@ -173,13 +173,6 @@ void CurvePointView::OnBnClickedButtonDelcurve()
 }
 
 
-//添加按钮事件，目前似乎用不到这个按钮
-void CurvePointView::OnBnClickedButtonAddpoint() {
-	// TODO: 在此添加控件通知处理程序代码
-
-}
-
-
 void CurvePointView::OnInitialUpdate()
 {
 	CFormView::OnInitialUpdate();
@@ -238,4 +231,42 @@ Return:
 *************************************************/
 void CurvePointView::resetList() {
 	this->m_pointList.DeleteAllItems();
+}
+
+
+/*************************************************
+Function:		OnFileSave
+Description:	保存当前焦点曲线的控制点到一个txt文件中，默认名称为“myCurve.txt”
+Author:			韩继锋
+Calls:			getCtrlPointsNumOfCurve，getCtrlPointFromCurve
+Input:
+Return:
+*************************************************/
+void CurvePointView::OnBnClickedButtonSavepoints()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	TCHAR szFilter[] = _T("文本文件(*.txt)|*.txt|Word文件(*.doc)|*.doc|所有文件(*.*)|*.*||");
+	// 构造保存文件对话框 
+	CFileDialog savedlg(false, _T(".txt"), _T("myCurve"), OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, szFilter, this);
+	CString strFilePath;
+	CString str;
+	if (savedlg.DoModal() == IDOK) { //显示对话框并允许用户进行选择。
+		strFilePath = savedlg.GetPathName();
+		CFile fsave(savedlg.GetPathName(), CFile::modeCreate | CFile::modeReadWrite);
+
+		CRuntimeClass* pClass = RUNTIME_CLASS(DrawView);
+		DrawView* pDraw = (DrawView*)GetView(pClass);
+		int num = pDraw->getCtrlPointsNumOfCurve();
+		for (int i = 0; i < num; ++i) {
+			CP2 p = pDraw->getCtrlPointFromCurve(i);
+			str.Format(_T("(%.2lf, %.2lf)"), p.x, p.y);
+			fsave.Write(str, str.GetLength() * 2);
+			fsave.Write("\r\n", 2);
+		}
+		fsave.Close(); //文件操作结束关闭
+
+		MessageBox(_T("保存文件成功"), _T("搞定了"), MB_ICONEXCLAMATION | MB_OK);
+	}
+	else
+		return;
 }
