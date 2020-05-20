@@ -285,31 +285,6 @@ int DrawView::getCurvePrecision(int index) const {
 }
 
 
-/*************************************************
-Function:
-Description:	更改一条线条的信息
-Author:			刘俊
-Calls:          无					// 被本函数调用的函数清单
-Input:
-		-index						//索引
-		-type						//线条类型
-		-degree						//阶数
-		-precision					//精度
-Return:         void				// 函数返回值的说明
-Others:         // 其它说明
-*************************************************/
-
-
-int DrawView::changeCurveInfo(int index, CurveType type, int degree, int prec)
-{
-	if (index<0)
-		return 0;
-
-	this->curves[index].changeCurveInfo(type,degree,prec);
-
-	return 1;
-}
-
 
 // DrawView 消息处理程序
 
@@ -339,9 +314,6 @@ void DrawView::OnLButtonDown(UINT nFlags, CPoint point)
 	CRuntimeClass* pClass = RUNTIME_CLASS(CurvePointView);
 	CurvePointView* pPointView = (CurvePointView*)GetView(pClass);
 
-	// 构造数据
-	//CString data;
-
 	// 转为 CP2
 	CP2 curPoint = CP2((double)point.x, (double)point.y);
 
@@ -355,9 +327,7 @@ void DrawView::OnLButtonDown(UINT nFlags, CPoint point)
 	this->addCtrlPoint2Curve(curPoint);
 
 	// 绘制
-	//CDC* pDC = GetDC();
 	this->RedrawWindow();
-	//ReleaseDC(pDC);
 }
 
 
@@ -435,4 +405,33 @@ void DrawView::drawGrid(CDC* pDC, const CRect& rect) {
 	}
 
 	pDC->SelectObject(pOldPen);
+}
+
+
+bool DrawView::setCurveInfo(int index, CurveType type, int degree, int precision)
+{
+	Curve* nowCurve = &curves[index];
+	nowCurve->changeCurveInfo(type, degree, precision);
+	return true;
+}
+
+bool DrawView::setCurveType(int index, CurveType type)
+{
+	Curve* nowCurve = &curves[index];
+	nowCurve->setType(type);
+	return true;
+}
+
+bool DrawView::setDegree(int index, int degree)
+{
+	Curve* nowCurve = &curves[index];
+	nowCurve->setDegree(degree);
+	return true;
+}
+
+bool DrawView::setPrecision(int index, int precision)
+{
+	Curve* nowCurve = &curves[index];
+	nowCurve->setPrecision(precision);
+	return true;
 }

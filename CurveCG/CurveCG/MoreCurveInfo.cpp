@@ -8,8 +8,8 @@
 #include "CurveCGView.h"
 #include "CP2.h"
 #include "Curve.h"
+#include "viewList.h"
 #include<sstream>
-
 
 // MoreCurveInfo 对话框
 
@@ -168,7 +168,7 @@ void MoreCurveInfo::OnEnChangeEdit01()
 /*************************************************
 Function:
 Description:	初始化线条详细信息
-Author:			刘俊
+Author:			刘俊, 刘崇鹏
 Calls:          无					// 被本函数调用的函数清单
 Input:
 		-
@@ -208,7 +208,7 @@ BOOL MoreCurveInfo::OnInitDialog()
 	CString ss;
 	ss.Format(_T("%d"), m_curve.getCurvePrecision());
 	this->m_PRESICION_EDIT.SetWindowTextW(ss);
-
+	nowPrecision = m_curve.getCurvePrecision();
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
@@ -218,7 +218,7 @@ BOOL MoreCurveInfo::OnInitDialog()
 /*************************************************
 Function:
 Description:	点击确定按钮修改线条信息
-Author:			刘俊
+Author:			刘俊, 刘崇鹏
 Calls:          					// 被本函数调用的函数清单
 Input:
 		-
@@ -264,7 +264,7 @@ void MoreCurveInfo::OnBnClickedRadioBezier01()
 {
 	// TODO: 在此添加控件通知处理程序代码
 
-	this->m_curve.changeCurveInfo((CurveType)'B');
+	this->m_curve.setType(Bezier);
 }
 
 
@@ -284,5 +284,5 @@ Others:         // 其它说明
 void MoreCurveInfo::OnBnClickedRadioBspline01()
 {
 	// TODO: 在此添加控件通知处理程序代码
-	this->m_curve.changeCurveInfo((CurveType)'S');
+	this->m_curve.setType(Spline);
 }
