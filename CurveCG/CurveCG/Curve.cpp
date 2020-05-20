@@ -179,7 +179,12 @@ void buildInfo(double(*p)[2], int dim, int n, CString& info) {
 			else if (p[n - 1][0] > 0)
 				pattern.Format(_T("+%.3f"), cur);
 		}
-		else {
+		else if (i == 0) {
+			if (cur != 0)
+				pattern.Format(_T("%.3lf t^%d "), cur, n - 1);
+		}
+		else
+		{
 			if (cur < 0)
 				pattern.Format(_T("%.3lf t^%d "), cur, n - 1 - i);
 			else
