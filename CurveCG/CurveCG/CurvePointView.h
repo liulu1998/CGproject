@@ -39,10 +39,10 @@ public:
 
 	void showCurvePoints();
 	afx_msg void OnBnClickedButtonDelcurve();
-	afx_msg void OnBnClickedButtonAddpoint();
 	virtual void OnInitialUpdate();
 
 	void addPoint(const CP2&);			// 增加一个控制点信息, 一定是在焦点曲线操作
 
 	void resetList();					// 清空控制点列表
+	afx_msg void OnBnClickedButtonSavepoints();
 };
