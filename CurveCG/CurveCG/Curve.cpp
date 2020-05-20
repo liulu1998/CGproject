@@ -11,20 +11,6 @@
 
 const double PI = 3.14159;
 
-// 组合数表
-const int Curve::combs[7][7] = {
-	{1},
-	{1, 1},
-	{1, 2, 1},
-	{1, 3, 3, 1},
-	{1, 4, 6, 4, 1},
-	{1, 5, 10, 10, 5, 1},
-	{1, 6, 15, 20, 15, 6, 1}
-};
-
-// 阶乘表
-const int Curve::factorials[6] = { 1, 1, 2, 6, 24, 120 };
-
 // 一次 曲线系数矩阵
 const int Curve::W1[2][2] = {
 	{-1, 1},
@@ -145,82 +131,6 @@ CP2 Curve::getCtrlPoint(int index) const {
 	if (index >= this->getCtrlPointsNum())
 		throw "索引越界!";
 	return this->ctrlPoints[index];
-}
-
-
-/*************************************************
-Function:       Combination
-Description:	组合数, 暴力解法
-Author:			刘陆
-Input:
-		- n: int, 总元素数
-		- m: int, 选出的元素数
-Return : int
-**************************************************/
-int Curve::Combination(int n, int m) throw(std::string) {
-	if (m > n)
-		throw "组合数m>n不合法";
-
-	int ans = 1;
-	for (int i = n; i >= (n - m + 1); --i)
-		ans *= i;
-	while (m)
-		ans /= m--;
-	return ans;
-}
-
-
-/*************************************************
-Function:       Bernstein
-Description:	Bezier 曲线的 Bernstein 基函数
-Author:			刘陆
-Calls:			Combination
-Input:
-		- i: int, 第 i 个控制点
-		- degree: int, 曲线阶数
-		- t: double, 参量
-Return: double
-*************************************************/
-double Curve::Bernstein(int i, int degree, double t) {
-	if (t == 0) {
-		if (i == 0) {
-			return 1.0;
-			return 0.0;
-		}
-	}
-	else if (t == 1) {
-		if (i == degree)
-			return 1.0;
-		return 0.0;
-	}
-
-	if (i > degree)
-		throw "Bernstein 组合数错误";
-	return this->combs[degree][i] * pow(t, i) * pow(1 - t, degree - i);
-}
-
-/*************************************************
-Function:       F
-Description:	B - 样条曲线 基函数
-Author:			刘陆
-Calls:			Combination
-Input:
-		- i: int, 第 i 个控制点
-		- degree: int, 曲线阶数
-		- t: double, 参量
-Return: double
-*************************************************/
-double Curve::F(int i, int degree, double t) {
-	double res = 0.0;
-
-	for (int j = 0; j <= degree - i; j++) {
-
-		if (j & 1)		// 奇数
-			res -= (this->combs[degree + 1][j] * pow(t + degree - i - j, degree));
-		else			// 偶数
-			res += (this->combs[degree + 1][j] * pow(t + degree - i - j, degree));
-	}
-	return res / factorials[degree];
 }
 
 

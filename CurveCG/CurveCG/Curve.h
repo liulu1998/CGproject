@@ -31,8 +31,6 @@ private:
 	CurveType type;      // 曲线类型
 	int degree;			 // 曲线阶数
 	int precision;		 // 曲线的精度, 即一段曲线由 多少个点 组成
-	const static int combs[7][7];				// 组合数表
-	const static int factorials[6];			    // 阶乘表
 
 	// 系数矩阵
 	const static int W1[2][2];					// 一次曲线矩阵
@@ -44,9 +42,6 @@ private:
 
 	// 方法
 public:
-	double Bernstein(int i, int degree, double t);	// Bernstein 基函数
-	double F(int i, int degree, double t);			// B-样条 基函数
-
 	EquationInfo calEquation(int start, int end, double(*p)[2]);					// 计算曲线方程
 	std::vector<CP2> generateCurvePoints(int start, int end);		// 生成样条曲线上的点
 	void addCtrlPoint(CP2);					// 追加一个控制点
@@ -66,8 +61,6 @@ public:
 	//void changeCurveInfo(CurveType type);
 	//void changeCurveInfo(int degree);
 	//void changeCurveInfo(int precision);
-
-	int Combination(int n, int m);			// 组合数
 
 	/** Getters */
 	CurveType getCurveType() const;				// 获得曲线类型
