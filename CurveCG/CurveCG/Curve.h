@@ -47,7 +47,7 @@ public:
 	double Bernstein(int i, int degree, double t);	// Bernstein 基函数
 	double F(int i, int degree, double t);			// B-样条 基函数
 
-	EquationInfo calEquation(int start, int end);					// 计算曲线方程
+	EquationInfo calEquation(int start, int end, double(*p)[2]);					// 计算曲线方程
 	std::vector<CP2> generateCurvePoints(int start, int end);		// 生成样条曲线上的点
 	void addCtrlPoint(CP2);					// 追加一个控制点
 

@@ -11,7 +11,7 @@
 
 const double PI = 3.14159;
 
-// 初始化 组合数表
+// 组合数表
 const int Curve::combs[7][7] = {
 	{1},
 	{1, 1},
@@ -22,10 +22,10 @@ const int Curve::combs[7][7] = {
 	{1, 6, 15, 20, 15, 6, 1}
 };
 
-// 初始化 阶乘表
+// 阶乘表
 const int Curve::factorials[6] = { 1, 1, 2, 6, 24, 120 };
 
-// 一次 Bezier 系数矩阵
+// 一次 曲线系数矩阵
 const int Curve::W1[2][2] = {
 	{-1, 1},
 	{1, 0}
@@ -45,7 +45,7 @@ const int Curve::W2[2][3][3] = {
 	}
 };
 
-// 三次 Bezier 系数矩阵
+// 三次 曲线系数矩阵
 const int Curve::W3[2][4][4] = {
 	{
 		{-1, 3, -3, 1},
@@ -278,7 +278,7 @@ Input:
 		- end: int, 曲线结束控制点
 Return:			Equation
 *************************************************/
-EquationInfo Curve::calEquation(int start, int end) {
+EquationInfo Curve::calEquation(int start, int end, double(*p)[2]) {
 	const int* parr = NULL;		// 指向 对应系数矩阵 的指针
 
 	if (degree == 1)
@@ -298,8 +298,6 @@ EquationInfo Curve::calEquation(int start, int end) {
 
 	int n = degree + 1;
 
-	double(*p)[2];				// 最终结果, N * 2 矩阵
-	p = new double[n][2];
 
 	// 矩阵乘
 	for (int i = 0; i < n; i++) {
@@ -332,7 +330,6 @@ EquationInfo Curve::calEquation(int start, int end) {
 	buildInfo(p, 0, n, info.nameX);
 	buildInfo(p, 1, n, info.nameY);
 
-	delete[] p;
 	return info;
 }
 
@@ -363,21 +360,28 @@ std::vector<CP2> Curve::generateCurvePoints(int start, int end)
 
 	double eps = 1.0 / this->precision;		// 参量 t 精度
 
+	double(*p)[2];				// 结果矩阵, N * 2 矩阵
+	p = new double[this->degree + 1][2];
+
+	double* tt = new double[this->degree + 1];		// t 的各个幂次的行向量
+	tt[this->degree] = 1;
+
 	for (int i = start; i + this->degree <= end; i += offset) {		// 起始控制点索引 i
-		EquationInfo info = calEquation(i, i + this->degree);		// 计算该段曲线方程
+		EquationInfo info = calEquation(i, i + this->degree, p);		// 计算该段曲线方程
 
 		for (double t = 0; t <= 1; t += eps) {		// 参数方程 参量 t
 			CP2 cur;
-			for (int k = 0; k <= this->degree; k++) {			// 遍历控制点
-				switch (type) {
-				case Bezier:		// Bazier 曲线
-					cur += ctrlPoints[i + k] * this->Bernstein(k, degree, t);
-					break;
-				case Spline:		// B - 样条曲线
-					cur += ctrlPoints[i + k] * this->F(k, degree, t);
-					break;
-				}
-			}
+
+			// 构造 t 的各幂次 行向量
+			for (int j = this->degree - 1; j > -1; j--)
+				tt[j] = t * tt[j + 1];
+
+			for (int j = 0; j <= this->degree; j++)
+				cur.x += (tt[j] * p[j][0]);
+
+			for (int j = 0; j <= this->degree; j++)
+				cur.y += (tt[j] * p[j][1]);
+
 			points.push_back(cur);
 		}
 		// 显示位置默认为曲线中部
@@ -391,6 +395,7 @@ std::vector<CP2> Curve::generateCurvePoints(int start, int end)
 	if (type == Bezier)
 		points.push_back(ctrlPoints[end]);
 
+	delete[] p;
 	return points;
 }
 
