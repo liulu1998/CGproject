@@ -74,9 +74,9 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
 	//cs.style = cs.style & ~WS_MAXIMIZEBOX;	// 不能最大化，但可以拖拽改变大小
-	//cs.style = WS_OVERLAPPED | WS_SYSMENU | WS_MINIMIZEBOX;		// 不能最大化，且不可拖拽改变大小
-	cs.style = WS_OVERLAPPED | WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX;		// 可以最大化，但不可拖拽改变大小
-	if( !CFrameWnd::PreCreateWindow(cs) )
+	cs.style = WS_OVERLAPPED | WS_SYSMENU | WS_MINIMIZEBOX;		// 不能最大化，且不可拖拽改变大小
+	// cs.style = WS_OVERLAPPED | WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX;		// 可以最大化，但不可拖拽改变大小
+	if (!CFrameWnd::PreCreateWindow(cs))
 		return FALSE;
 	// TODO: 在此处通过修改
 	//  CREATESTRUCT cs 来修改窗口类或样式
@@ -133,7 +133,7 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
 	//m_LeftSplitter.CreateView(2, 0, RUNTIME_CLASS(CurvePointView), CSize(284, 233), pContext);
 
 	m_splitter.SetColumnInfo(0, shape.Width() / 5, 526);
-	m_splitter.SetColumnInfo(1, shape.Width()*4 / 5, 10);
+	m_splitter.SetColumnInfo(1, shape.Width() * 4 / 5, 10);
 
 	// 设置左边的框大小
 	m_LeftSplitter.SetRowInfo(0, shape.Height() / 3, 10);
@@ -171,6 +171,6 @@ void CMainFrame::OnSize(UINT nType, int cx, int cy)
 
 
 	}
-	
+
 
 }
