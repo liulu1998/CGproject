@@ -403,26 +403,46 @@ void DrawView::BufferDraw(CDC* pDC) {
 /*************************************************
 Function:		drawGrid
 Description:	绘制网格线
-Author:			刘陆
+Author:			刘陆,刘俊
 Calls:
 Input:
 		- pDC: CDC*
 Return:
 *************************************************/
 void DrawView::drawGrid(CDC* pDC, const CRect& rect) {
-	CPen pen, * pOldPen;
+
+	CPen pen, pen1,* pOldPen;
 	pen.CreatePen(PS_DASHDOT, 1, RGB(191, 191, 191));		// 灰色 点划线画笔
+	pen1.CreatePen(PS_SOLID, 5, RGB(0, 0, 0));		//黑色，直线画笔
 	pOldPen = pDC->SelectObject(&pen);
 
 	// 竖线
 	for (int i = 0; i < rect.Width(); i += 30) {
 		pDC->MoveTo(i, 0);
+		if (i == 0)
+		{
+			pDC->SelectObject(&pen1);
+			pDC->LineTo(i, rect.Height());
+			pDC->LineTo(10, rect.Height() - 15);
+			pDC->TextOutW(10, rect.Height() - 15, (CString)"Y");
+			pDC->SelectObject(&pen);
+			continue;
+		}
 		pDC->LineTo(i, rect.Height());
 	}
 
 	// 横线
 	for (int j = 0; j < rect.Height(); j += 30) {
 		pDC->MoveTo(0, j);
+		if (j == 0)
+		{
+			pDC->SelectObject(&pen1);
+			pDC->LineTo(rect.Width(),j);
+			pDC->LineTo(rect.Width() - 15, 10);
+			pDC->TextOutW(rect.Width() - 15, 10,(CString)"X");
+			pDC->SelectObject(&pen);
+			continue;
+		}
 		pDC->LineTo(rect.Width(), j);
 	}
 
