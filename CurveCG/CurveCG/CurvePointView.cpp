@@ -245,7 +245,7 @@ Return:
 void CurvePointView::OnBnClickedButtonSavepoints()
 {
 	// TODO: 在此添加控件通知处理程序代码
-	TCHAR szFilter[] = _T("文本文件(*.txt)|*.txt|Word文件(*.doc)|*.doc|所有文件(*.*)|*.*||");
+	TCHAR szFilter[] = _T("文本文件(*.txt)|*.txt|所有文件(*.*)|*.*||");
 	// 构造保存文件对话框 
 	CFileDialog savedlg(false, _T(".txt"), _T("myCurve"), OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, szFilter, this);
 	CString strFilePath;
@@ -253,15 +253,20 @@ void CurvePointView::OnBnClickedButtonSavepoints()
 	if (savedlg.DoModal() == IDOK) { //显示对话框并允许用户进行选择。
 		strFilePath = savedlg.GetPathName();
 		CFile fsave(savedlg.GetPathName(), CFile::modeCreate | CFile::modeReadWrite);
+		//设置编码
+		wchar_t unicode = 0xFEFF;  
+		fsave.Write(&unicode, sizeof(wchar_t)); 
 
 		CRuntimeClass* pClass = RUNTIME_CLASS(DrawView);
 		DrawView* pDraw = (DrawView*)GetView(pClass);
+		//输出控制点数据
 		int num = pDraw->getCtrlPointsNumOfCurve();
 		for (int i = 0; i < num; ++i) {
 			CP2 p = pDraw->getCtrlPointFromCurve(i);
 			str.Format(_T("(%.2lf, %.2lf)"), p.x, p.y);
 			fsave.Write(str, str.GetLength() * 2);
-			fsave.Write("\r\n", 2);
+			
+			fsave.Write("\n", 2);
 		}
 		fsave.Close(); //文件操作结束关闭
 
