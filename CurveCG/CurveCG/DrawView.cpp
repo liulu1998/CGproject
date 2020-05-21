@@ -413,7 +413,7 @@ void DrawView::drawGrid(CDC* pDC, const CRect& rect) {
 
 	CPen pen, pen1,* pOldPen;
 	pen.CreatePen(PS_DASHDOT, 1, RGB(191, 191, 191));		// 灰色 点划线画笔
-	pen1.CreatePen(PS_SOLID, 5, RGB(0, 0, 0));		//黑色，直线画笔
+	pen1.CreatePen(PS_SOLID, 3, RGB(125,125,125));		//黑色，直线画笔
 	pOldPen = pDC->SelectObject(&pen);
 
 	// 竖线
@@ -445,6 +445,9 @@ void DrawView::drawGrid(CDC* pDC, const CRect& rect) {
 		}
 		pDC->LineTo(rect.Width(), j);
 	}
+
+	//原点
+	pDC->TextOutW(5, 5, (CString)"O");
 
 	pDC->SelectObject(pOldPen);
 }
