@@ -175,13 +175,11 @@ void buildInfo(double(*p)[2], int dim, int n, CString& info) {
 		else if (i == n - 1) {		// 常数项
 			pattern.Format(_T("%.3f"), cur);
 		}
-		else if (i == 0) {
-			pattern.Format(_T("%.3lf t^%d "), cur, n - 1);
-		}
 		else
 		{
 			pattern.Format(_T("%.3lf t^%d "), cur, n - 1 - i);
 		}
+		// 是正数, 补加 +
 		if (i != 0 && cur > 0)
 			pattern = PLUS + pattern;
 
