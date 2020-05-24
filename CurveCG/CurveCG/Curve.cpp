@@ -160,38 +160,31 @@ Return:
 *************************************************/
 void buildInfo(double(*p)[2], int dim, int n, CString& info) {
 	CString pattern;
-	CString PLUS("+");
+	CString PLUS("+ ");
 
 	for (int i = 0; i < n; i++) {
+		pattern.Empty();
+
 		double cur = p[i][dim];
 		if (cur == 0)
 			continue;
 
-		pattern.Empty();
-
 		if (n - 1 - i == 1) {		// t ^ 1
-			if (cur < 0)
-				pattern.Format(_T("%.3lf t "), cur);
-			else
-				pattern.Format(_T("+%.3lf t "), cur);
+			pattern.Format(_T("%.3lf t "), cur);
 		}
 		else if (i == n - 1) {		// 常数项
-			if (cur < 0)
-				pattern.Format(_T("%.3f"), cur);
-			else if (p[n - 1][0] > 0)
-				pattern.Format(_T("+%.3f"), cur);
+			pattern.Format(_T("%.3f"), cur);
 		}
 		else if (i == 0) {
-			if (cur != 0)
-				pattern.Format(_T("%.3lf t^%d "), cur, n - 1);
+			pattern.Format(_T("%.3lf t^%d "), cur, n - 1);
 		}
 		else
 		{
-			if (cur < 0)
-				pattern.Format(_T("%.3lf t^%d "), cur, n - 1 - i);
-			else
-				pattern.Format(_T("+%.3lf t^%d "), cur, n - 1 - i);
+			pattern.Format(_T("%.3lf t^%d "), cur, n - 1 - i);
 		}
+		if (i != 0 && cur > 0)
+			pattern = PLUS + pattern;
+
 		info += pattern;
 	}
 }
@@ -201,10 +194,11 @@ void buildInfo(double(*p)[2], int dim, int n, CString& info) {
 Function:       calEquation
 Description:	计算曲线方程
 Author:			刘陆
-Calls:
+Calls:			buildInfo
 Input:
 		- start: int, 曲线起始控制点
 		- end: int, 曲线结束控制点
+		- p, 保存结果矩阵的数组指针
 Return:			Equation
 *************************************************/
 EquationInfo Curve::calEquation(int start, int end, double(*p)[2]) {
@@ -265,7 +259,7 @@ EquationInfo Curve::calEquation(int start, int end, double(*p)[2]) {
 Function:       generateCurvePoints
 Description:	采样生成样条曲线上的点
 Author:			刘陆
-Calls:			Bernstein, F
+Calls:			calEquation
 Input:
 		- start: int, 曲线起始控制点 在 ctrlPoints 中的索引
 		- end: int, 曲线结束控制点 在 ctrlPoints 中的索引
