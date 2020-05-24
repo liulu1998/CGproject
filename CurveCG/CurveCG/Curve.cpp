@@ -160,6 +160,8 @@ Return:
 *************************************************/
 void buildInfo(double(*p)[2], int dim, int n, CString& info) {
 	CString pattern;
+	CString PLUS("+");
+
 	for (int i = 0; i < n; i++) {
 		double cur = p[i][dim];
 		if (cur == 0)
@@ -225,7 +227,6 @@ EquationInfo Curve::calEquation(int start, int end, double(*p)[2]) {
 
 	int n = degree + 1;
 
-
 	// 矩阵乘
 	for (int i = 0; i < n; i++) {
 		for (int j = 0; j < 2; j++) {
@@ -238,13 +239,13 @@ EquationInfo Curve::calEquation(int start, int end, double(*p)[2]) {
 					tot += (int)ctrlPoints[start + k].y * *(parr + i * n + k);
 			}
 
-			p[i][j] = tot;
+			p[i][j] = (double)tot;
 		}
 	}
 
 	// B- 样条曲线 前缀系数
 	if (this->type == Spline && this->degree != 1) {
-		double w = this->BSplineW[this->degree];
+		double w = this->BSplineW[degree];
 
 		for (int i = 0; i < n; i++)
 			p[i][0] *= w, p[i][1] *= w;
@@ -252,7 +253,6 @@ EquationInfo Curve::calEquation(int start, int end, double(*p)[2]) {
 
 	// 构造 info
 	EquationInfo info;
-	CString pattern;
 
 	buildInfo(p, 0, n, info.nameX);
 	buildInfo(p, 1, n, info.nameY);
@@ -290,9 +290,6 @@ std::vector<CP2> Curve::generateCurvePoints(int start, int end)
 	double(*p)[2];				// 结果矩阵, N * 2 矩阵
 	p = new double[this->degree + 1][2];
 
-	double* tt = new double[this->degree + 1];		// t 的各个幂次的行向量
-	tt[this->degree] = 1;
-
 	for (int i = start; i + this->degree <= end; i += offset) {		// 起始控制点索引 i
 		EquationInfo info = calEquation(i, i + this->degree, p);		// 计算该段曲线方程
 		this->equations.push_back(info);
@@ -300,15 +297,15 @@ std::vector<CP2> Curve::generateCurvePoints(int start, int end)
 		for (double t = 0; t <= 1; t += eps) {		// 参数方程 参量 t
 			CP2 cur;
 
-			// 构造 t 的各幂次 行向量
-			for (int j = this->degree - 1; j > -1; j--)
-				tt[j] = t * tt[j + 1];
+			cur.x = p[this->degree][0];
+			cur.y = p[this->degree][1];
 
-			for (int j = 0; j <= this->degree; j++)
-				cur.x += (tt[j] * p[j][0]);
-
-			for (int j = 0; j <= this->degree; j++)
-				cur.y += (tt[j] * p[j][1]);
+			double ct = 1.0;			// t 的各个幂次, 初始化为 t^0
+			for (int j = this->degree - 1; j > -1; j--) {
+				ct *= t;
+				cur.x += (ct * p[j][0]);
+				cur.y += (ct * p[j][1]);
+			}
 
 			points.push_back(cur);
 		}
@@ -319,7 +316,6 @@ std::vector<CP2> Curve::generateCurvePoints(int start, int end)
 		points.push_back(ctrlPoints[end]);
 
 	delete[] p;
-	delete[] tt;
 	return points;
 }
 
