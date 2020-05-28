@@ -32,6 +32,7 @@
 #define IDC_BUTTON_DELCURVE             1012
 #define IDC_LIST2                       1012
 #define IDC_BUTTON2                     1013
+#define IDC_BUTTON_DELCURVE2            1013
 #define IDC_EDIT_02                     1014
 #define IDC_RADIO_BEZIER_01             1015
 #define IDC_RADIO_BSPLINE_01            1016

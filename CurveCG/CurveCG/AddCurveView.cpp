@@ -126,6 +126,7 @@ void AddCurveView::OnInitialUpdate()
 
 	// 初始化 次数 下拉框
 	CString degrees[] = { TEXT("1"), TEXT("2"), TEXT("3") };
+	m_nMapMode = -1;
 
 	for (int i = 0; i < 3; i++)
 		m_degree_cbx.AddString(degrees[i]);
