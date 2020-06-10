@@ -195,6 +195,7 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="MoreCurveInfo.h" />
+    <ClInclude Include="MyFormView.h" />
     <ClInclude Include="MySplitter.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
@@ -214,6 +215,7 @@
     <ClCompile Include="DrawView.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="MoreCurveInfo.cpp" />
+    <ClCompile Include="MyFormView.cpp" />
     <ClCompile Include="MySplitter.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

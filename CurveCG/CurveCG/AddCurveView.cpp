@@ -123,7 +123,8 @@ Return:
 void AddCurveView::OnInitialUpdate()
 {
 	CFormView::OnInitialUpdate();
-
+	// 消除滚动条
+	m_nMapMode = -1;
 	// 初始化 次数 下拉框
 	CString degrees[] = { TEXT("1"), TEXT("2"), TEXT("3") };
 	m_nMapMode = -1;

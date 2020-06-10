@@ -3,3 +3,4 @@
 #include "CurveInfoView.h"
 #include "CurvePointView.h"
 #include "DrawView.h"
+#include "MyFormView.h"

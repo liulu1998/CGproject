@@ -9,6 +9,7 @@
 #define IDI_ICON1                       310
 #define IDI_ICON_LOGO                   310
 #define IDD_DLG_ADDCURVE                311
+#define IDD_MyFormView                  312
 #define IDD_DLG_CURVEINFO               313
 #define IDD_DLG_CURBEPOINT              314
 #define IDD_DLG_CURVEPOINT              314
@@ -54,6 +55,6 @@
 #define _APS_NEXT_RESOURCE_VALUE        318
 #define _APS_NEXT_COMMAND_VALUE         32773
 #define _APS_NEXT_CONTROL_VALUE         1014
-#define _APS_NEXT_SYMED_VALUE           310
+#define _APS_NEXT_SYMED_VALUE           313
 #endif
 #endif

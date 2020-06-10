@@ -176,7 +176,8 @@ void CurvePointView::OnBnClickedButtonDelcurve()
 void CurvePointView::OnInitialUpdate()
 {
 	CFormView::OnInitialUpdate();
-
+	// 消除滚动条
+	m_nMapMode = -1;
 	// 初始化列表
 	// 设置表头
 	CRect listRect;

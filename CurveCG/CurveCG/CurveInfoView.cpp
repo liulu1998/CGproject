@@ -88,7 +88,8 @@ void CurveInfoView::OnSize(UINT nType, int cx, int cy)
 void CurveInfoView::OnInitialUpdate()
 {
 	CFormView::OnInitialUpdate();
-
+	// 消除滚动条
+	m_nMapMode = -1;
 	// 曲线列表初始化, 设置整行选中
 	m_curveList.SetExtendedStyle(m_curveList.GetExtendedStyle() | LVS_EX_FULLROWSELECT);
 
