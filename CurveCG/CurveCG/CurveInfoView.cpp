@@ -41,6 +41,7 @@ ON_NOTIFY(NM_CLICK, IDC_LIST_CURVES, &CurveInfoView::OnNMClickListCurves)
 //ON_NOTIFY(NM_CLICK, IDC_LIST_CURVES, &CurveInfoView::OnNMClickListCurves)
 ON_WM_TIMER()
 ON_BN_CLICKED(IDC_BUTTON_DELCURVE, &CurveInfoView::OnBnClickedButtonDelcurve)
+ON_BN_CLICKED(IDC_MOREINFO, &CurveInfoView::OnClickedMoreinfo)
 END_MESSAGE_MAP()
 
 
@@ -462,4 +463,48 @@ void CurveInfoView::OnBnClickedButtonDelcurve()
 
 
 
+}
+
+
+/*************************************************
+Function:
+Description:	显示详细信息
+Author:			刘俊
+Calls:          无					// 被本函数调用的函数清单
+Input:
+		-
+Return:         void				// 函数返回值的说明
+Others:         // 其它说明
+*************************************************/
+void CurveInfoView::OnClickedMoreinfo()
+{
+	// 获取当前选中的曲线
+	int index = m_curveList.GetSelectionMark();
+
+	if (index == -1) {
+		MessageBox(_T("请先创建曲线!"));
+		return;
+	}
+
+	MoreCurveInfo pClass;
+	CString str;
+	str = m_curveList.GetItemText(index, 0);
+
+	//获取DrawView指针
+	CRuntimeClass* pClass1 = RUNTIME_CLASS(DrawView);
+	DrawView* pDraw = (DrawView*)GetView(pClass1);
+
+
+	pClass.setCurveName(str);
+	//pClass.curveName = str;
+	pClass.setCurve(pDraw->getCurveType(index), pDraw->getCurveDegree(index), pDraw->getCurvePrecision(index));
+	pClass.setEquation(pDraw->getCurveEquationInfo(index));
+
+	pClass.DoModal();
+
+
+	this->changeCurveInfo(pClass.getCurveType(), pClass.getCurveDegree(), pClass.getCurvePrec());
+
+	// 重绘曲线
+	pDraw->RedrawWindow();
 }

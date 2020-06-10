@@ -56,4 +56,5 @@ public:
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnBnClickedButton1();
 	afx_msg void OnBnClickedButtonDelcurve();
+	afx_msg void OnClickedMoreinfo();
 };

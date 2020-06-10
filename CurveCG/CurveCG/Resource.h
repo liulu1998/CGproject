@@ -25,6 +25,7 @@
 #define IDC_BUTTON_ADDCURVE             1004
 #define IDC_BUTTON_ADDPOINT             1004
 #define IDC_BUTTON_SAVEPOINTS           1004
+#define IDC_MOREINFO                    1004
 #define IDC_LIST_CURVE                  1007
 #define IDC_LIST_POINT                  1008
 #define IDC_EDIT1                       1009
