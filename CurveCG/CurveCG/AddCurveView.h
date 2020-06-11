@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include<string>
+#include<vector>
 #include "viewList.h"
 #include "Curve.h"
 
@@ -64,4 +66,5 @@ public:
 	afx_msg void OnKillfocusEdit1();
 	//	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnClickedOpencurve();
 };

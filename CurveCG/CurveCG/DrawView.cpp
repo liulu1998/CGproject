@@ -154,6 +154,27 @@ int DrawView::addCurve(CurveType type, int degree, int precision) {
 
 
 /*************************************************
+Function:
+Description:	增加一条曲线
+Author:			刘俊
+Calls:          无					// 被本函数调用的函数清单
+Input:
+		-Curve
+Return:         void				// 函数返回值的说明
+Others:         // 其它说明
+*************************************************/
+
+
+int DrawView::addCurve(Curve newCurve)
+{
+	this->curves.push_back(newCurve);
+	this->setFocus(this->getCurvesNum() - 1);		// 切换焦点
+	return this->getCurvesNum() - 1;
+	return 0;
+}
+
+
+/*************************************************
 Function:		getCtrlPointsNumOfCurve
 Description:	获得焦点曲线的 控制点数
 Author:			刘陆

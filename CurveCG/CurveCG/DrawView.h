@@ -48,6 +48,7 @@ public:
 
 	int addCurve();
 	int addCurve(CurveType type, int degree, int precision);
+	int addCurve(Curve);
 
 	void deleteCurve(int index);			// 删除一条曲线
 	CView* GetView(CRuntimeClass* pClass);	// 获取指定类型的View

@@ -41,6 +41,7 @@ BEGIN_MESSAGE_MAP(AddCurveView, CFormView)
 	ON_EN_KILLFOCUS(IDC_EDIT1, &AddCurveView::OnKillfocusEdit1)
 	//ON_WM_LBUTTONDBLCLK()
 	ON_WM_LBUTTONDOWN()
+	ON_BN_CLICKED(IDC_OPENCURVE, &AddCurveView::OnClickedOpencurve)
 END_MESSAGE_MAP()
 
 
@@ -438,4 +439,119 @@ void AddCurveView::OnLButtonDown(UINT nFlags, CPoint point)
 
 	CFormView::OnLButtonDown(nFlags, point);
 	GetDlgItem(IDC_BUTTON_ADDCURVE)->SetFocus();
+}
+
+
+
+/*************************************************
+Function:
+Description:	打开线条
+Author:			刘俊
+Calls:          无					// 被本函数调用的函数清单
+Input:
+		-
+Return:         void				// 函数返回值的说明
+Others:         // 其它说明
+*************************************************/
+
+
+void AddCurveView::OnClickedOpencurve()
+{
+	// TODO: 在此添加控件通知处理程序代码
+
+	// TODO: Add your control notification handler code here   
+	// 设置过滤器   
+	TCHAR szFilter[] = _T("文本文件(*.txt)|*.txt|所有文件(*.*)|*.*||");
+	// 构造打开文件对话框   
+	CFileDialog fileDlg(TRUE, _T("txt"), NULL, 0, szFilter, this);
+	CString strFilePath;
+
+	// 显示打开文件对话框   
+	if (IDOK == fileDlg.DoModal())
+	{
+		// 如果点击了文件对话框上的“打开”按钮，则将选择的文件路径显示到编辑框里   
+		strFilePath = fileDlg.GetPathName();
+		CFile myCurve;
+		if (!myCurve.Open(strFilePath, CFile::modeRead))
+		{
+			MessageBox(_T("打开失败!"));
+		}
+
+		std::string type, degree, pre;
+		Curve newCurve;
+		
+		DWORD len = myCurve.GetLength();
+		char buffer[10000];
+		myCurve.Read(buffer, 10000);
+		std::string s;
+		for(int i = 0; i < len; i++)
+		{
+			if (buffer[i] == '\0' ||i==0||i==1) continue;
+			s += buffer[i];
+		}
+		
+		std::string::size_type pos;
+		std::vector<std::string> vec;
+		std::string ch = "\n";
+		std::string ch1 = ", ";
+		for (int i = 0; i < s.size(); i++)
+		{
+			pos = s.find(ch, i);
+			if (pos < s.size())
+			{
+				std::string str = s.substr(i, pos - i);
+				if (i == 0)
+				{
+					type = str[5];
+					if (type == "B") newCurve.setType((CurveType)'B');
+					else newCurve.setType((CurveType)'S');
+					degree = str[14];
+					newCurve.setDegree(atoi(degree.c_str()));
+					std::string pre1 = str.substr(20,str.size()-1);
+					newCurve.setPrecision(atoi(pre1.c_str()));
+					i = pos + ch.size() - 1;
+					continue;
+				}
+				vec.push_back(str);
+				i = pos + ch.size() - 1;
+			}
+		}
+
+		for (std::string it : vec)
+		{
+			std::string p = it.substr(1, it.size() - 2);
+			pos = p.find(ch1, 0);
+			std::string x = p.substr(0, pos);
+			std::string y = p.substr(pos + 2, p.size() - 1);
+			CP2 cPoint;
+			cPoint.x = atof(x.c_str());
+			cPoint.y = atof(y.c_str());
+			newCurve.addCtrlPoint(cPoint);
+		}
+
+		// 获取 DrawView 指针
+		CRuntimeClass* pClass = RUNTIME_CLASS(DrawView);
+		DrawView* pDraw = (DrawView*)GetView(pClass);
+
+		// DrawView 中新增一条曲线
+		pDraw->addCurve(newCurve);
+		// 获得 控制点数
+		int ctrlCount = pDraw->getCtrlPointsNumOfCurve();
+
+		pDraw->RedrawWindow();
+
+		// CurveInfoView 中 更新信息
+		// 获取 DrawView 指针
+		pClass = RUNTIME_CLASS(CurveInfoView);
+		CurveInfoView* pInfo = (CurveInfoView*)GetView(pClass);
+
+		// 在curveInfo中加入新曲线信息
+		pInfo->openCurveInfo(newCurve);
+
+		pClass = RUNTIME_CLASS(CurvePointView);
+		CurvePointView* pPoint = (CurvePointView*)GetView(pClass);
+		pPoint->showCurvePoints();
+		
+	}
+
 }

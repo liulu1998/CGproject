@@ -9,6 +9,7 @@
 #define IDI_ICON1                       310
 #define IDI_ICON_LOGO                   310
 #define IDD_DLG_ADDCURVE                311
+#define IDD_OPENCURVE                   311
 #define IDD_MyFormView                  312
 #define IDD_DLG_CURVEINFO               313
 #define IDD_DLG_CURBEPOINT              314
@@ -35,6 +36,7 @@
 #define IDC_LIST2                       1012
 #define IDC_BUTTON2                     1013
 #define IDC_BUTTON_DELCURVE2            1013
+#define IDC_OPENCURVE                   1013
 #define IDC_EDIT_02                     1014
 #define IDC_RADIO_BEZIER_01             1015
 #define IDC_RADIO_BSPLINE_01            1016

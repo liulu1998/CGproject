@@ -38,6 +38,7 @@ public:
 	// 我们的方法
 public:
 	void addCurveInfo(CurveType, int, int);// 添加点信息
+	void openCurveInfo(Curve);//打开一条曲线
 	void changeCurveInfo(CurveType, int, int);//修改曲线信息
 private:
 	CView* GetView(CRuntimeClass* pClass);	// 获取指定类型的View

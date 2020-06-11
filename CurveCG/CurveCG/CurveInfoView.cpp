@@ -183,6 +183,58 @@ void CurveInfoView::addCurveInfo(CurveType type, int degree, int prec)
 }
 
 
+/*************************************************
+Function:
+Description:	打开一条曲线
+Author:			刘俊
+Calls:          					// 被本函数调用的函数清单
+Input:
+		-Curve
+Return:         void				// 函数返回值的说明
+Others:         // 其它说明
+*************************************************/
+void CurveInfoView::openCurveInfo(Curve newCurve)
+{
+	CString idStr;
+	int listLength = m_curveList.GetItemCount();
+	int id;
+	// 如果列表长度为0, id为0
+	if (listLength == 0)id = 0;
+	else {
+		// 如果不为0, 则为最后一个元素id+1
+		id = _wtoi(m_curveList.GetItemText(listLength - 1, 0)) + 1;
+	}
+
+	// 数据格式 { _T("id"), _T("type"), _T("degree"), _T("prec") };
+
+	// 依次设置类型等
+	CString type_, degree_, prec_;
+
+	// 格式化
+	type_.Format(_T("%c"), newCurve.getCurveType());
+	degree_.Format(_T("%d"), newCurve.getCurveDegree());
+	//count_.Format(_T("%d"), count);
+	prec_.Format(_T("%d"), newCurve.getCurvePrecision());
+
+	// 插入表格
+	// 插入 第一列 id
+	idStr.Format(_T("%d"), id);
+	m_curveList.InsertItem(listLength, idStr);
+	// 插入其他列
+	m_curveList.SetItemText(listLength, 1, type_);
+	m_curveList.SetItemText(listLength, 2, degree_);
+	//m_curveList.SetItemText(listLength, 3, count_);
+	m_curveList.SetItemText(listLength, 3, prec_);
+
+	m_curveList.EnsureVisible(listLength, FALSE);
+
+	// 选中新插入行
+	m_curveList.SetItemState(listLength, LVIS_FOCUSED | LVIS_SELECTED, LVIS_FOCUSED | LVIS_SELECTED);   //选中行
+	m_curveList.SetSelectionMark(listLength);
+	m_curveList.SetFocus();
+}
+
+
 
 /*************************************************
 Function:
