@@ -191,7 +191,7 @@ void CurvePointView::OnInitialUpdate()
 	m_pointList.GetWindowRect(listRect);
 
 	CString header[] = { _T("id"), _T("x"), _T("y") };
-	float colWidth[] = { 0.2, 0.4, 0.4 };
+	float colWidth[] = { 0.18, 0.4, 0.4 };
 	for (int i = 0; i < 3; i++)
 	{
 		m_pointList.InsertColumn(i, header[i], LVCFMT_LEFT, listRect.Width() * colWidth[i]);
