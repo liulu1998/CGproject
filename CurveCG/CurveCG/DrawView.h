@@ -57,8 +57,11 @@ public:
 	void drawGrid(CDC* pDC, const CRect&);						// 绘制网格
 
 	int getCurveDegree(int index) const;
+	int getCurveDegree();
 	CurveType getCurveType(int index) const;
+	CurveType getCurveType();
 	int getCurvePrecision(int index) const;
+	int getCurvePrecision();
 	std::vector<EquationInfo> getCurveEquationInfo(int index) const;
 
 	bool setCurveInfo(int index, CurveType type, int degree, int precision);	// 改变curve信息

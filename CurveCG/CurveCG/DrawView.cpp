@@ -280,6 +280,24 @@ int DrawView::getCurveDegree(int index) const {
 
 
 /*************************************************
+Function:
+Description:	获取曲线次数
+Author:			刘俊
+Calls:          无					// 被本函数调用的函数清单
+Input:
+		-
+Return:         int				// 函数返回值的说明
+Others:         // 其它说明
+*************************************************/
+
+
+int DrawView::getCurveDegree()
+{
+	return this->curves[this->getFocus()].getCurveDegree();
+}
+
+
+/*************************************************
 Function:		getCurveType
 Description:	获取曲线类型
 Input:
@@ -294,6 +312,24 @@ CurveType DrawView::getCurveType(int index) const {
 
 
 /*************************************************
+Function:
+Description:	获取曲线类型
+Author:			刘俊
+Calls:          无					// 被本函数调用的函数清单
+Input:
+		-
+Return:         CurveType				// 函数返回值的说明
+Others:         // 其它说明
+*************************************************/
+
+
+CurveType DrawView::getCurveType()
+{
+	return this->curves[this->getFocus()].getCurveType();
+}
+
+
+/*************************************************
 Function:		getCurvePrecision
 Description:	获取曲线精度
 Input:
@@ -304,6 +340,24 @@ int DrawView::getCurvePrecision(int index) const {
 	if (index >= this->getCurvesNum())
 		throw "索引越界";
 	return this->curves[index].getCurvePrecision();
+}
+
+
+/*************************************************
+Function:
+Description:	获取曲线精度
+Author:			刘俊
+Calls:          无					// 被本函数调用的函数清单
+Input:
+		-
+Return:         int				// 函数返回值的说明
+Others:         // 其它说明
+*************************************************/
+
+
+int DrawView::getCurvePrecision()
+{
+	return this->curves[this->getFocus()].getCurvePrecision();
 }
 
 /*************************************************

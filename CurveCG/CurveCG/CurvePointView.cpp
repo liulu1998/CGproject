@@ -238,7 +238,7 @@ void CurvePointView::resetList() {
 /*************************************************
 Function:		OnFileSave
 Description:	保存当前焦点曲线的控制点到一个txt文件中，默认名称为“myCurve.txt”
-Author:			韩继锋
+Author:			韩继锋,刘俊
 Calls:			getCtrlPointsNumOfCurve，getCtrlPointFromCurve
 Input:
 Return:
@@ -260,6 +260,15 @@ void CurvePointView::OnBnClickedButtonSavepoints()
 
 		CRuntimeClass* pClass = RUNTIME_CLASS(DrawView);
 		DrawView* pDraw = (DrawView*)GetView(pClass);
+
+		CString infoStr;
+		CString infoType;
+		if (pDraw->getCurveType() == 'B') infoType = "B";
+		else infoType = "S";
+		infoStr.Format(_T("type:%s,degree:%d,pre:%d"), infoType, pDraw->getCurveDegree(), pDraw->getCurvePrecision());
+		fsave.Write(infoStr, infoStr.GetLength() * 2);
+		fsave.Write("\n", 2);
+
 		//输出控制点数据
 		int num = pDraw->getCtrlPointsNumOfCurve();
 		for (int i = 0; i < num; ++i) {
