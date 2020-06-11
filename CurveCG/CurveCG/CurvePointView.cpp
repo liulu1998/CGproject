@@ -273,7 +273,7 @@ void CurvePointView::OnBnClickedButtonSavepoints()
 		int num = pDraw->getCtrlPointsNumOfCurve();
 		for (int i = 0; i < num; ++i) {
 			CP2 p = pDraw->getCtrlPointFromCurve(i);
-			str.Format(_T("(%.2lf, %.2lf)"), p.x, p.y);
+			str.Format(_T("(%d, %d)"), (int)p.x, (int)p.y);
 			fsave.Write(str, str.GetLength() * 2);
 			
 			fsave.Write("\n", 2);

@@ -453,8 +453,6 @@ Input:
 Return:         void				// 函数返回值的说明
 Others:         // 其它说明
 *************************************************/
-
-
 void AddCurveView::OnClickedOpencurve()
 {
 	// TODO: 在此添加控件通知处理程序代码

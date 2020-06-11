@@ -289,8 +289,6 @@ Input:
 Return:         int				// 函数返回值的说明
 Others:         // 其它说明
 *************************************************/
-
-
 int DrawView::getCurveDegree()
 {
 	return this->curves[this->getFocus()].getCurveDegree();
@@ -321,8 +319,6 @@ Input:
 Return:         CurveType				// 函数返回值的说明
 Others:         // 其它说明
 *************************************************/
-
-
 CurveType DrawView::getCurveType()
 {
 	return this->curves[this->getFocus()].getCurveType();
@@ -353,8 +349,6 @@ Input:
 Return:         int				// 函数返回值的说明
 Others:         // 其它说明
 *************************************************/
-
-
 int DrawView::getCurvePrecision()
 {
 	return this->curves[this->getFocus()].getCurvePrecision();
