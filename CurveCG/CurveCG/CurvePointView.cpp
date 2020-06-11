@@ -153,6 +153,13 @@ Return:
 *************************************************/
 void CurvePointView::OnBnClickedButtonDelcurve()
 {
+	// 获取当前选中的曲线
+	int index = m_pointList.GetSelectionMark();
+
+	if (index == -1) {
+		MessageBox(_T("没有控制点!"));
+		return;
+	}
 	// 获取 选中行 索引
 	int point_index = this->m_pointList.GetNextItem(-1, LVIS_SELECTED);
 
@@ -245,6 +252,13 @@ Return:
 *************************************************/
 void CurvePointView::OnBnClickedButtonSavepoints()
 {
+	// 获取当前选中的曲线
+	int index = m_pointList.GetSelectionMark();
+
+	if (index == -1) {
+		MessageBox(_T("没有控制点!"));
+		return;
+	}
 	// TODO: 在此添加控件通知处理程序代码
 	TCHAR szFilter[] = _T("文本文件(*.txt)|*.txt|所有文件(*.*)|*.*||");
 	// 构造保存文件对话框 
