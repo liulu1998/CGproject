@@ -478,6 +478,7 @@ void AddCurveView::OnClickedOpencurve()
 		std::string type, degree, pre;
 		Curve newCurve;
 		
+		//读取文件内容
 		DWORD len = myCurve.GetLength();
 		char buffer[10000];
 		myCurve.Read(buffer, 10000);
@@ -492,6 +493,7 @@ void AddCurveView::OnClickedOpencurve()
 		std::vector<std::string> vec;
 		std::string ch = "\n";
 		std::string ch1 = ", ";
+		//读取加载曲线信息并初始化曲线
 		for (int i = 0; i < s.size(); i++)
 		{
 			pos = s.find(ch, i);
@@ -500,6 +502,15 @@ void AddCurveView::OnClickedOpencurve()
 				std::string str = s.substr(i, pos - i);
 				if (i == 0)
 				{
+					//正则匹配
+					std::regex reg("type:(B|S),degree:(1|2|3),pre:(.*)");
+					std::smatch res;
+					if (!std::regex_match(str, res, reg))
+					{
+						MessageBox(_T("不支持的文件内容!"));
+						return;
+					}
+					//设置曲线信息
 					type = str[5];
 					if (type == "B") newCurve.setType((CurveType)'B');
 					else newCurve.setType((CurveType)'S');
@@ -513,8 +524,13 @@ void AddCurveView::OnClickedOpencurve()
 				vec.push_back(str);
 				i = pos + ch.size() - 1;
 			}
+			else
+			{
+				MessageBox(_T("不支持的文件内容!"));
+				return;
+			}
 		}
-
+		//往加载的线条中写入控制点
 		for (std::string it : vec)
 		{
 			std::string p = it.substr(1, it.size() - 2);

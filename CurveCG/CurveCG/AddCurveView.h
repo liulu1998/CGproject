@@ -2,6 +2,7 @@
 
 #include<string>
 #include<vector>
+#include<regex>
 #include "viewList.h"
 #include "Curve.h"
 
