@@ -294,7 +294,7 @@ void CurvePointView::OnBnClickedButtonSavepoints()
 		}
 		fsave.Close(); //文件操作结束关闭
 
-		MessageBox(_T("保存文件成功"), _T("搞定了"), MB_ICONEXCLAMATION | MB_OK);
+		MessageBox(_T("保存文件成功"), _T("保存曲线"), MB_ICONEXCLAMATION | MB_OK);
 	}
 	else
 		return;
