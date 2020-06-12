@@ -267,6 +267,7 @@ BOOL MoreCurveInfo::OnInitDialog()
 
 	//初始化名称
 	this->m_edit_curveName.SetWindowTextW(curveName);
+	this->m_edit_curveName.SetReadOnly(TRUE);
 
 	//初始化类型
 	if (m_curve.getCurveType() == 'B')

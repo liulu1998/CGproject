@@ -48,6 +48,7 @@
 #define IDC_STATIC_04                   1022
 #define IDC_EDIT_01                     1023
 #define IDC_LIST1                       1024
+#define IDC_RICHEDIT21                  1025
 #define ID_32771                        32771
 #define ID_SAVETEST                     32772
 
@@ -57,7 +58,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        318
 #define _APS_NEXT_COMMAND_VALUE         32773
-#define _APS_NEXT_CONTROL_VALUE         1014
+#define _APS_NEXT_CONTROL_VALUE         1026
 #define _APS_NEXT_SYMED_VALUE           313
 #endif
 #endif
